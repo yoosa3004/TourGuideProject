@@ -19,22 +19,29 @@ let APIUrl = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBa
 
 class TGNetworkingManager {
     
-    // API 통신 후 받아온 json 파일을 변환해 최종적으로 쓰일 데이터에 할당하는 함수
+    // API 통신 후 받아온 json 파일을 변환해 최종적으로 쓰일 DataSet에 할당하는 함수
     func loadData() {
         Alamofire.request(APIUrl).responseObject { (response: DataResponse<TourInfo>) in
             if let afResult = response.result.value?.response {
                 if let afHead = afResult.head {
+                    // API 통신 결과가 OK인 경우에만 시도
                     switch afHead.resultMsg {
                     case "OK":
-                        if let tourInfos = afResult.body?.items?.item {
-                            for tourInfo in tourInfos {
-                                print(tourInfo.title ?? "Data load failed")
+                        if let afItems = afResult.body?.items?.item {
+                            for afItem in afItems {
+                                
+                                let newTourInfo = TourData(title: afItem.title, areaCode: afItem.areaCode, addr1: afItem.addr1, addr2: afItem.addr2, image: afItem.image, tel: afItem.tel, contenttypeid: afItem.contenttypeid)
+                                
+                                // DataSet에 삽입
+                                tourInfos.insert(newTourInfo)
                             }
                         }
                     default:
                         print("Data load failed")
                     }
                 }
+            } else {
+                print("API load failed")
             }
         }
     }

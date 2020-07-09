@@ -10,6 +10,30 @@
 import Foundation
 import ObjectMapper
 
+// 관광지 정보를 저장할 구조체 ( 구조체, 클래스 고민이 되는데 일단 상속 필요없고, callbyvalue 오버헤드 걱정될만한 크기가 아니므로 일단 구조체 )
+struct TourData: Hashable{
+    // 제목
+    var title: String?
+    // 지역 코드
+    var areaCode: Int?
+    // 전체 주소
+    var addr1: String?
+    // 상세 주소
+    var addr2: String?
+    // 대표 이미지
+    var image: String?
+    // 전화번호
+    var tel: String?
+    // 관광지코드 (관광지, 숙박, 행사 등)
+    var contenttypeid: Int?
+}
+
+// 최종적으로 사용할 DataSet.
+var tourInfos = Set<TourData>()
+
+
+// json 파싱을 위한 class
+//---------------------------------------------------------------------------
 // API 통신 후 받는 json 파일
 class TourInfo: Mappable {
     var response: ResponseInfo?
@@ -93,6 +117,19 @@ class ItemInfo: Mappable {
     var title: String?
     //--
     
+    //-- 부가 정보
+    // 지역 코드
+    var areaCode: Int?
+    // 전체 주소
+    var addr1: String?
+    // 상세 주소
+    var addr2: String?
+    // 대표 이미지
+    var image: String?
+    // 전화번호
+    var tel: String?
+    //--
+    
     required init?(map: Map) {
     }
     
@@ -102,7 +139,14 @@ class ItemInfo: Mappable {
         createdtime <- map["createdtime"]
         modifiedtime <- map["modifiedtime"]
         title <- map["title"]
+        
+        areaCode <- map["areacode"]
+        addr1 <- map["addr1"]
+        addr2 <- map["addr2"]
+        image <- map["firstimage"]
+        tel <- map["tel"]
     }
 }
+//---------------------------------------------------------------------------
 
 

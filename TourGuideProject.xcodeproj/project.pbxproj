@@ -9,16 +9,15 @@
 /* Begin PBXBuildFile section */
 		02315B0524B57AB900166294 /* TGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0424B57AB900166294 /* TGDataManager.swift */; };
 		02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* TGNetworkingManager.swift */; };
-		02315B0924B5B8B100166294 /* File in Resources */ = {isa = PBXBuildFile; fileRef = 02315B0824B5B8B100166294 /* File */; };
 		0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AB24B4155100945CEA /* AppDelegate.swift */; };
 		0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AD24B4155100945CEA /* SceneDelegate.swift */; };
 		0254A2B024B4155100945CEA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AF24B4155100945CEA /* ViewController.swift */; };
-		0254A2B324B4155200945CEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2B124B4155200945CEA /* Main.storyboard */; };
 		0254A2B524B4155300945CEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2B424B4155300945CEA /* Assets.xcassets */; };
 		0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2B624B4155300945CEA /* LaunchScreen.storyboard */; };
 		0254A2C324B4155300945CEA /* TourGuideProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2C224B4155300945CEA /* TourGuideProjectTests.swift */; };
 		0254A2CE24B4155300945CEA /* TourGuideProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2CD24B4155300945CEA /* TourGuideProjectUITests.swift */; };
 		0254A2DC24B415D600945CEA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2DB24B415D600945CEA /* .gitignore */; };
+		02D3EC3B24B6E79E00446F7C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3A24B6E79E00446F7C /* MainViewController.swift */; };
 		1B2DAAE203B3C55F7DB08810 /* Pods_TourGuideProject_TourGuideProjectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */; };
 		8CB24100C60F92A299031221 /* Pods_TourGuideProjectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5078FB52E117B4CFC33DE7D4 /* Pods_TourGuideProjectTests.framework */; };
 		C1DA969FB55A4B8B53F30DA4 /* Pods_TourGuideProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF26D61086C15BE86A78587A /* Pods_TourGuideProject.framework */; };
@@ -44,12 +43,10 @@
 /* Begin PBXFileReference section */
 		02315B0424B57AB900166294 /* TGDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGDataManager.swift; sourceTree = "<group>"; };
 		02315B0624B5995C00166294 /* TGNetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGNetworkingManager.swift; sourceTree = "<group>"; };
-		02315B0824B5B8B100166294 /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
 		0254A2A824B4155100945CEA /* TourGuideProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TourGuideProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0254A2AB24B4155100945CEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0254A2AD24B4155100945CEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0254A2AF24B4155100945CEA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0254A2B224B4155200945CEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0254A2B424B4155300945CEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0254A2B724B4155300945CEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0254A2B924B4155300945CEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,6 +57,7 @@
 		0254A2CD24B4155300945CEA /* TourGuideProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourGuideProjectUITests.swift; sourceTree = "<group>"; };
 		0254A2CF24B4155300945CEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0254A2DB24B415D600945CEA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		02D3EC3A24B6E79E00446F7C /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4AD49760D0171AE8282A7613 /* Pods-TourGuideProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProject.release.xcconfig"; path = "Target Support Files/Pods-TourGuideProject/Pods-TourGuideProject.release.xcconfig"; sourceTree = "<group>"; };
 		4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TourGuideProject_TourGuideProjectUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5078FB52E117B4CFC33DE7D4 /* Pods_TourGuideProjectTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TourGuideProjectTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,13 +139,12 @@
 				0254A2AB24B4155100945CEA /* AppDelegate.swift */,
 				0254A2AD24B4155100945CEA /* SceneDelegate.swift */,
 				0254A2AF24B4155100945CEA /* ViewController.swift */,
-				0254A2B124B4155200945CEA /* Main.storyboard */,
 				0254A2B424B4155300945CEA /* Assets.xcassets */,
 				0254A2B624B4155300945CEA /* LaunchScreen.storyboard */,
 				0254A2B924B4155300945CEA /* Info.plist */,
 				02315B0424B57AB900166294 /* TGDataManager.swift */,
 				02315B0624B5995C00166294 /* TGNetworkingManager.swift */,
-				02315B0824B5B8B100166294 /* File */,
+				02D3EC3A24B6E79E00446F7C /* MainViewController.swift */,
 			);
 			path = TourGuideProject;
 			sourceTree = "<group>";
@@ -292,8 +289,6 @@
 				0254A2DC24B415D600945CEA /* .gitignore in Resources */,
 				0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */,
 				0254A2B524B4155300945CEA /* Assets.xcassets in Resources */,
-				0254A2B324B4155200945CEA /* Main.storyboard in Resources */,
-				02315B0924B5B8B100166294 /* File in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,6 +419,7 @@
 				02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */,
 				0254A2B024B4155100945CEA /* ViewController.swift in Sources */,
 				0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */,
+				02D3EC3B24B6E79E00446F7C /* MainViewController.swift in Sources */,
 				02315B0524B57AB900166294 /* TGDataManager.swift in Sources */,
 				0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */,
 			);
@@ -461,14 +457,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		0254A2B124B4155200945CEA /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0254A2B224B4155200945CEA /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		0254A2B624B4155300945CEA /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -601,6 +589,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = TourGuideProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -619,6 +608,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = TourGuideProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
