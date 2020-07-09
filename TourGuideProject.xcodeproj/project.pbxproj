@@ -3,10 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02315B0524B57AB900166294 /* TGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0424B57AB900166294 /* TGDataManager.swift */; };
+		02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* TGNetworkingManager.swift */; };
+		02315B0924B5B8B100166294 /* File in Resources */ = {isa = PBXBuildFile; fileRef = 02315B0824B5B8B100166294 /* File */; };
 		0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AB24B4155100945CEA /* AppDelegate.swift */; };
 		0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AD24B4155100945CEA /* SceneDelegate.swift */; };
 		0254A2B024B4155100945CEA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AF24B4155100945CEA /* ViewController.swift */; };
@@ -39,6 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		02315B0424B57AB900166294 /* TGDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGDataManager.swift; sourceTree = "<group>"; };
+		02315B0624B5995C00166294 /* TGNetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGNetworkingManager.swift; sourceTree = "<group>"; };
+		02315B0824B5B8B100166294 /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
 		0254A2A824B4155100945CEA /* TourGuideProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TourGuideProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0254A2AB24B4155100945CEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0254A2AD24B4155100945CEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,7 +109,6 @@
 				F21B74F446F8A7B6FDBD90DA /* Pods-TourGuideProjectTests.debug.xcconfig */,
 				80EBBE3A063824D605F3B2BB /* Pods-TourGuideProjectTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -140,6 +145,9 @@
 				0254A2B424B4155300945CEA /* Assets.xcassets */,
 				0254A2B624B4155300945CEA /* LaunchScreen.storyboard */,
 				0254A2B924B4155300945CEA /* Info.plist */,
+				02315B0424B57AB900166294 /* TGDataManager.swift */,
+				02315B0624B5995C00166294 /* TGNetworkingManager.swift */,
+				02315B0824B5B8B100166294 /* File */,
 			);
 			path = TourGuideProject;
 			sourceTree = "<group>";
@@ -285,6 +293,7 @@
 				0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */,
 				0254A2B524B4155300945CEA /* Assets.xcassets in Resources */,
 				0254A2B324B4155200945CEA /* Main.storyboard in Resources */,
+				02315B0924B5B8B100166294 /* File in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,8 +421,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */,
 				0254A2B024B4155100945CEA /* ViewController.swift in Sources */,
 				0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */,
+				02315B0524B57AB900166294 /* TGDataManager.swift in Sources */,
 				0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -4,10 +4,10 @@
 target 'TourGuideProject' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  pod 'AlamofireObjectMapper', :inhibit_warnings => true #, :binary => true
   pod 'ObjectMapperAdditions/Core', '~> 4.1', :inhibit_warnings => true #, :binary => true
   pod 'Then', :inhibit_warnings => true #, :binary => true
-  pod 'SnapKit', '~> 4.0.0', :inhibit_warnings => true #, :binary => true  
+  pod 'SnapKit', '~> 4.0.0', :inhibit_warnings => true #, :binary => true
+  pod 'AlamofireObjectMapper', '~> 5.2'
 # Pods for TourGuideProject
 
   target 'TourGuideProjectTests' do
