@@ -3,6 +3,7 @@ PODS:
   - AlamofireObjectMapper (5.2.1):
     - Alamofire (~> 4.7)
     - ObjectMapper (~> 3.4)
+  - ESTabBarController-swift (2.6.4)
   - ObjectMapper (3.5.3)
   - ObjectMapperAdditions/Core (4.2.1):
     - ObjectMapper
@@ -11,6 +12,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireObjectMapper (~> 5.2)
+  - ESTabBarController-swift (= 2.6.4)
   - ObjectMapperAdditions/Core (~> 4.1)
   - SnapKit (~> 4.0.0)
   - Then
@@ -19,6 +21,7 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireObjectMapper
+    - ESTabBarController-swift
     - ObjectMapper
     - ObjectMapperAdditions
     - SnapKit
@@ -27,11 +30,12 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireObjectMapper: 1989f690e982b71921b9253f53a4f33a9bc00d88
+  ESTabBarController-swift: 58cca4ab7de980657d99a02181c1ff310983e975
   ObjectMapper: 97111c97e054a6ee25917662106689f0b4127b37
   ObjectMapperAdditions: e11586bce98cf1090a36c24d4628ae5720a95d85
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: c27a30d1da89f1cb3ec5edfa95d6b525d7a2604e
+PODFILE CHECKSUM: ccdfb636c4a459f564b1e1793064d3d2419eaa60
 
 COCOAPODS: 1.9.3

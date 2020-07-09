@@ -8,6 +8,7 @@ target 'TourGuideProject' do
   pod 'Then', :inhibit_warnings => true #, :binary => true
   pod 'SnapKit', '~> 4.0.0', :inhibit_warnings => true #, :binary => true
   pod 'AlamofireObjectMapper', '~> 5.2'
+  pod 'ESTabBarController-swift', '2.6.4', :inhibit_warnings => true #, :binary => true
 # Pods for TourGuideProject
 
   target 'TourGuideProjectTests' do

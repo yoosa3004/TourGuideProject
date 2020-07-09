@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ESTabBarController_swift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,10 +23,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }else {
             
             window = UIWindow(frame: UIScreen.main.bounds)
+            
+            // ESTabBarController 넣기
+            //----------------------------------------------------------
             // 루트 뷰 컨트롤러가 될 뷰 컨트롤러를 생성한다.
-            let rootVC = MainViewController()
+            let tabBarVC = ESTabBarController()
+            
+            let v1 = TGMainViewController()
+            let v2 = TGMainViewController()
+            let v3 = TGMainViewController()
+            
+            v1.tabBarItem.title = "관광지"
+            v2.tabBarItem.title = "행사"
+            v3.tabBarItem.title = "나의 계정"
+            
+            tabBarVC.viewControllers = [v1,v2,v3]
+            
             // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
-            let navigationVC = UINavigationController(rootViewController: rootVC)
+            let navigationVC = UINavigationController(rootViewController: tabBarVC)
             
             // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
             window?.rootViewController = navigationVC
