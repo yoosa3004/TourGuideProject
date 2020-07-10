@@ -29,15 +29,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 루트 뷰 컨트롤러가 될 뷰 컨트롤러를 생성한다.
             let tabBarVC = ESTabBarController()
             
-            let v1 = TGMainViewController()
-            let v2 = TGMainViewController()
-            let v3 = TGMainViewController()
-            
+            let v1 = TGTourSpotViewController()
+            let v2 = TGFestivalViewController()
+            let v3 = TGMyAccountViewController()
+
             v1.tabBarItem.title = "관광지"
             v2.tabBarItem.title = "행사"
             v3.tabBarItem.title = "나의 계정"
             
             tabBarVC.viewControllers = [v1,v2,v3]
+            //----------------------------------------------------------
             
             // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
             let navigationVC = UINavigationController(rootViewController: tabBarVC)
@@ -45,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
             window?.rootViewController = navigationVC
             window?.makeKeyAndVisible()
+            //----------------------------------------------------------
         }
         
         // Override point for customization after application launch.

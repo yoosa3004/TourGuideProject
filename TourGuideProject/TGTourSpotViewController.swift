@@ -1,23 +1,19 @@
 //
-//  MainViewController.swift
+//  TGTourSpotViewController.swift
 //  TourGuideProject
 //
 //  Created by hyunndy on 2020/07/09.
 //  Copyright © 2020 hyunndy. All rights reserved.
 //
 
-
-
-// 새로운 뷰로 들어갈 때 hidesBottomBarWhenPushed = true 설정
-
 import UIKit
-import Then
 import SnapKit
+import Then
 
-final class TGMainViewController: UIViewController{
+class TGTourSpotViewController: UIViewController {
 
     let testLabel = UILabel().then {
-        $0.text = "안녕하세요"
+        $0.text = "관광지정보"
         $0.textColor = .black
         $0.textAlignment = .center
         $0.bounds = CGRect(x: 0, y: 0, width: 100, height: 100)
@@ -26,23 +22,24 @@ final class TGMainViewController: UIViewController{
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-    
-        self.view.backgroundColor = UIColor.white
         
+        super.viewDidLoad()
+        
+        // MARK: iOS 계층구조에 있다고해서 모든 상위 계층에 접근할 수 있는게 아님. 이 경우 바로 상위계층인 tabBarController에서 title 세팅 필요.
+        self.tabBarController?.title = "관광지"        
+        self.view.backgroundColor = UIColor.white
         
         setUpView()
     }
     
 
     private func setUpView() {
-        
         self.view.addSubview(self.testLabel)
-        
         self.testLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
     }
+    
     
 
     /*

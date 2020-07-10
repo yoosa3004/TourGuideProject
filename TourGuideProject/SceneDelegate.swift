@@ -25,13 +25,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
          
+        // -----------------------------------------------
          // 루트 뷰 컨트롤러가 될 뷰 컨트롤러를 생성한다.
          let tabBarVC = ESTabBarController()
          
-         let v1 = TGMainViewController()
-         let v2 = TGMainViewController()
-         let v3 = TGMainViewController()
-         
+         let v1 = TGTourSpotViewController()
+         let v2 = TGFestivalViewController()
+         let v3 = TGMyAccountViewController()
+        
          v1.tabBarItem.title = "관광지"
          v2.tabBarItem.title = "행사"
          v3.tabBarItem.title = "나의 계정"
@@ -39,11 +40,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          tabBarVC.viewControllers = [v1,v2,v3]
         
          // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
+        
+        
          let navigationVC = UINavigationController(rootViewController: tabBarVC)
-         
          // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
          window?.rootViewController = navigationVC
          window?.makeKeyAndVisible()
+        
     }
 
     // scene의 연결이 해제될 때 호출된다. 연결은 다시 연결될수도 있음
