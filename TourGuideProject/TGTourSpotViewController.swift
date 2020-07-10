@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import Then
+import ScrollableSegmentedControl
 
 class TGTourSpotViewController: UIViewController {
 
@@ -20,26 +21,30 @@ class TGTourSpotViewController: UIViewController {
         $0.backgroundColor = .purple
     }
     
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        // MARK: iOS 계층구조에 있다고해서 모든 상위 계층에 접근할 수 있는게 아님. 이 경우 바로 상위계층인 tabBarController에서 title 세팅 필요.
-        self.tabBarController?.title = "관광지"        
+    
         self.view.backgroundColor = UIColor.white
         
         setUpView()
     }
+     
     
-
-    private func setUpView() {
-        self.view.addSubview(self.testLabel)
-        self.testLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        
+        // MARK: iOS 계층구조에 있다고해서 모든 상위 계층에 접근할 수 있는게 아님. 이 경우 바로 상위계층인 tabBarController에서 title 세팅 필요.
+        self.tabBarController?.title = "관광지"
     }
     
+
+    func setUpView() {
+        //self.view.addSubview(self.testLabel)
+       // self.testLabel.snp.makeConstraints {
+       //     $0.center.equalToSuperview()
+       // }
+        
+    }
     
 
     /*

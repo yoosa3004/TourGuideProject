@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0209293924B857E9004C3C7F /* TGCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0209293724B857E9004C3C7F /* TGCustomCell.swift */; };
+		0209293A24B857E9004C3C7F /* TGCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0209293824B857E9004C3C7F /* TGCustomCell.xib */; };
+		0209293C24B865AC004C3C7F /* TGIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0209293B24B865AC004C3C7F /* TGIdentifier.swift */; };
+		0209293E24B8663B004C3C7F /* TGCustomMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0209293D24B8663B004C3C7F /* TGCustomMenuBar.swift */; };
 		02315B0524B57AB900166294 /* TGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0424B57AB900166294 /* TGDataManager.swift */; };
 		02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* TGNetworkingManager.swift */; };
 		0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AB24B4155100945CEA /* AppDelegate.swift */; };
@@ -43,6 +47,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0209293724B857E9004C3C7F /* TGCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGCustomCell.swift; sourceTree = "<group>"; };
+		0209293824B857E9004C3C7F /* TGCustomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TGCustomCell.xib; sourceTree = "<group>"; };
+		0209293B24B865AC004C3C7F /* TGIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGIdentifier.swift; sourceTree = "<group>"; };
+		0209293D24B8663B004C3C7F /* TGCustomMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGCustomMenuBar.swift; sourceTree = "<group>"; };
 		02315B0424B57AB900166294 /* TGDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGDataManager.swift; sourceTree = "<group>"; };
 		02315B0624B5995C00166294 /* TGNetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGNetworkingManager.swift; sourceTree = "<group>"; };
 		0254A2A824B4155100945CEA /* TourGuideProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TourGuideProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +159,10 @@
 				02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */,
 				02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */,
 				02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */,
+				0209293724B857E9004C3C7F /* TGCustomCell.swift */,
+				0209293824B857E9004C3C7F /* TGCustomCell.xib */,
+				0209293B24B865AC004C3C7F /* TGIdentifier.swift */,
+				0209293D24B8663B004C3C7F /* TGCustomMenuBar.swift */,
 			);
 			path = TourGuideProject;
 			sourceTree = "<group>";
@@ -292,6 +304,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0209293A24B857E9004C3C7F /* TGCustomCell.xib in Resources */,
 				02DB30D824B7FD410021704C /* 12.png in Resources */,
 				0254A2DC24B415D600945CEA /* .gitignore in Resources */,
 				0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */,
@@ -426,10 +439,13 @@
 				02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */,
 				02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */,
 				0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */,
+				0209293924B857E9004C3C7F /* TGCustomCell.swift in Sources */,
+				0209293E24B8663B004C3C7F /* TGCustomMenuBar.swift in Sources */,
 				02D3EC3D24B7134F00446F7C /* TGTourSpotViewController.swift in Sources */,
 				02315B0524B57AB900166294 /* TGDataManager.swift in Sources */,
 				0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */,
 				02D3EC4124B7138E00446F7C /* TGMyAccountViewController.swift in Sources */,
+				0209293C24B865AC004C3C7F /* TGIdentifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

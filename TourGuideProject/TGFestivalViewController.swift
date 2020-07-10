@@ -24,10 +24,15 @@ class TGFestivalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        self.tabBarController?.title = "행사"
+        
         self.view.backgroundColor = UIColor.white
         setUpView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        // MARK: iOS 계층구조에 있다고해서 모든 상위 계층에 접근할 수 있는게 아님. 이 경우 바로 상위계층인 tabBarController에서 title 세팅 필요.
+        self.tabBarController?.title = "행사"
     }
     
 
