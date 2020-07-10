@@ -9,6 +9,7 @@ target 'TourGuideProject' do
   pod 'SnapKit', '~> 4.0.0', :inhibit_warnings => true #, :binary => true
   pod 'AlamofireObjectMapper', '~> 5.2'
   pod 'ESTabBarController-swift', '2.6.4', :inhibit_warnings => true #, :binary => true
+  pod 'ScrollableSegmentedControl', '~> 1.5.0'
 # Pods for TourGuideProject
 
   target 'TourGuideProjectTests' do

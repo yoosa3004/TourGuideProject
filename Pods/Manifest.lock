@@ -7,6 +7,7 @@ PODS:
   - ObjectMapper (3.5.3)
   - ObjectMapperAdditions/Core (4.2.1):
     - ObjectMapper
+  - ScrollableSegmentedControl (1.5.0)
   - SnapKit (4.0.1)
   - Then (2.7.0)
 
@@ -14,6 +15,7 @@ DEPENDENCIES:
   - AlamofireObjectMapper (~> 5.2)
   - ESTabBarController-swift (= 2.6.4)
   - ObjectMapperAdditions/Core (~> 4.1)
+  - ScrollableSegmentedControl (~> 1.5.0)
   - SnapKit (~> 4.0.0)
   - Then
 
@@ -24,6 +26,7 @@ SPEC REPOS:
     - ESTabBarController-swift
     - ObjectMapper
     - ObjectMapperAdditions
+    - ScrollableSegmentedControl
     - SnapKit
     - Then
 
@@ -33,9 +36,10 @@ SPEC CHECKSUMS:
   ESTabBarController-swift: 58cca4ab7de980657d99a02181c1ff310983e975
   ObjectMapper: 97111c97e054a6ee25917662106689f0b4127b37
   ObjectMapperAdditions: e11586bce98cf1090a36c24d4628ae5720a95d85
+  ScrollableSegmentedControl: 2e64bbe8968a7fcd8aae5014434481464fcdfe60
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: ccdfb636c4a459f564b1e1793064d3d2419eaa60
+PODFILE CHECKSUM: 297041f9cf6cdef2970fccf4fad30735283abbe9
 
 COCOAPODS: 1.9.3
