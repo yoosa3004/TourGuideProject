@@ -27,6 +27,8 @@
 		1B2DAAE203B3C55F7DB08810 /* Pods_TourGuideProject_TourGuideProjectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */; };
 		8CB24100C60F92A299031221 /* Pods_TourGuideProjectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5078FB52E117B4CFC33DE7D4 /* Pods_TourGuideProjectTests.framework */; };
 		C1DA969FB55A4B8B53F30DA4 /* Pods_TourGuideProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF26D61086C15BE86A78587A /* Pods_TourGuideProject.framework */; };
+		CE4D10EC24BAE508007715C5 /* TGCustomPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D10EA24BAE508007715C5 /* TGCustomPage.swift */; };
+		CE4D10ED24BAE508007715C5 /* TGCustomPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE4D10EB24BAE508007715C5 /* TGCustomPage.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +78,8 @@
 		80EBBE3A063824D605F3B2BB /* Pods-TourGuideProjectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProjectTests.release.xcconfig"; path = "Target Support Files/Pods-TourGuideProjectTests/Pods-TourGuideProjectTests.release.xcconfig"; sourceTree = "<group>"; };
 		8E70A0CD891402995CD34F5E /* Pods-TourGuideProject-TourGuideProjectUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProject-TourGuideProjectUITests.debug.xcconfig"; path = "Target Support Files/Pods-TourGuideProject-TourGuideProjectUITests/Pods-TourGuideProject-TourGuideProjectUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B284EF3E6B41EB84C3F8EDA7 /* Pods-TourGuideProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProject.debug.xcconfig"; path = "Target Support Files/Pods-TourGuideProject/Pods-TourGuideProject.debug.xcconfig"; sourceTree = "<group>"; };
+		CE4D10EA24BAE508007715C5 /* TGCustomPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGCustomPage.swift; sourceTree = "<group>"; };
+		CE4D10EB24BAE508007715C5 /* TGCustomPage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TGCustomPage.xib; sourceTree = "<group>"; };
 		D7D0FE120F7C40D191936229 /* Pods-TourGuideProject-TourGuideProjectUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProject-TourGuideProjectUITests.release.xcconfig"; path = "Target Support Files/Pods-TourGuideProject-TourGuideProjectUITests/Pods-TourGuideProject-TourGuideProjectUITests.release.xcconfig"; sourceTree = "<group>"; };
 		EF26D61086C15BE86A78587A /* Pods_TourGuideProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TourGuideProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F21B74F446F8A7B6FDBD90DA /* Pods-TourGuideProjectTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProjectTests.debug.xcconfig"; path = "Target Support Files/Pods-TourGuideProjectTests/Pods-TourGuideProjectTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -163,6 +167,8 @@
 				0209293824B857E9004C3C7F /* TGCustomCell.xib */,
 				0209293B24B865AC004C3C7F /* TGIdentifier.swift */,
 				0209293D24B8663B004C3C7F /* TGCustomMenuBar.swift */,
+				CE4D10EA24BAE508007715C5 /* TGCustomPage.swift */,
+				CE4D10EB24BAE508007715C5 /* TGCustomPage.xib */,
 			);
 			path = TourGuideProject;
 			sourceTree = "<group>";
@@ -308,6 +314,7 @@
 				02DB30D824B7FD410021704C /* 12.png in Resources */,
 				0254A2DC24B415D600945CEA /* .gitignore in Resources */,
 				0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */,
+				CE4D10ED24BAE508007715C5 /* TGCustomPage.xib in Resources */,
 				0254A2B524B4155300945CEA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -436,6 +443,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE4D10EC24BAE508007715C5 /* TGCustomPage.swift in Sources */,
 				02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */,
 				02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */,
 				0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */,
