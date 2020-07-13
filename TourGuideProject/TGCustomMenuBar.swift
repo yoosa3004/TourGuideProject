@@ -43,7 +43,7 @@ class TGCustomMenuBar: UIView {
         collectionViewLayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: collectionViewLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .purple
         return collectionView
     }()
     
@@ -63,7 +63,7 @@ class TGCustomMenuBar: UIView {
         customTabBarCollectionView.dataSource = self
         customTabBarCollectionView.showsHorizontalScrollIndicator = false
         customTabBarCollectionView.register(UINib(nibName: TGCustomCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGCustomCell.reusableIdentifier)
-        customTabBarCollectionView.isScrollEnabled = false
+        
         
         let indexPath = IndexPath(item: 0, section: 0)
         customTabBarCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
@@ -87,21 +87,13 @@ class TGCustomMenuBar: UIView {
         indicatorViewWidthConstraint = indicatorView.widthAnchor.constraint(equalToConstant: self.frame.width/4)
         indicatorViewWidthConstraint.isActive = true
         indicatorView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        
+        
         indicatorViewLeadingConstraint = indicatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
         indicatorViewLeadingConstraint.isActive = true
         indicatorView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         //--
     }
-
-    
-    
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
 
 }
 
@@ -110,20 +102,23 @@ extension TGCustomMenuBar: UICollectionViewDelegate, UICollectionViewDataSource 
     
     // 컬렉션뷰의 지정된 위치에 표시할 셀을 요청하는 함수
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        // 강제캐스팅하는거 바꾸기!!! -> 굉장히 위험함 guard 구문 사용
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGCustomCell.reusableIdentifier, for: indexPath) as! TGCustomCell
         return cell
     }
     
-    // 지정된 섹션에 표시할 항목의 갯수
+    // 지정된 섹션에 표시할 항목의 갯수 - 지역의 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return 8
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.width / 4 , height: 55)
+        return CGSize(width: self.frame.width / 4 , height: 30)
         
     }
 
+    //  특정 index의 아이템이 선택되었을 때 델리게이트 호출
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.customMenuBar(scrollTo: indexPath.row)
     }
