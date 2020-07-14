@@ -1,5 +1,5 @@
 //
-//  TGCustomPage.swift
+//  TGAreaTourSpotView.swift
 //  TourGuideProject
 //
 //  Created by user on 2020/07/12.
@@ -9,15 +9,8 @@
 import UIKit
 import Then
 
-class TGCustomPage: UICollectionViewCell {
+class TGAreaTourSpotView: UICollectionViewCell {
 
-    var label = UILabel().then {
-        $0.textColor = .black
-        $0.textAlignment = .center
-        $0.font = UIFont.systemFont(ofSize: 40, weight: .bold)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
     let appsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), collectionViewLayout: layout)
@@ -45,18 +38,11 @@ class TGCustomPage: UICollectionViewCell {
        
         appsCollectionView.register(TGTourSpotView.self, forCellWithReuseIdentifier: TGTourSpotView.reusableIdentifier)
         appsCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        /*
-        appsCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        appsCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        appsCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        appsCollectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-        */
     }
 
 }
 
-extension TGCustomPage: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension TGAreaTourSpotView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 10

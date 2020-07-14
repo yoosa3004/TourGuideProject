@@ -1,5 +1,5 @@
 //
-//  TGCustomCell.swift
+//  TGAreaMenuCell.swift
 //  TourGuideProject
 //
 //  Created by hyunndy on 2020/07/10.
@@ -9,7 +9,7 @@
 import UIKit
 import Then
 
-class TGCustomCell: UICollectionViewCell {
+class TGAreaMenuCell: UICollectionViewCell {
 
     let label = UILabel().then {
         $0.text = "테스트"

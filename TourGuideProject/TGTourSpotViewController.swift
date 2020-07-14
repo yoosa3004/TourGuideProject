@@ -14,22 +14,22 @@ import ScrollableSegmentedControl
 class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
 
     // 지역 메뉴바
-    var areaMenuBar = TGCustomMenuBar().then {
-    
+    var areaMenuBar = TGAreaMenuBar().then {
         // view의 크기와 위치를 동적으로 계산하기 위해 이 프로퍼티를 false로 해야함 (auto resizing mask는 view의 크기와 위치를 완전히 고정하므로 추가 constraint를 지정할 수 없기 때문
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    // 지역 관광지 뷰
-    var areaCollectionView: UICollectionView = {
-        let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.scrollDirection = .horizontal
+    // 지역 관광지 그리드뷰를 나타내기 위한 container View
+    var areaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
         
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 300, height: 300), collectionViewLayout: collectionViewLayout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return collectionView
-    }()
+        $0.backgroundColor = .white
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.showsHorizontalScrollIndicator = false
+        $0.isPagingEnabled = true
+        $0.collectionViewLayout = layout
+    }
     
     
     override func loadView() {
@@ -38,11 +38,6 @@ class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
         setUpView()
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-     
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -55,7 +50,9 @@ class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
         self.view.backgroundColor = UIColor.white
         
         setUpMenuBar()
-        setupPageCollectionView()
+        setupAreaCollectionView()
+        
+        bindConstraint()
     }
     
     func setUpMenuBar() {
@@ -64,47 +61,42 @@ class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
         
         // 델리게이트 설정
         areaMenuBar.delegate = self
+    }
+    
+    // 지역의 관광지들을 보여주는 CollectionView
+    func setupAreaCollectionView(){
         
-        //-- 레이아웃 설정
-        areaMenuBar.translatesAutoresizingMaskIntoConstraints = false
-        // 시작하는 부분
-        areaMenuBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        // 끝나는 부분
-        areaMenuBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        // 위
-        areaMenuBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        areaMenuBar.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        //--
+        self.view.addSubview(areaCollectionView)
         
-        //인디케이터의 width 설정
+        areaCollectionView.delegate = self
+        areaCollectionView.dataSource = self
+        areaCollectionView.register(UINib(nibName: TGAreaTourSpotView.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGAreaTourSpotView.reusableIdentifier)
+    }
+    
+    func bindConstraint() {
+        // 메뉴바
+        areaMenuBar.snp.makeConstraints { (make) -> Void in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(60)
+        }
+        
+        // 메뉴바의 인디케이터
         areaMenuBar.indicatorViewWidthConstraint.constant = self.view.frame.width / 4
+        
+        // 지역 관광지 컬렉션 뷰
+        areaCollectionView.snp.makeConstraints { (make) -> Void in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+            make.top.equalTo(self.areaMenuBar.snp.bottom)
+        }
     }
     
     // 메뉴바에 설정된 델리게이트 구현
     func customMenuBar(scrollTo index: Int) {
         self.areaCollectionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: true)
-    }
-    
-    // 지역의 관광지들을 보여주는 CollectionView
-    func setupPageCollectionView(){
-        
-        areaCollectionView.delegate = self
-        areaCollectionView.dataSource = self
-        areaCollectionView.showsHorizontalScrollIndicator = false
-        areaCollectionView.isPagingEnabled = true
-        areaCollectionView.register(UINib(nibName: TGCustomPage.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGCustomPage.reusableIdentifier)
-        
-        self.view.addSubview(areaCollectionView)
-        
-        //-- 레이아웃 관련
-        // 시작
-        areaCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        // 끝
-        areaCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        // 바닥
-        areaCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        // 위 - 메뉴바의 밑에 위치
-        areaCollectionView.topAnchor.constraint(equalTo: self.areaMenuBar.bottomAnchor).isActive = true
     }
 }
 
@@ -114,9 +106,9 @@ extension TGTourSpotViewController: UICollectionViewDelegate, UICollectionViewDa
     // 각 셀 채우기 - 지역 관광지들을 채워야함
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        // TGCustomPage를 셀로 이용한다.
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGCustomPage.reusableIdentifier, for: indexPath) as? TGCustomPage else { return UICollectionViewCell() }
-        cell.label.text = "\(indexPath.row + 1)번째 뷰"
+        // TGAreaTourSpotView를 셀로 이용한다.
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGAreaTourSpotView.reusableIdentifier, for: indexPath) as? TGAreaTourSpotView else { return UICollectionViewCell() }
+//        cell.label.text = "\(indexPath.row + 1)번째 뷰"
         return cell
     }
     
@@ -134,8 +126,8 @@ extension TGTourSpotViewController: UICollectionViewDelegate, UICollectionViewDa
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let itemAt = Int(targetContentOffset.pointee.x / self.view.frame.width)
         let indexPath = IndexPath(item: itemAt, section: 0)
-        areaMenuBar.customTabBarCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-        areaMenuBar.customTabBarCollectionView.scrollToItem(at: indexPath, at: [], animated: true)
+        areaMenuBar.menuCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+        areaMenuBar.menuCollectionView.scrollToItem(at: indexPath, at: [], animated: true)
     }
 }
 //MARK:- UICollectionViewDelegateFlowLayout
@@ -144,7 +136,7 @@ extension TGTourSpotViewController: UICollectionViewDelegateFlowLayout {
     // 각 셀의 사이즈
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        //셀 즉 TGCustomPage의 사이즈
+        //셀 즉 TGAreaTourSpotView의 사이즈
         return CGSize(width: areaCollectionView.frame.width, height: areaCollectionView.frame.height)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

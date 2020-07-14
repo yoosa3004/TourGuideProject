@@ -1,5 +1,5 @@
 //
-//  TGCustomMenuBar.swift
+//  TGAreaMenuBar.swift
 //  TourGuideProject
 //
 //  Created by hyunndy on 2020/07/10.
@@ -14,22 +14,24 @@
 
 import UIKit
 import Then
+import SnapKit
 
 // 델리게이트
 protocol CustomMenuBarDelegate: class {
     func customMenuBar(scrollTo index: Int)
 }
 
-
-class TGCustomMenuBar: UIView {
+class TGAreaMenuBar: UIView {
 
     weak var delegate: CustomMenuBarDelegate?
     
     // 초기화
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.backgroundColor = .white
-       setupCustomTabBar()
+        
+        setupCustomMenuBar()
     }
     
     required init?(coder: NSCoder) {
@@ -37,18 +39,18 @@ class TGCustomMenuBar: UIView {
     }
     
     
-    // 커스텀메뉴바의 컬렉션뷰
-    var customTabBarCollectionView: UICollectionView = {
-        let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: collectionViewLayout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .purple
-        return collectionView
-    }()
+    // 메뉴바의 개별 항목 (서울/경기/부산 등)
+    let menuCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        
+        $0.collectionViewLayout = layout
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = .purple
+        $0.showsHorizontalScrollIndicator = false
+    }
     
-    
-    // 인디케이터뷰?
+    // 인디케이터뷰
     var indicatorView = UIView().then {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .black
@@ -57,54 +59,59 @@ class TGCustomMenuBar: UIView {
     var indicatorViewLeadingConstraint: NSLayoutConstraint!
     var indicatorViewWidthConstraint: NSLayoutConstraint!
     
-    // 콜렉션 뷰 세팅
-    func setupCollectionView() {
-        customTabBarCollectionView.delegate = self
-        customTabBarCollectionView.dataSource = self
-        customTabBarCollectionView.showsHorizontalScrollIndicator = false
-        customTabBarCollectionView.register(UINib(nibName: TGCustomCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGCustomCell.reusableIdentifier)
+    // 메뉴바 세팅
+    func setupCustomMenuBar() {
         
+        //메뉴 컬렉션 뷰 세팅
+        setupMenu()
         
-        let indexPath = IndexPath(item: 0, section: 0)
-        customTabBarCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+        //레이아웃 세팅
+        bindConstraints()
     }
     
-    // 탭바세팅
-    func setupCustomTabBar() {
+    // 메뉴 항목 세팅
+    func setupMenu() {
+
+        menuCollectionView.delegate = self
+        menuCollectionView.dataSource = self
         
-        //--  컬렉션뷰 세팅
-        setupCollectionView()
-        self.addSubview(customTabBarCollectionView)
+        menuCollectionView.register(UINib(nibName: TGAreaMenuCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGAreaMenuCell.reusableIdentifier)
+        menuCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: [])
         
-        customTabBarCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        customTabBarCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        customTabBarCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        customTabBarCollectionView.heightAnchor.constraint(equalToConstant: 55).isActive = true
-        //--
-        
-        //-- 인디케이터뷰 세팅
+        self.addSubview(menuCollectionView)
         self.addSubview(indicatorView)
+    }
+    
+    func bindConstraints(){
+        
+        // 메뉴 항목
+        menuCollectionView.snp.makeConstraints { (make) -> Void in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.height.equalTo(55)
+        }
+        
+        // 인디케이터
         indicatorViewWidthConstraint = indicatorView.widthAnchor.constraint(equalToConstant: self.frame.width/4)
-        indicatorViewWidthConstraint.isActive = true
-        indicatorView.heightAnchor.constraint(equalToConstant: 5).isActive = true
-        
-        
         indicatorViewLeadingConstraint = indicatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
         indicatorViewLeadingConstraint.isActive = true
-        indicatorView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        //--
+        indicatorViewWidthConstraint.isActive = true
+        indicatorView.snp.makeConstraints { (make) -> Void in
+            make.height.equalTo(5)
+            make.bottom.equalToSuperview()
+        }
     }
-
 }
 
 // 익스텐션
-extension TGCustomMenuBar: UICollectionViewDelegate, UICollectionViewDataSource {
+extension TGAreaMenuBar: UICollectionViewDelegate, UICollectionViewDataSource {
     
     // 컬렉션뷰의 지정된 위치에 표시할 셀을 요청하는 함수
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // 강제캐스팅하는거 바꾸기!!! -> 굉장히 위험함 guard 구문 사용
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGCustomCell.reusableIdentifier, for: indexPath) as! TGCustomCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGAreaMenuCell.reusableIdentifier, for: indexPath) as! TGAreaMenuCell
         return cell
     }
     
@@ -124,12 +131,12 @@ extension TGCustomMenuBar: UICollectionViewDelegate, UICollectionViewDataSource 
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? TGCustomCell else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TGAreaMenuCell else { return }
         cell.label.textColor = .lightGray
     }
 }
 
-extension TGCustomMenuBar: UICollectionViewDelegateFlowLayout {
+extension TGAreaMenuBar: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
