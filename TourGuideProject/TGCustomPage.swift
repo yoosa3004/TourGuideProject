@@ -20,7 +20,7 @@ class TGCustomPage: UICollectionViewCell {
     
     let appsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), collectionViewLayout: layout)
         collectionView.backgroundColor = .green
         return collectionView
     }()
@@ -31,17 +31,27 @@ class TGCustomPage: UICollectionViewCell {
         
         self.backgroundColor = .white
         
-        addSubview(appsCollectionView)
+        
+        self.addSubview(appsCollectionView)
         appsCollectionView.delegate = self
         appsCollectionView.dataSource = self
         
-        appsCollectionView.frame = CGRect(x: 0, y: 0, width: 494.0, height: 375.0)
-        print(self.frame.width)
-        print(self.frame.height)
-        print(self.bounds.width)
-        print(self.bounds.height)
-
+        appsCollectionView.snp.makeConstraints { (make) -> Void in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.height.equalToSuperview()
+        }
+       
         appsCollectionView.register(TGTourSpotView.self, forCellWithReuseIdentifier: TGTourSpotView.reusableIdentifier)
+        appsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        /*
+        appsCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        appsCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        appsCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        appsCollectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        */
     }
 
 }
@@ -55,6 +65,11 @@ extension TGCustomPage: UICollectionViewDataSource, UICollectionViewDelegate, UI
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGTourSpotView.reusableIdentifier, for: indexPath)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 10, height: 10)
+        
     }
 }
 

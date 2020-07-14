@@ -143,8 +143,8 @@ extension TGTourSpotViewController: UICollectionViewDelegateFlowLayout {
     
     // 각 셀의 사이즈
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {
-        print("악 \(areaCollectionView.frame.width)")
-        print("악 \(areaCollectionView.frame.height)")
+        
+        //셀 즉 TGCustomPage의 사이즈
         return CGSize(width: areaCollectionView.frame.width, height: areaCollectionView.frame.height)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
