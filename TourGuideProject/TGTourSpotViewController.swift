@@ -36,8 +36,14 @@ class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
         super.loadView()
         
         setUpView()
+        
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        TGNetworkingManager().loadData()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -74,6 +80,7 @@ class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
     }
     
     func bindConstraint() {
+        
         // 메뉴바
         areaMenuBar.snp.makeConstraints { (make) -> Void in
             make.leading.equalToSuperview()
@@ -107,8 +114,7 @@ extension TGTourSpotViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // TGAreaTourSpotView를 셀로 이용한다.
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGAreaTourSpotView.reusableIdentifier, for: indexPath) as? TGAreaTourSpotView else { return UICollectionViewCell() }
-//        cell.label.text = "\(indexPath.row + 1)번째 뷰"
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGAreaTourSpotView.reusableIdentifier, for: indexPath) as? TGAreaTourSpotView else { return TGAreaTourSpotView() }
         return cell
     }
     

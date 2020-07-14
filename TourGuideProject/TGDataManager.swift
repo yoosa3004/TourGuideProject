@@ -29,7 +29,7 @@ struct TourData: Hashable{
 }
 
 // 최종적으로 사용할 DataSet.
-var tourInfos = Set<TourData>()
+var tourInfos = Array<TourData>()
 
 
 // json 파싱을 위한 class

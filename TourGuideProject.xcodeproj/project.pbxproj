@@ -20,6 +20,8 @@
 		0254A2C324B4155300945CEA /* TourGuideProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2C224B4155300945CEA /* TourGuideProjectTests.swift */; };
 		0254A2CE24B4155300945CEA /* TourGuideProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2CD24B4155300945CEA /* TourGuideProjectUITests.swift */; };
 		0254A2DC24B415D600945CEA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2DB24B415D600945CEA /* .gitignore */; };
+		026E603B24BD5D45001CB5D4 /* TGTourSpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */; };
+		026E603C24BD5D45001CB5D4 /* TGTourSpotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 026E603A24BD5D45001CB5D4 /* TGTourSpotCell.xib */; };
 		02D3EC3D24B7134F00446F7C /* TGTourSpotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */; };
 		02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */; };
 		02D3EC4124B7138E00446F7C /* TGMyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */; };
@@ -68,6 +70,8 @@
 		0254A2CD24B4155300945CEA /* TourGuideProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourGuideProjectUITests.swift; sourceTree = "<group>"; };
 		0254A2CF24B4155300945CEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0254A2DB24B415D600945CEA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotCell.swift; sourceTree = "<group>"; };
+		026E603A24BD5D45001CB5D4 /* TGTourSpotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TGTourSpotCell.xib; sourceTree = "<group>"; };
 		02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotViewController.swift; sourceTree = "<group>"; };
 		02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGFestivalViewController.swift; sourceTree = "<group>"; };
 		02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGMyAccountViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +156,14 @@
 		0254A2AA24B4155100945CEA /* TourGuideProject */ = {
 			isa = PBXGroup;
 			children = (
+				0209293724B857E9004C3C7F /* TGAreaMenuCell.swift */,
+				0209293824B857E9004C3C7F /* TGAreaMenuCell.xib */,
+				0209293B24B865AC004C3C7F /* TGIdentifier.swift */,
+				0209293D24B8663B004C3C7F /* TGAreaMenuBar.swift */,
+				CE4D10EA24BAE508007715C5 /* TGAreaTourSpotView.swift */,
+				CE4D10EB24BAE508007715C5 /* TGAreaTourSpotView.xib */,
+				026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */,
+				026E603A24BD5D45001CB5D4 /* TGTourSpotCell.xib */,
 				02DB30D724B7FD410021704C /* 12.png */,
 				0254A2AB24B4155100945CEA /* AppDelegate.swift */,
 				0254A2AD24B4155100945CEA /* SceneDelegate.swift */,
@@ -159,16 +171,10 @@
 				0254A2B624B4155300945CEA /* LaunchScreen.storyboard */,
 				0254A2B924B4155300945CEA /* Info.plist */,
 				02315B0424B57AB900166294 /* TGDataManager.swift */,
-				02315B0624B5995C00166294 /* TGNetworkingManager.swift */,
 				02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */,
+				02315B0624B5995C00166294 /* TGNetworkingManager.swift */,
 				02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */,
 				02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */,
-				0209293724B857E9004C3C7F /* TGAreaMenuCell.swift */,
-				0209293824B857E9004C3C7F /* TGAreaMenuCell.xib */,
-				0209293B24B865AC004C3C7F /* TGIdentifier.swift */,
-				0209293D24B8663B004C3C7F /* TGAreaMenuBar.swift */,
-				CE4D10EA24BAE508007715C5 /* TGAreaTourSpotView.swift */,
-				CE4D10EB24BAE508007715C5 /* TGAreaTourSpotView.xib */,
 			);
 			path = TourGuideProject;
 			sourceTree = "<group>";
@@ -312,6 +318,7 @@
 			files = (
 				0209293A24B857E9004C3C7F /* TGAreaMenuCell.xib in Resources */,
 				02DB30D824B7FD410021704C /* 12.png in Resources */,
+				026E603C24BD5D45001CB5D4 /* TGTourSpotCell.xib in Resources */,
 				0254A2DC24B415D600945CEA /* .gitignore in Resources */,
 				0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */,
 				CE4D10ED24BAE508007715C5 /* TGAreaTourSpotView.xib in Resources */,
@@ -454,6 +461,7 @@
 				0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */,
 				02D3EC4124B7138E00446F7C /* TGMyAccountViewController.swift in Sources */,
 				0209293C24B865AC004C3C7F /* TGIdentifier.swift in Sources */,
+				026E603B24BD5D45001CB5D4 /* TGTourSpotCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

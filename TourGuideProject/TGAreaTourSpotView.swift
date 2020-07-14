@@ -11,35 +11,37 @@ import Then
 
 class TGAreaTourSpotView: UICollectionViewCell {
 
-    let appsCollectionView: UICollectionView = {
+    let containerView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         let layout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), collectionViewLayout: layout)
-        collectionView.backgroundColor = .green
-        return collectionView
-    }()
-    
+        layout.scrollDirection = .vertical
+        
+        $0.collectionViewLayout = layout
+        $0.backgroundColor = .green
+        $0.translatesAutoresizingMaskIntoConstraints = false
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         self.backgroundColor = .white
-        
-        
-        self.addSubview(appsCollectionView)
-        appsCollectionView.delegate = self
-        appsCollectionView.dataSource = self
-        
-        appsCollectionView.snp.makeConstraints { (make) -> Void in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.height.equalToSuperview()
-        }
-       
-        appsCollectionView.register(TGTourSpotView.self, forCellWithReuseIdentifier: TGTourSpotView.reusableIdentifier)
-        appsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        setContainerView()
     }
-
+    
+    func setContainerView() {
+         self.addSubview(containerView)
+        
+         containerView.delegate = self
+         containerView.dataSource = self
+         
+         containerView.snp.makeConstraints { (make) -> Void in
+             make.leading.equalToSuperview()
+             make.trailing.equalToSuperview()
+             make.top.equalToSuperview()
+             make.height.equalToSuperview()
+         }
+        
+         containerView.register(UINib(nibName: TGTourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGTourSpotCell.reusableIdentifier)
+    }
 }
 
 extension TGAreaTourSpotView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -48,25 +50,22 @@ extension TGAreaTourSpotView: UICollectionViewDataSource, UICollectionViewDelega
         return 10
     }
 
+    
+    // 셀의 정보 세팅 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGTourSpotView.reusableIdentifier, for: indexPath)
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGTourSpotCell.reusableIdentifier, for: indexPath) as? TGTourSpotCell else { return UICollectionViewCell() }
+        
+        
+       // cell.titleLabel.text = tourInfos[0].title
+        
+        
         return cell
     }
     
+    // 여행장소들이 들어갈 셀의 사이즈
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 10, height: 10)
+        return CGSize(width: self.frame.width/2, height: self.frame.height/2)
         
-    }
-}
-
-class TGTourSpotView: UICollectionViewCell {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        backgroundColor = .yellow
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not benn implemented")
     }
 }

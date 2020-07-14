@@ -15,7 +15,7 @@ import ObjectMapper
 let serviceKey = "a74NIAcB4Qf%2BtsFyvKMQuUgHtj1GC8P%2Fog5YLsqQJs2kvhfTVrhZGc4NhIYdQJ1dl6U0Sq8DF7srBwrfoZloDA%3D%3D"
 let APIUrl = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?serviceKey="
             + serviceKey
-            + "&pageNo=1&numOfRows=10&MobileApp=AppTest&MobileOS=IOS&arrange=O&cat1=&contentTypeId=&areaCode=&sigunguCode=&cat2=&cat3=&listYN=Y&modifiedtime=&_type=json"
+            + "&pageNo=1&numOfRows=3&MobileApp=AppTest&MobileOS=IOS&arrange=O&cat1=&contentTypeId=&areaCode=&sigunguCode=&cat2=&cat3=&listYN=Y&modifiedtime=&_type=json"
 
 class TGNetworkingManager {
     
@@ -32,8 +32,11 @@ class TGNetworkingManager {
                                 
                                 let newTourInfo = TourData(title: afItem.title, areaCode: afItem.areaCode, addr1: afItem.addr1, addr2: afItem.addr2, image: afItem.image, tel: afItem.tel, contenttypeid: afItem.contenttypeid)
                                 
+                                print(newTourInfo.title)
+                                
+                                
                                 // DataSet에 삽입
-                                tourInfos.insert(newTourInfo)
+                                tourInfos.append(newTourInfo)
                             }
                         }
                     default:
