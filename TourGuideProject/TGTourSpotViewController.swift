@@ -15,43 +15,102 @@ protocol TourSpotVCDelegate: class {
     func updateData()
 }
 
-class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
+class TGTourSpotViewController: UIViewController {
     
-    var delegate: TourSpotVCDelegate?
-    
-    // 지역 메뉴바
-    var areaMenuBar = TGAreaMenuBar().then {
-        // view의 크기와 위치를 동적으로 계산하기 위해 이 프로퍼티를 false로 해야함 (auto resizing mask는 view의 크기와 위치를 완전히 고정하므로 추가 constraint를 지정할 수 없기 때문
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
     
     // 지역 관광지 그리드뷰를 나타내기 위한 container View
     var areaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         
-        $0.backgroundColor = .white
+        $0.backgroundColor = .purple
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.showsHorizontalScrollIndicator = false
         $0.isPagingEnabled = true
         $0.collectionViewLayout = layout
     }
     
+    // 지역 관광지 그리드뷰를 나타내기 위한 container View
+    var areaCollectionView2 = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        $0.backgroundColor = .purple
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.showsHorizontalScrollIndicator = false
+        $0.isPagingEnabled = true
+        $0.collectionViewLayout = layout
+    }
+    
+    // 지역 세그먼트 컨트롤바
+    let areaMenuInfos = ["서울", "경기도", "강원도", "전라도", "충청도", "경상도", "제주도"]
+    let areaSegmentControl = UISegmentedControl(items: ["서울", "경기도", "강원도", "전라도", "충청도", "경상도", "제주도"]).then {
+        $0.selectedSegmentIndex = 0
+        $0.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    // 스크롤뷰
+    let areaScrollView = UIScrollView().then {
+        $0.backgroundColor = .gray
+        $0.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    // 스택뷰
+    let areaStackView = UIStackView().then {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .horizontal
+        $0.spacing = 10.0
+        $0.backgroundColor = .purple
+        $0.distribution = .fillEqually
+        $0.alignment = .fill
+    }
+    
+    @objc func changePage(_ segmentedControl: UISegmentedControl) {
+
+        
+    }
+    
     
     override func loadView() {
         super.loadView()
     
-        setUpView()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    
-        TGNetworkingManager().loadData {
-            print("데이터로드를 완료했습니다.")
-            self.delegate?.updateData()
+        
+        self.view.backgroundColor = .white
+        self.view.addSubview(areaSegmentControl)
+        areaSegmentControl.snp.makeConstraints { (make) -> Void in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(60)
+
         }
+        areaSegmentControl.addTarget(self, action: #selector(changePage(_:)), for: .valueChanged)
+        
+        self.view.addSubview(areaScrollView)
+        areaScrollView.snp.makeConstraints { (make) -> Void in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalTo(self.areaSegmentControl.snp.bottom)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        self.areaScrollView.addSubview(areaStackView)
+        
+        areaStackView.snp.makeConstraints { [unowned self] (make) -> Void in
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.top.equalTo(self.areaScrollView.snp.top)
+            make.bottom.equalTo(self.areaScrollView.snp.bottom)
+            make.height.equalTo(self.areaScrollView.snp.height)
+        }
+        
+        NSLog("test")
+        setupAreaCollectionView()
+        
+        // 델리게이트
+        areaScrollView.delegate = self
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -59,59 +118,26 @@ class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
         self.tabBarController?.title = "관광지"
     }
     
-
-    func setUpView() {
-        self.view.backgroundColor = UIColor.white
-        
-        setUpMenuBar()
-        setupAreaCollectionView()
-        
-        bindConstraint()
-    }
-    
-    func setUpMenuBar() {
-        
-        self.view.addSubview(areaMenuBar)
-        
-        // 델리게이트 설정
-        areaMenuBar.delegate = self
-    }
-    
-    // 지역의 관광지들을 보여주는 CollectionView
     func setupAreaCollectionView(){
         
-        self.view.addSubview(areaCollectionView)
-        
-        areaCollectionView.delegate = self
-        areaCollectionView.dataSource = self
-        areaCollectionView.register(UINib(nibName: TGAreaTourSpotView.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGAreaTourSpotView.reusableIdentifier)
-    }
-    
-    func bindConstraint() {
-        
-        // 메뉴바
-        areaMenuBar.snp.makeConstraints { (make) -> Void in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(60)
+         self.areaStackView.addArrangedSubview(areaCollectionView)
+        self.areaStackView.addArrangedSubview(areaCollectionView2)
+
+        areaCollectionView.then {
+            $0.delegate = self
+            $0.dataSource = self
+            $0.register(UINib(nibName: TGTourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGTourSpotCell.reusableIdentifier)
+        }.snp.makeConstraints {
+            $0.width.equalTo(self.view)
         }
         
-        // 메뉴바의 인디케이터
-        areaMenuBar.indicatorViewWidthConstraint.constant = self.view.frame.width / 4
-        
-        // 지역 관광지 컬렉션 뷰
-        areaCollectionView.snp.makeConstraints { (make) -> Void in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-            make.top.equalTo(self.areaMenuBar.snp.bottom)
+        areaCollectionView2.then {
+            $0.delegate = self
+            $0.dataSource = self
+            $0.register(UINib(nibName: TGTourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGTourSpotCell.reusableIdentifier)
+        }.snp.makeConstraints {
+            $0.width.equalTo(self.view)
         }
-    }
-    
-    // 메뉴바에 설정된 델리게이트 구현
-    func customMenuBar(scrollTo index: Int) {
-        self.areaCollectionView.scrollToItem(at: IndexPath(row: index, section: 0), at: .centeredHorizontally, animated: true)
     }
 }
 
@@ -120,33 +146,27 @@ extension TGTourSpotViewController: UICollectionViewDelegate, UICollectionViewDa
     
     // 각 셀 채우기 - 지역 관광지들을 채워야함
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         // TGAreaTourSpotView를 셀로 이용한다.
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGAreaTourSpotView.reusableIdentifier, for: indexPath) as? TGAreaTourSpotView else { return TGAreaTourSpotView() }
-        
-        // 델리게이트 위임자를 각 cell로 설정한다.
-        self.delegate = cell
-        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGTourSpotCell.reusableIdentifier, for: indexPath) as? TGTourSpotCell else { return TGTourSpotCell() }
+        cell.titleLabel.text = "아이우에오"
         return cell
     }
-    
+
+
     // 각 섹션의 아이템 갯수 - 지역 관광지 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
-    }
-    
-    // 페이지에다가 대고 scroll 했을 때 메뉴바의 인디케이터 시작점 변화시키기
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        areaMenuBar.indicatorViewLeadingConstraint.constant = scrollView.contentOffset.x / 4
-    }
-    
-    // PageCollectionView에서 옆으로 드래깅했을 때 areaMenuBar의 항목에 맞게 이동시키기
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let itemAt = Int(targetContentOffset.pointee.x / self.view.frame.width)
-        let indexPath = IndexPath(item: itemAt, section: 0)
-        areaMenuBar.menuCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-        areaMenuBar.menuCollectionView.scrollToItem(at: indexPath, at: [], animated: true)
+        return 5
     }
 }
+
+// 스크롤뷰
+extension TGTourSpotViewController: UIScrollViewDelegate {
+    
+    
+}
+
+
 //MARK:- UICollectionViewDelegateFlowLayout
 extension TGTourSpotViewController: UICollectionViewDelegateFlowLayout {
     
@@ -154,9 +174,21 @@ extension TGTourSpotViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         //셀 즉 TGAreaTourSpotView의 사이즈
-        return CGSize(width: areaCollectionView.frame.width, height: areaCollectionView.frame.height)
+        return CGSize(width: 250, height: 250)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
+}
+
+public func DLog(tag: String, _ object: Any, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
+  #if DEBUG
+  let className = (fileName as NSString).lastPathComponent
+  print("<\(className)> \(functionName) #\(lineNumber) \(NSDate())\n [\(tag)]\(object)\n")
+  #else
+  if CMEasterEgg.isReleaseLog == true {
+    let className = (fileName as NSString).lastPathComponent
+    os_log("%{public}s\n[%{public}s] %{public}s","<\(className)> \(functionName) #\(lineNumber) \(NSDate())",tag,"\(object)")
+  }
+  #endif
 }

@@ -36,6 +36,8 @@ class TGTourSpotCell: UICollectionViewCell {
         
         self.backgroundColor = .yellow
         
+        print("탄생")
+        
         setView()
     }
     

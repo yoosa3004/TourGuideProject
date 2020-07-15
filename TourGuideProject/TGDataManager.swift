@@ -29,7 +29,13 @@ struct TourData: Hashable{
 }
 
 // 최종적으로 사용할 DataSet.
-var tourInfos = Array<TourData>()
+var tourInfos = [TourData]()
+
+// areaCode(Int) - 지역(String)을 매칭할 딕셔너리
+//var areaInfos: Dictionary<Int, String> = [1:"서울", 31:"경기도", 32:"강원도", 36:"전라도", 37:"경상도", 39:"제주도"]
+
+let areaMenuInfosInteger: Array<Int> = [1,31,32,37,36,39]
+
 
 
 // json 파싱을 위한 class
