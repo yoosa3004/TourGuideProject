@@ -55,7 +55,6 @@ class TGTourSpotCell: UICollectionViewCell {
         
         let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
         imageView.kf.setImage(with: url, options: [.processor(processor)])
-        //imageView.image = UIImage(named: "12.png")
         imageView.snp.makeConstraints { (make) -> Void in
             
             make.centerX.equalToSuperview()

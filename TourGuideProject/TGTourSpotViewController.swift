@@ -11,8 +11,14 @@ import SnapKit
 import Then
 import ScrollableSegmentedControl
 
-class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
+protocol TourSpotVCDelegate: class {
+    func updateData()
+}
 
+class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
+    
+    var delegate: TourSpotVCDelegate?
+    
     // 지역 메뉴바
     var areaMenuBar = TGAreaMenuBar().then {
         // view의 크기와 위치를 동적으로 계산하기 위해 이 프로퍼티를 false로 해야함 (auto resizing mask는 view의 크기와 위치를 완전히 고정하므로 추가 constraint를 지정할 수 없기 때문
@@ -34,15 +40,17 @@ class TGTourSpotViewController: UIViewController, CustomMenuBarDelegate {
     
     override func loadView() {
         super.loadView()
-        
+    
         setUpView()
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        TGNetworkingManager().loadData()
+    
+        TGNetworkingManager().loadData {
+            print("데이터로드를 완료했습니다.")
+            self.delegate?.updateData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -112,9 +120,12 @@ extension TGTourSpotViewController: UICollectionViewDelegate, UICollectionViewDa
     
     // 각 셀 채우기 - 지역 관광지들을 채워야함
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         // TGAreaTourSpotView를 셀로 이용한다.
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGAreaTourSpotView.reusableIdentifier, for: indexPath) as? TGAreaTourSpotView else { return TGAreaTourSpotView() }
+        
+        // 델리게이트 위임자를 각 cell로 설정한다.
+        self.delegate = cell
+        
         return cell
     }
     

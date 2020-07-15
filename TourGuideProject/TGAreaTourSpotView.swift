@@ -9,7 +9,14 @@
 import UIKit
 import Then
 
-class TGAreaTourSpotView: UICollectionViewCell {
+class TGAreaTourSpotView: UICollectionViewCell, TourSpotVCDelegate {
+    func updateData() {
+        print("프로토콜 호출")
+        containerView.reloadData()
+    }
+    
+    
+    var myVC: TGTourSpotViewController?
 
     let containerView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         let layout = UICollectionViewFlowLayout()
@@ -24,6 +31,7 @@ class TGAreaTourSpotView: UICollectionViewCell {
         super.awakeFromNib()
         
         self.backgroundColor = .white
+        
         setContainerView()
     }
     
@@ -47,18 +55,15 @@ class TGAreaTourSpotView: UICollectionViewCell {
 extension TGAreaTourSpotView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return tourInfos.count
     }
 
-    
     // 셀의 정보 세팅 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGTourSpotCell.reusableIdentifier, for: indexPath) as? TGTourSpotCell else { return UICollectionViewCell() }
         
-        
-       // cell.titleLabel.text = tourInfos[0].title
-        
+        cell.titleLabel.text = tourInfos[indexPath.row].title
         
         return cell
     }
@@ -66,12 +71,5 @@ extension TGAreaTourSpotView: UICollectionViewDataSource, UICollectionViewDelega
     // 여행장소들이 들어갈 셀의 사이즈
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.frame.width/2, height: self.frame.height/2)
-
-        /*
-         
-         https://firebasestorage.googleapis.com/v0/b/honggun-blog.appspot.com/o/%E1%84%91%E1%85%B5%E1%84%8F%E1%85%A1%E1%84%8E%E1%85%B2.png?alt=media&token=68c2ffff-81a5-4db9-a67e-b776242cea02
-         */
-
-
     }
 }
