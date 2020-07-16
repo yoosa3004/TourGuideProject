@@ -1,5 +1,5 @@
 //
-//  TGTourSpotCollectionView.swift
+//  TGTourSpotCollectionView2.swift
 //  TourGuideProject
 //
 //  Created by hyunndy on 2020/07/16.
@@ -8,13 +8,15 @@
 
 import UIKit
 
+protocol TGTourSpotCellDelegate: class {
+    func selected(_ detailInfo: TourData)
+}
 
+class TGTourSpotCollectionView: UICollectionView {
     
-class TGTourSpotCollectionView: NSObject {
+    // 델리게이트
+    weak var tapCellDelegate: TGTourSpotCellDelegate?
 
-    // 콜렉션뷰
-    var areaCV = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    
     // 데이터
     var tourInfos = Array<TourData>()
     
@@ -23,7 +25,7 @@ class TGTourSpotCollectionView: NSObject {
     func loadData() {
         TGNetworkingManager().loadData(areaNum) { [unowned self] (apiData) -> Void in
             self.tourInfos = apiData
-            self.areaCV.reloadData()
+            self.reloadData()
         }
     }
     
@@ -39,12 +41,14 @@ extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGTourSpotCell.reusableIdentifier, for: indexPath) as? TGTourSpotCell else { return TGTourSpotCell() }
         
         if self.tourInfos.count > 0 {
-            cell.titleLabel.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: 50)
-            cell.titleLabel.text = self.tourInfos[indexPath.row].title
-            cell.imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width/2, height: cell.frame.height/2)
-            cell.setImageView(self.tourInfos[indexPath.row].image!)
+            cell.then { [unowned self] in
+                $0.titleLabel.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: 50)
+                $0.titleLabel.text = self.tourInfos[indexPath.row].title
+                $0.imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width/2, height: cell.frame.height/2)
+                $0.setImageView(self.tourInfos[indexPath.row].image!)
+            }
         } else {
-            cell.titleLabel.text = "데이터로드전"
+            cell.titleLabel.text = "데이터로드 전"
         }
         
         return cell
@@ -54,6 +58,14 @@ extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionView
     // 각 섹션의 아이템 갯수 - 지역 관광지 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numOfRows
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("셀이 눌렸습니다")
+        
+        if self.tourInfos.count > 0 {
+          tapCellDelegate?.selected(tourInfos[indexPath.row])
+        }
     }
 }
 

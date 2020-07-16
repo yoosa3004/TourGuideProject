@@ -11,10 +11,6 @@ import SnapKit
 import Then
 import ScrollableSegmentedControl
 
-protocol TourSpotVCDelegate: class {
-    func updateData()
-}
-
 class TGTourSpotViewController: UIViewController {
     
     // 스택뷰 안에 들어갈 컬렉션뷰 배열
@@ -91,14 +87,9 @@ class TGTourSpotViewController: UIViewController {
         
         for idx in areaMenuCode.indices {
             
-            let collectionView = TGTourSpotCollectionView().then {
+            let collectionView = TGTourSpotCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then { [weak self] in
                 $0.areaNum = areaMenuCode[idx]
-            }
-            
-            collectionViewArray.append(collectionView)
-            self.areaStackView.addArrangedSubview(collectionViewArray[idx].areaCV)
-            
-            collectionViewArray[idx].areaCV.then {
+                $0.tapCellDelegate = self
                 let layout = UICollectionViewFlowLayout()
                 layout.scrollDirection = .vertical
                 
@@ -108,10 +99,15 @@ class TGTourSpotViewController: UIViewController {
                 $0.isPagingEnabled = true
                 $0.collectionViewLayout = layout
                 
-                $0.delegate = collectionViewArray[idx]
-                $0.dataSource = collectionViewArray[idx]
+                $0.delegate = $0
+                $0.dataSource = $0
                 $0.register(UINib(nibName: TGTourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGTourSpotCell.reusableIdentifier)
-            }.snp.makeConstraints { [unowned self] (make) -> Void in
+            }
+            
+            collectionViewArray.append(collectionView)
+            self.areaStackView.addArrangedSubview(collectionViewArray[idx])
+            
+            collectionViewArray[idx].snp.makeConstraints { [unowned self] (make) -> Void in
                 make.width.equalTo(self.view)
             }
             
@@ -120,10 +116,13 @@ class TGTourSpotViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-                
         super.viewDidLoad()
-    }
+        
+        let a = TGFestivalViewController()
+        self.tabBarController?.navigationController?.pushViewController(a, animated: false)
+        self.navigationController?.pushViewController(a, animated: false)
     
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -154,6 +153,14 @@ class TGTourSpotViewController: UIViewController {
     }
 
  }
+
+// 개별 셀 클릭
+extension TGTourSpotViewController: TGTourSpotCellDelegate {
+    func selected(_ detailInfo: TourData) {
+        let detailView = TGTourSpotDetailViewController()
+        self.navigationController?.pushViewController(detailView, animated: false)
+    }
+}
 
 
 // 딜리 로그 함수
