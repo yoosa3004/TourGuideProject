@@ -17,67 +17,26 @@ protocol TourSpotVCDelegate: class {
 
 class TGTourSpotViewController: UIViewController {
     
+    // 스택뷰 안에 들어갈 컬렉션뷰 배열
+    var collectionViewArray = Array<TGTourSpotCollectionView>()
     
-    // 지역 관광지 그리드뷰를 나타내기 위한 container View
-    var areaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        
-        $0.backgroundColor = .purple
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.showsHorizontalScrollIndicator = false
-        $0.isPagingEnabled = true
-        $0.collectionViewLayout = layout
-    }
-    
-    // 지역 관광지 그리드뷰를 나타내기 위한 container View
-    var areaCollectionView2 = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        
-        $0.backgroundColor = .purple
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.showsHorizontalScrollIndicator = false
-        $0.isPagingEnabled = true
-        $0.collectionViewLayout = layout
-    }
-    
-    // 지역 세그먼트 컨트롤바
-    let areaMenuInfos = ["서울", "경기도", "강원도", "전라도", "충청도", "경상도", "제주도"]
-    let areaSegmentControl = UISegmentedControl(items: ["서울", "경기도", "강원도", "전라도", "충청도", "경상도", "제주도"]).then {
-        $0.selectedSegmentIndex = 0
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
+    // 세그먼트 컨트롤
+    let areaSegmentControl = UISegmentedControl(items: areaMenu)
+
     // 스크롤뷰
-    let areaScrollView = UIScrollView().then {
-        $0.backgroundColor = .gray
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
+    let areaScrollView = UIScrollView()
     
     // 스택뷰
-    let areaStackView = UIStackView().then {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.axis = .horizontal
-        $0.spacing = 10.0
-        $0.backgroundColor = .purple
-        $0.distribution = .fillEqually
-        $0.alignment = .fill
-    }
+    let areaStackView = UIStackView()
     
-    @objc func changePage(_ segmentedControl: UISegmentedControl) {
-
+    func setupFrameViews() {
         
-    }
-    
-    
-    override func loadView() {
-        super.loadView()
-    
-        
-        self.view.backgroundColor = .white
+        // 세그먼트 컨트롤 뷰
         self.view.addSubview(areaSegmentControl)
-        areaSegmentControl.snp.makeConstraints { (make) -> Void in
+        areaSegmentControl.then{
+            $0.selectedSegmentIndex = 0
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }.snp.makeConstraints { [unowned self] (make) -> Void in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
@@ -86,29 +45,83 @@ class TGTourSpotViewController: UIViewController {
         }
         areaSegmentControl.addTarget(self, action: #selector(changePage(_:)), for: .valueChanged)
         
+        // 스크롤 뷰
         self.view.addSubview(areaScrollView)
-        areaScrollView.snp.makeConstraints { (make) -> Void in
+        areaScrollView.then {
+            $0.backgroundColor = .gray
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.delegate = self
+            $0.isPagingEnabled = true
+        }.snp.makeConstraints { [unowned self] (make) -> Void in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.top.equalTo(self.areaSegmentControl.snp.bottom)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
         }
         
+        // 스택 뷰
         self.areaScrollView.addSubview(areaStackView)
-        
-        areaStackView.snp.makeConstraints { [unowned self] (make) -> Void in
+        areaStackView.then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.axis = .horizontal
+            $0.backgroundColor = .purple
+            
+            // axis와 함께 사용되는 가로/세로의 개념
+            $0.distribution = .fillEqually
+            $0.alignment = .fill
+        }.snp.makeConstraints { [unowned self] (make) -> Void in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalTo(self.areaScrollView.snp.top)
             make.bottom.equalTo(self.areaScrollView.snp.bottom)
             make.height.equalTo(self.areaScrollView.snp.height)
         }
+    }
+    
+    override func loadView() {
+        super.loadView()
+    
+        self.view.backgroundColor = .white
         
-        NSLog("test")
-        setupAreaCollectionView()
+        setupFrameViews()
+        initCollectionView()
+    }
+    
+    func initCollectionView() {
         
-        // 델리게이트
-        areaScrollView.delegate = self
+        for idx in areaMenuCode.indices {
+            
+            let collectionView = TGTourSpotCollectionView().then {
+                $0.areaNum = areaMenuCode[idx]
+            }
+            
+            collectionViewArray.append(collectionView)
+            self.areaStackView.addArrangedSubview(collectionViewArray[idx].areaCV)
+            
+            collectionViewArray[idx].areaCV.then {
+                let layout = UICollectionViewFlowLayout()
+                layout.scrollDirection = .vertical
+                
+                $0.backgroundColor = .purple
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.showsHorizontalScrollIndicator = false
+                $0.isPagingEnabled = true
+                $0.collectionViewLayout = layout
+                
+                $0.delegate = collectionViewArray[idx]
+                $0.dataSource = collectionViewArray[idx]
+                $0.register(UINib(nibName: TGTourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGTourSpotCell.reusableIdentifier)
+            }.snp.makeConstraints { [unowned self] (make) -> Void in
+                make.width.equalTo(self.view)
+            }
+            
+            collectionViewArray[idx].loadData()
+        }
+    }
+    
+    override func viewDidLoad() {
+                
+        super.viewDidLoad()
     }
     
     
@@ -118,69 +131,32 @@ class TGTourSpotViewController: UIViewController {
         self.tabBarController?.title = "관광지"
     }
     
-    func setupAreaCollectionView(){
+    @objc func changePage(_ segmentedControl: UISegmentedControl) {
         
-         self.areaStackView.addArrangedSubview(areaCollectionView)
-        self.areaStackView.addArrangedSubview(areaCollectionView2)
-
-        areaCollectionView.then {
-            $0.delegate = self
-            $0.dataSource = self
-            $0.register(UINib(nibName: TGTourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGTourSpotCell.reusableIdentifier)
-        }.snp.makeConstraints {
-            $0.width.equalTo(self.view)
-        }
+        let screenWidth = UIScreen.main.bounds.maxX
+        let idx = CGFloat(segmentedControl.selectedSegmentIndex)
         
-        areaCollectionView2.then {
-            $0.delegate = self
-            $0.dataSource = self
-            $0.register(UINib(nibName: TGTourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGTourSpotCell.reusableIdentifier)
-        }.snp.makeConstraints {
-            $0.width.equalTo(self.view)
-        }
+        areaScrollView.contentOffset.x = screenWidth*idx
     }
 }
+ 
+ // 스크롤뷰
+ extension TGTourSpotViewController: UIScrollViewDelegate {
 
-//MARK:- UICollectionViewDelegate, UICollectionViewDataSource
-extension TGTourSpotViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    // 각 셀 채우기 - 지역 관광지들을 채워야함
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        // TGAreaTourSpotView를 셀로 이용한다.
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGTourSpotCell.reusableIdentifier, for: indexPath) as? TGTourSpotCell else { return TGTourSpotCell() }
-        cell.titleLabel.text = "아이우에오"
-        return cell
+        // 스크롤뷰의 사이즈
+        let x = scrollView.contentOffset.x
+        // 현재 디바이스 화면의 사이즈
+        let screenWidth = UIScreen.main.bounds.maxX
+        // 넓은 백지인 스크롤뷰에서 현재 보여지고있는 뷰의 위치
+        areaSegmentControl.selectedSegmentIndex = Int(x/screenWidth)
     }
 
-
-    // 각 섹션의 아이템 갯수 - 지역 관광지 갯수
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
-    }
-}
-
-// 스크롤뷰
-extension TGTourSpotViewController: UIScrollViewDelegate {
-    
-    
-}
+ }
 
 
-//MARK:- UICollectionViewDelegateFlowLayout
-extension TGTourSpotViewController: UICollectionViewDelegateFlowLayout {
-    
-    // 각 셀의 사이즈
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        //셀 즉 TGAreaTourSpotView의 사이즈
-        return CGSize(width: 250, height: 250)
-    }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-}
-
+// 딜리 로그 함수
 public func DLog(tag: String, _ object: Any, functionName: String = #function, fileName: String = #file, lineNumber: Int = #line) {
   #if DEBUG
   let className = (fileName as NSString).lastPathComponent

@@ -13,16 +13,19 @@ import AlamofireObjectMapper
 import ObjectMapper
 
 
+let numOfRows = 10
 let serviceKey = "a74NIAcB4Qf%2BtsFyvKMQuUgHtj1GC8P%2Fog5YLsqQJs2kvhfTVrhZGc4NhIYdQJ1dl6U0Sq8DF7srBwrfoZloDA%3D%3D"
 var APIUrl = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?serviceKey="
             + serviceKey
-            + "&pageNo=1&numOfRows=10&MobileApp=AppTest&MobileOS=IOS&arrange=O&cat1=&contentTypeId=&sigunguCode=&cat2=&cat3=&listYN=Y&modifiedtime=&_type=json&areaCode="
+            + "&pageNo=1&numOfRows="
+            + String(numOfRows)
+            + "&MobileApp=AppTest&MobileOS=IOS&arrange=Q&cat1=&contentTypeId=12&sigunguCode=&cat2=&cat3=&listYN=Y&modifiedtime=&_type=json&areaCode="
 
 
 class TGNetworkingManager {
     
     // API 통신 후 받아온 json 파일을 변환해 최종적으로 쓰일 DataSet에 할당하는 함수
-    func loadData( areaCode:Int, update: @escaping (_ a: [TourData]) -> Void) {
+    func loadData(_ areaCode:Int, update: @escaping (_ a: [TourData]) -> Void) {
         
         var validTourInfo = [TourData]()
         
@@ -36,11 +39,6 @@ class TGNetworkingManager {
                             for afItem in afItems {
                                 
                                 let newTourInfo = TourData(title: afItem.title, areaCode: afItem.areaCode, addr1: afItem.addr1, addr2: afItem.addr2, image: afItem.image, tel: afItem.tel, contenttypeid: afItem.contenttypeid)
-                                
-//                                print(String(areaCode))
-                                // DataSet에 삽입
-//                                print(newTourInfo.areaCode)
-//                                print(newTourInfo.addr1)
                                 validTourInfo.append(newTourInfo)
                             }
                             
