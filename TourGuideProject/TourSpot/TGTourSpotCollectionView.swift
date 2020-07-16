@@ -20,10 +20,13 @@ class TGTourSpotCollectionView: UICollectionView {
     // 데이터
     var tourInfos = Array<TourData>()
     
+    // API 요청변수 - 지역코드
     var areaNum: Int = 0
+    // API 요청변수 - 관광코드
+    var contentTypeId: Int = 12
     
     func loadData() {
-        TGNetworkingManager().loadData(areaNum) { [unowned self] (apiData) -> Void in
+        TGNetworkingManager().loadData(areaNum, contentTypeId) { [unowned self] (apiData) -> Void in
             self.tourInfos = apiData
             self.reloadData()
         }
@@ -44,7 +47,7 @@ extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionView
             cell.then { [unowned self] in
                 $0.titleLabel.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: 50)
                 $0.titleLabel.text = self.tourInfos[indexPath.row].title
-                $0.imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width/2, height: cell.frame.height/2)
+                $0.imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width/1.5, height: cell.frame.height/1.5)
                 $0.setImageView(self.tourInfos[indexPath.row].image!)
             }
         } else {
@@ -76,7 +79,7 @@ extension TGTourSpotCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         //셀 즉 TGAreaTourSpotView의 사이즈
-        return CGSize(width: 250, height: 250)
+        return CGSize(width: self.frame.width/1.5, height: self.frame.height/2)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10.0

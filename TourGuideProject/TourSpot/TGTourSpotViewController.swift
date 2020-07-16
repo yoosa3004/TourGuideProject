@@ -154,10 +154,12 @@ class TGTourSpotViewController: UIViewController {
 
  }
 
-// 개별 셀 클릭
+// 개별 셀 클릭 시 불리는 프로토콜
 extension TGTourSpotViewController: TGTourSpotCellDelegate {
     func selected(_ detailInfo: TourData) {
-        let detailView = TGTourSpotDetailViewController()
+        let detailView = TGTourSpotDetailViewController().then {
+            $0.dataInfo = detailInfo
+        }
         self.navigationController?.pushViewController(detailView, animated: false)
     }
 }

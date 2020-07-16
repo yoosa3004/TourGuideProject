@@ -17,7 +17,7 @@ class TGTourSpotCell: UICollectionViewCell {
     var imageView = UIImageView().then {
         $0.frame = .zero
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
     }
     
     // 관광지 제목
@@ -47,6 +47,8 @@ class TGTourSpotCell: UICollectionViewCell {
         self.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) -> Void in
             make.centerX.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
             make.bottom.equalTo(-40)
         }
         

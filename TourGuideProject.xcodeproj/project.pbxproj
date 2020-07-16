@@ -19,8 +19,8 @@
 		0254A2DC24B415D600945CEA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2DB24B415D600945CEA /* .gitignore */; };
 		026E603B24BD5D45001CB5D4 /* TGTourSpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */; };
 		026E603C24BD5D45001CB5D4 /* TGTourSpotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 026E603A24BD5D45001CB5D4 /* TGTourSpotCell.xib */; };
-		0277A1A024C0274C00F13874 /* TGTourSpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0277A19F24C0274C00F13874 /* TGTourSpotDetailViewController.swift */; };
 		0277A1A224C02B9600F13874 /* TGTourSpotCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0277A1A124C02B9600F13874 /* TGTourSpotCollectionView.swift */; };
+		0277A1A824C0374300F13874 /* TGTourSpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0277A1A724C0374300F13874 /* TGTourSpotDetailViewController.swift */; };
 		02D3EC3D24B7134F00446F7C /* TGTourSpotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */; };
 		02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */; };
 		02D3EC4124B7138E00446F7C /* TGMyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */; };
@@ -65,8 +65,8 @@
 		0254A2DB24B415D600945CEA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotCell.swift; sourceTree = "<group>"; };
 		026E603A24BD5D45001CB5D4 /* TGTourSpotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TGTourSpotCell.xib; sourceTree = "<group>"; };
-		0277A19F24C0274C00F13874 /* TGTourSpotDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotDetailViewController.swift; sourceTree = "<group>"; };
 		0277A1A124C02B9600F13874 /* TGTourSpotCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotCollectionView.swift; sourceTree = "<group>"; };
+		0277A1A724C0374300F13874 /* TGTourSpotDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotDetailViewController.swift; sourceTree = "<group>"; };
 		02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotViewController.swift; sourceTree = "<group>"; };
 		02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGFestivalViewController.swift; sourceTree = "<group>"; };
 		02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGMyAccountViewController.swift; sourceTree = "<group>"; };
@@ -184,7 +184,7 @@
 				026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */,
 				0277A1A124C02B9600F13874 /* TGTourSpotCollectionView.swift */,
 				02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */,
-				0277A19F24C0274C00F13874 /* TGTourSpotDetailViewController.swift */,
+				0277A1A724C0374300F13874 /* TGTourSpotDetailViewController.swift */,
 			);
 			path = TourSpot;
 			sourceTree = "<group>";
@@ -470,8 +470,8 @@
 				02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */,
 				02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */,
 				0277A1A224C02B9600F13874 /* TGTourSpotCollectionView.swift in Sources */,
+				0277A1A824C0374300F13874 /* TGTourSpotDetailViewController.swift in Sources */,
 				0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */,
-				0277A1A024C0274C00F13874 /* TGTourSpotDetailViewController.swift in Sources */,
 				02D3EC3D24B7134F00446F7C /* TGTourSpotViewController.swift in Sources */,
 				02315B0524B57AB900166294 /* TGDataManager.swift in Sources */,
 				0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */,
