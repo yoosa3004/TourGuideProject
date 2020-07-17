@@ -26,7 +26,7 @@ class TGTourSpotCollectionView: UICollectionView {
     var contentTypeId: Int = 12
     
     func loadData() {
-        TGNetworkingManager().loadData(areaNum, contentTypeId) { [unowned self] (apiData) -> Void in
+        TGNetworkingManager().loadTourSpotData(areaNum) { [unowned self] (apiData) -> Void in
             self.tourInfos = apiData
             self.reloadData()
         }

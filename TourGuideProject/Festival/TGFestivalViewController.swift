@@ -12,21 +12,25 @@ import Then
 
 class TGFestivalViewController: UIViewController {
 
+    var tbvFestival = TGFestivalTableView()
+
     
-    let testLabel = UILabel().then {
-        $0.text = "행사정보란"
-        $0.textColor = .black
-        $0.textAlignment = .center
-        $0.bounds = CGRect(x: 0, y: 0, width: 100, height: 100)
-        $0.backgroundColor = .purple
+    
+    override func loadView() {
+        super.loadView()
+
+        self.view.backgroundColor = .white
+        setUpView()
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.white
-        setUpView()
+        TGNetworkingManager().loadFestivalData { [unowned self] (apiData) -> Void in
+           self.tbvFestival.festivalInfos = apiData
+           self.tbvFestival.reloadData()
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,24 +41,21 @@ class TGFestivalViewController: UIViewController {
     
 
     private func setUpView() {
-        
-        self.view.addSubview(self.testLabel)
-        
-        self.testLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        self.view.addSubview(self.tbvFestival)
+        tbvFestival.then { [unowned self] in
+            $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            $0.delegate = $0
+            $0.dataSource = $0
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.register(UINib(nibName: TGFestivalCell.reusableIdentifier, bundle: nil), forCellReuseIdentifier: TGFestivalCell.reusableIdentifier)
+        }.snp.makeConstraints { [unowned self] (make) -> Void in
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
     }
     
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+

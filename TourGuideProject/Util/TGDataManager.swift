@@ -31,6 +31,28 @@ struct TourData: Hashable{
 let areaMenu = ["서울", "경기도", "강원도", "전라도", "경상도", "제주도"]
 let areaMenuCode: Array<Int> = [1,31,32,37,36,39]
 let areaNum = areaMenu.count
+//---------------------------------------------------------------------------
+
+// 행사 정보를 저장할 구조체
+struct FestivalData: Hashable{
+    // 제목
+    var title: String?
+    // 전체 주소
+    var addr1: String?
+    // 상세 주소
+    var addr2: String?
+    // 행사 시작일
+    var eventstartdate: Int?
+    // 행사 종료일
+    var eventenddate: Int?
+    // 대표 이미지
+    var image: String?
+    // 썸네일 이미지
+    var thumbnail: String?
+    // 전화번호
+    var tel: String?
+}
+
 
 // json 파싱을 위한 class
 //---------------------------------------------------------------------------
@@ -148,5 +170,111 @@ class ItemInfo: Mappable {
     }
 }
 //---------------------------------------------------------------------------
+
+class FestivalInfo: Mappable {
+    var response: ResponseInfo2?
+    
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        response <- map["response"]
+    }
+}
+
+// "response"
+class ResponseInfo2: Mappable {
+    var head: HeadInfo?
+    var body: BodyInfo2?
+    
+    
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        head <- map["header"]
+        body <- map["body"]
+    }
+}
+
+
+class BodyInfo2: Mappable {
+    var items: ItemsInfo2?
+    var numOfRows: Int?
+    var pageNo: Int?
+    var totalCount: Int?
+    
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        items <- map["items"]
+        numOfRows <- map["numOfRows"]
+        pageNo <- map["pageNo"]
+        totalCount <- map["totalCount"]
+    }
+}
+
+// "body" - "items" <아이템 목록>
+class ItemsInfo2: Mappable {
+    var item: [ItemInfo2]?
+    
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        item <- map["item"]
+    }
+    
+}
+
+// "body" - "item" <아이템> - 최종적으로 쓰이게될 데이터
+class ItemInfo2: Mappable {
+    
+    //-- 필수 정보
+    var contentid: Int?
+    var contenttypeid: Int?
+    var createdtime: Int?
+    var modifiedtime: Int?
+    var title: String?
+    var eventstartdate: Int?
+    var eventenddate: Int?
+    //--
+    
+    //-- 부가 정보
+    // 지역 코드
+    var areaCode: Int?
+    // 전체 주소
+    var addr1: String?
+    // 상세 주소
+    var addr2: String?
+    // 대표 이미지
+    var image: String?
+    // 썸네일
+    var thumbnail: String?
+    // 전화번호
+    var tel: String?
+    //--
+    
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        contentid <- map["contentid"]
+        contenttypeid <- map["contenttypeid"]
+        createdtime <- map["createdtime"]
+        modifiedtime <- map["modifiedtime"]
+        title <- map["title"]
+        eventstartdate <- map["eventstartdate"]
+        eventenddate <- map["eventenddate"]
+        
+        areaCode <- map["areacode"]
+        addr1 <- map["addr1"]
+        addr2 <- map["addr2"]
+        image <- map["firstimage"]
+        thumbnail <- map["firstimage2"]
+        tel <- map["tel"]
+    }
+}
 
 

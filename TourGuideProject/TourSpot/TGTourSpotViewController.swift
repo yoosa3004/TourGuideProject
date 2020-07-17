@@ -60,7 +60,7 @@ class TGTourSpotViewController: UIViewController {
         areaStackView.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.axis = .horizontal
-            $0.backgroundColor = .purple
+            $0.backgroundColor = .white
             
             // axis와 함께 사용되는 가로/세로의 개념
             $0.distribution = .fillEqually
@@ -93,7 +93,7 @@ class TGTourSpotViewController: UIViewController {
                 let layout = UICollectionViewFlowLayout()
                 layout.scrollDirection = .vertical
                 
-                $0.backgroundColor = .purple
+                $0.backgroundColor = .white
                 $0.translatesAutoresizingMaskIntoConstraints = false
                 $0.showsHorizontalScrollIndicator = false
                 $0.isPagingEnabled = true
@@ -160,6 +160,7 @@ extension TGTourSpotViewController: TGTourSpotCellDelegate {
         let detailView = TGTourSpotDetailViewController().then {
             $0.dataInfo = detailInfo
         }
+        
         self.navigationController?.pushViewController(detailView, animated: false)
     }
 }

@@ -130,6 +130,7 @@ class TGTourSpotDetailViewController: UIViewController {
         
         // 네비 제목
         self.navigationController?.navigationBar.topItem?.title = dataInfo.title
+        //print(self.navigationController?.navigationBar.topItem?.leftBarButtonItem)
         
         // 오른쪽 - 찜 아이콘
         imgFullHeart = imgFullHeart?.resized(to: CGSize(width: (self.navigationController?.navigationBar.frame.width)! / 10, height: (self.navigationController?.navigationBar.frame.height)!))
