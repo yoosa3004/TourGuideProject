@@ -30,7 +30,6 @@ struct TourData: Hashable{
 
 let areaMenu = ["서울", "경기도", "강원도", "전라도", "경상도", "제주도"]
 let areaMenuCode: Array<Int> = [1,31,32,37,36,39]
-let areaNum = areaMenu.count
 //---------------------------------------------------------------------------
 
 // 행사 정보를 저장할 구조체
@@ -53,8 +52,7 @@ struct FestivalData: Hashable{
     var tel: String?
 }
 
-
-// json 파싱을 위한 class
+// 관광지 데이터 json 파싱을 위한 class
 //---------------------------------------------------------------------------
 // API 통신 후 받는 json 파일
 class TourInfo: Mappable {
@@ -171,6 +169,9 @@ class ItemInfo: Mappable {
 }
 //---------------------------------------------------------------------------
 
+
+// 행사 데이터 json 파싱을 위한 class
+//---------------------------------------------------------------------------
 class FestivalInfo: Mappable {
     var response: ResponseInfo2?
     
@@ -184,7 +185,7 @@ class FestivalInfo: Mappable {
 
 // "response"
 class ResponseInfo2: Mappable {
-    var head: HeadInfo?
+    var head: HeadInfo2?
     var body: BodyInfo2?
     
     
@@ -197,6 +198,19 @@ class ResponseInfo2: Mappable {
     }
 }
 
+// "header" -> header에서 받는 응답코드 / 응답메세지로 데이터 로드 성공/실패 구분 가능
+class HeadInfo2: Mappable {
+    var resultCode: String?
+    var resultMsg: String?
+    
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        resultCode <- map["resultCode"]
+        resultMsg <- map["resultMsg"]
+    }
+}
 
 class BodyInfo2: Mappable {
     var items: ItemsInfo2?
@@ -276,5 +290,23 @@ class ItemInfo2: Mappable {
         tel <- map["tel"]
     }
 }
+
+// 20201515 -> 2015.15.15 변환 익스텐션
+extension Int {
+    func changeDateFormat() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let tempDate = dateFormatter.date(from: String(self))
+        
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+
+        if tempDate != nil {
+            return dateFormatter.string(from: tempDate!)
+        }else {
+            return ""
+        }
+    }
+}
+
 
 

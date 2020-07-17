@@ -43,6 +43,7 @@ class TGFestivalCell: UITableViewCell {
         ivFestival.then { [unowned self] in
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.frame = CGRect(x: 0, y: 0, width: 150, height: self.frame.height) // 150*100
+            $0.image = UIImage(named: "heart_full.png")
             $0.contentMode = .scaleAspectFit
         }.snp.makeConstraints {
             $0.left.equalToSuperview().offset(25)
@@ -86,7 +87,7 @@ class TGFestivalCell: UITableViewCell {
         }
     }
     
-    
+    // KingFisher를 통한 이미지 세팅
     func setImageView(_ url:String) {
         let url = URL(string: url)
         let processor = DownsamplingImageProcessor(size: ivFestival.frame.size)

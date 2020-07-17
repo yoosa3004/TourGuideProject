@@ -14,7 +14,7 @@ import ObjectMapper
 
 var contentTypeId = 12
 let numOfRows = 10
-let serviceKey = "a74NIAcB4Qf%2BtsFyvKMQuUgHtj1GC8P%2Fog5YLsqQJs2kvhfTVrhZGc4NhIYdQJ1dl6U0Sq8DF7srBwrfoZloDA%3D%3D"
+let serviceKey = "tLN%2Bjilj3ZFHA2%2FpssG4J4hN82oI6Q2b0rF3pB5hrv3LVOccCkbBP2YcHlMqd7%2FqHejXWPsU0abYZ2y%2FnivcZQ%3D%3D"
 let TourAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?serviceKey="
             + serviceKey
             + "&pageNo=1&numOfRows="
@@ -22,15 +22,11 @@ let TourAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaB
             + "&MobileApp=AppTest&MobileOS=IOS&arrange=Q&cat1=&sigunguCode=&cat2=&cat3=&listYN=Y&modifiedtime=&_type=json&contentTypeId=12&areaCode="
 
 
-
-
 let FestivalAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey="
                 + serviceKey
-                + "&MobileOS=IOS&MobileApp=AppTest&arrange=P&listYN=Y&_type=json&"
-                + String(10)
+                + "&MobileOS=IOS&pageNo=1&MobileApp=AppTest&arrange=P&listYN=Y&_type=json&numOfRows="
+                + String(numOfRows)
                 + "&eventStartDate=20200101"
-
-
 
 class TGNetworkingManager {
     
@@ -42,6 +38,9 @@ class TGNetworkingManager {
         Alamofire.request(TourAPI + String(areaCode)).responseObject { (response: DataResponse<TourInfo>) in
             if let afResult = response.result.value?.response {
                 if let afHead = afResult.head {
+                    
+                    print(afHead.resultMsg)
+                    
                     // API 통신 결과가 OK인 경우에만 시도
                     switch afHead.resultMsg {
                     case "OK":
@@ -56,7 +55,7 @@ class TGNetworkingManager {
                             update(validTourInfo)
                         }
                     default:
-                        print("Data load failed")
+                        print("Tour Data load failed")
                     }
                 }
             } else {
@@ -73,6 +72,9 @@ class TGNetworkingManager {
         Alamofire.request(FestivalAPI).responseObject { (response: DataResponse<FestivalInfo>) in
             if let afResult = response.result.value?.response {
                 if let afHead = afResult.head {
+                    
+                     print(afHead.resultMsg)
+                    
                     // API 통신 결과가 OK인 경우에만 시도
                     switch afHead.resultMsg {
                     case "OK":
@@ -81,15 +83,13 @@ class TGNetworkingManager {
                             
                                 let newFestivalInfo = FestivalData(title: afItem.title, addr1: afItem.addr1, addr2: afItem.addr2, eventstartdate: afItem.eventstartdate, eventenddate: afItem.eventenddate, image: afItem.image, thumbnail: afItem.thumbnail, tel: afItem.tel)
                                 
-                                
-                                
                                 validFestivalInfo.append(newFestivalInfo)
                             }
                             
                             update(validFestivalInfo)
                         }
                     default:
-                        print("Data load failed")
+                        print("Festival Data load failed")
                     }
                 }
             } else {
@@ -98,22 +98,4 @@ class TGNetworkingManager {
         }
     }
 }
-
-extension Int {
-    func changeDateFormat() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        let tempDate = dateFormatter.date(from: String(self))
-        
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-
-        if tempDate != nil {
-            return dateFormatter.string(from: tempDate!)
-        }else {
-            return ""
-        }
-    }
-}
-
-
 

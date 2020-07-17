@@ -8,7 +8,14 @@
 
 import UIKit
 
+protocol TGFestivalDelegate: class {
+    func selected()//_ detailInfo: FestivalData)
+}
+
 class TGFestivalTableView: UITableView {
+    
+    // 델리게이트
+    weak var tapCellDelegate: TGFestivalDelegate?
     
     // 데이터
     var festivalInfos = Array<FestivalData>()
@@ -17,7 +24,7 @@ class TGFestivalTableView: UITableView {
 
 extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return festivalInfos.count
+        return 5//festivalInfos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -37,7 +44,6 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
                 //날짜
                 $0.lbFestivalDate.text = String(festivalInfos[indexPath.row].eventstartdate!.changeDateFormat()) + " ~ " + String(festivalInfos[indexPath.row].eventenddate!.changeDateFormat())
                 //이미지
-//                $0.ivFestival.image = UIImage(named: festivalInfos[indexPath.row].thumbnail!)
                 $0.setImageView(festivalInfos[indexPath.row].thumbnail!)
             }
             
@@ -50,5 +56,10 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.frame.height/5
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        tapCellDelegate?.selected()//festivalInfos[indexPath.row])
     }
 }

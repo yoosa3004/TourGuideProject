@@ -111,6 +111,7 @@ class TGTourSpotViewController: UIViewController {
                 make.width.equalTo(self.view)
             }
             
+            // API 통신
             collectionViewArray[idx].loadData()
         }
     }

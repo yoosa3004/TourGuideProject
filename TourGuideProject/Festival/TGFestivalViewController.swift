@@ -14,8 +14,6 @@ class TGFestivalViewController: UIViewController {
 
     var tbvFestival = TGFestivalTableView()
 
-    
-    
     override func loadView() {
         super.loadView()
 
@@ -47,6 +45,7 @@ class TGFestivalViewController: UIViewController {
             $0.delegate = $0
             $0.dataSource = $0
             $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.tapCellDelegate = self
             $0.register(UINib(nibName: TGFestivalCell.reusableIdentifier, bundle: nil), forCellReuseIdentifier: TGFestivalCell.reusableIdentifier)
         }.snp.makeConstraints { [unowned self] (make) -> Void in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
@@ -55,7 +54,11 @@ class TGFestivalViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
     }
-    
-    
+}
+
+extension TGFestivalViewController: TGFestivalDelegate {
+    func selected() {//_ detailInfo: FestivalData) {
+        self.navigationController?.pushViewController(TGFestivalDetailViewController(), animated: true)
+    }
 }
 
