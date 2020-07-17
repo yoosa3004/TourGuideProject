@@ -23,6 +23,9 @@ class TGTourSpotDetailViewController: UIViewController {
     var lbAddr = UILabel()
     // 전화번호
     var lbTel = UILabel()
+    // 찜아이콘
+    var imgFullHeart = UIImage(named: "heart_full.png")
+    var imgEmptyHeart = UIImage(named: "heart_empty.png")
     
     override func loadView() {
         super.loadView()
@@ -101,7 +104,6 @@ class TGTourSpotDetailViewController: UIViewController {
             make.top.equalTo(self.lbAddr.snp.bottom).offset(25)
             make.centerX.equalToSuperview()
         }
-        
     }
     
     override func viewDidLoad() {
@@ -113,16 +115,42 @@ class TGTourSpotDetailViewController: UIViewController {
         setNavItem()
     }
     
+    @objc func selectHeart(_ sender: UIBarButtonItem) {
+        print("버튼이눌렸습니다.")
+        
+        // 꽉찬하트
+        if(sender.image == imgFullHeart) {
+            sender.image = imgEmptyHeart
+        } else {
+            sender.image = imgFullHeart
+        }
+    }
+    
     func setNavItem(){
         
         // 네비 제목
         self.navigationController?.navigationBar.topItem?.title = dataInfo.title
-        // 찜 아이콘
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(title: "찜하기", style: .plain, target: nil, action: nil)
+        
+        // 오른쪽 - 찜 아이콘
+        imgFullHeart = imgFullHeart?.resized(to: CGSize(width: (self.navigationController?.navigationBar.frame.width)! / 10, height: (self.navigationController?.navigationBar.frame.height)!))
+        imgEmptyHeart = imgEmptyHeart?.resized(to: CGSize(width: (self.navigationController?.navigationBar.frame.width)! / 10, height: (self.navigationController?.navigationBar.frame.height)!))
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(image: imgEmptyHeart, style: .plain, target: self, action: #selector(selectHeart(_:)))
+        
+        // 왼쪽 - 뒤로가기
     }
+    
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
+}
+
+extension UIImage {
+    func resized(to size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 }
