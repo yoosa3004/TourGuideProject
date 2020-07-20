@@ -9,7 +9,7 @@
 import UIKit
 
 protocol TGFestivalDelegate: class {
-    func selected()//_ detailInfo: FestivalData)
+    func selected(_ detailInfo: FestivalData)
 }
 
 class TGFestivalTableView: UITableView {
@@ -24,7 +24,7 @@ class TGFestivalTableView: UITableView {
 
 extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5//festivalInfos.count
+        return festivalInfos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -60,6 +60,6 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        tapCellDelegate?.selected()//festivalInfos[indexPath.row])
+        tapCellDelegate?.selected(festivalInfos[indexPath.row])
     }
 }

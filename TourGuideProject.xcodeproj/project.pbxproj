@@ -10,6 +10,7 @@
 		0209293C24B865AC004C3C7F /* TGIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0209293B24B865AC004C3C7F /* TGIdentifier.swift */; };
 		02315B0524B57AB900166294 /* TGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0424B57AB900166294 /* TGDataManager.swift */; };
 		02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* TGNetworkingManager.swift */; };
+		02528F3E24C5327900DD1EF3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */; };
 		0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AB24B4155100945CEA /* AppDelegate.swift */; };
 		0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AD24B4155100945CEA /* SceneDelegate.swift */; };
 		0254A2B524B4155300945CEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2B424B4155300945CEA /* Assets.xcassets */; };
@@ -56,6 +57,7 @@
 		0209293B24B865AC004C3C7F /* TGIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGIdentifier.swift; sourceTree = "<group>"; };
 		02315B0424B57AB900166294 /* TGDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGDataManager.swift; sourceTree = "<group>"; };
 		02315B0624B5995C00166294 /* TGNetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGNetworkingManager.swift; sourceTree = "<group>"; };
+		02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0254A2A824B4155100945CEA /* TourGuideProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TourGuideProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0254A2AB24B4155100945CEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0254A2AD24B4155100945CEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 		0254A29F24B4155100945CEA = {
 			isa = PBXGroup;
 			children = (
+				02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */,
 				0254A2DB24B415D600945CEA /* .gitignore */,
 				0254A2AA24B4155100945CEA /* TourGuideProject */,
 				0254A2C124B4155300945CEA /* TourGuideProjectTests */,
@@ -369,6 +372,7 @@
 				0254A2DC24B415D600945CEA /* .gitignore in Resources */,
 				0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */,
 				0254A2B524B4155300945CEA /* Assets.xcassets in Resources */,
+				02528F3E24C5327900DD1EF3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

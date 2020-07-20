@@ -8,6 +8,7 @@
 
 import UIKit
 import ESTabBarController_swift
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -47,6 +48,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = navigationVC
             window?.makeKeyAndVisible()
             //----------------------------------------------------------
+            
+            // 파이어베이스
+            FirebaseApp.configure()
+            
+            
         }
         
         // Override point for customization after application launch.

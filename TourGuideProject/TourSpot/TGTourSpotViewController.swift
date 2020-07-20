@@ -118,11 +118,6 @@ class TGTourSpotViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let a = TGFestivalViewController()
-        self.tabBarController?.navigationController?.pushViewController(a, animated: false)
-        self.navigationController?.pushViewController(a, animated: false)
-    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -162,7 +157,7 @@ extension TGTourSpotViewController: TGTourSpotCellDelegate {
             $0.dataInfo = detailInfo
         }
         
-        self.navigationController?.pushViewController(detailView, animated: false)
+        self.navigationController?.pushViewController(detailView, animated: true)
     }
 }
 

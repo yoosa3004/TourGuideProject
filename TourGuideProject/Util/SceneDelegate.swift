@@ -10,6 +10,7 @@
 
 import UIKit
 import ESTabBarController_swift
+import Firebase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -46,6 +47,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
          window?.rootViewController = navigationVC
          window?.makeKeyAndVisible()
+        
+        // 파이어베이스
+        FirebaseApp.configure()
         
     }
 

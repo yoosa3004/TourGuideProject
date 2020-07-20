@@ -57,8 +57,12 @@ class TGFestivalViewController: UIViewController {
 }
 
 extension TGFestivalViewController: TGFestivalDelegate {
-    func selected() {//_ detailInfo: FestivalData) {
-        self.navigationController?.pushViewController(TGFestivalDetailViewController(), animated: true)
+    func selected(_ detailInfo: FestivalData) {
+        let detailView = TGFestivalDetailViewController().then {
+            $0.dataInfo = detailInfo
+        }
+        
+        self.navigationController?.pushViewController(detailView, animated: true)
     }
 }
 

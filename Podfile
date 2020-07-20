@@ -11,6 +11,10 @@ target 'TourGuideProject' do
   pod 'ESTabBarController-swift', '2.6.4', :inhibit_warnings => true #, :binary => true
   pod 'ScrollableSegmentedControl', '~> 1.5.0'
   pod 'Kingfisher', :inhibit_warnings => true #, :binary => true
+  # add the Firebase pod for Google Analytics
+  pod 'Firebase/Analytics'
+  
+  
 # Pods for TourGuideProject
 
   target 'TourGuideProjectTests' do

@@ -38,9 +38,6 @@ class TGNetworkingManager {
         Alamofire.request(TourAPI + String(areaCode)).responseObject { (response: DataResponse<TourInfo>) in
             if let afResult = response.result.value?.response {
                 if let afHead = afResult.head {
-                    
-                    print(afHead.resultMsg)
-                    
                     // API 통신 결과가 OK인 경우에만 시도
                     switch afHead.resultMsg {
                     case "OK":
@@ -48,10 +45,9 @@ class TGNetworkingManager {
                             for afItem in afItems {
                                 
                                 let newTourInfo = TourData(title: afItem.title, areaCode: afItem.areaCode, addr1: afItem.addr1, addr2: afItem.addr2, image: afItem.image, tel: afItem.tel, contenttypeid: afItem.contenttypeid)
-                                
                                 validTourInfo.append(newTourInfo)
                             }
-                            
+        
                             update(validTourInfo)
                         }
                     default:
@@ -72,9 +68,6 @@ class TGNetworkingManager {
         Alamofire.request(FestivalAPI).responseObject { (response: DataResponse<FestivalInfo>) in
             if let afResult = response.result.value?.response {
                 if let afHead = afResult.head {
-                    
-                     print(afHead.resultMsg)
-                    
                     // API 통신 결과가 OK인 경우에만 시도
                     switch afHead.resultMsg {
                     case "OK":
@@ -82,7 +75,6 @@ class TGNetworkingManager {
                             for afItem in afItems {
                             
                                 let newFestivalInfo = FestivalData(title: afItem.title, addr1: afItem.addr1, addr2: afItem.addr2, eventstartdate: afItem.eventstartdate, eventenddate: afItem.eventenddate, image: afItem.image, thumbnail: afItem.thumbnail, tel: afItem.tel)
-                                
                                 validFestivalInfo.append(newFestivalInfo)
                             }
                             

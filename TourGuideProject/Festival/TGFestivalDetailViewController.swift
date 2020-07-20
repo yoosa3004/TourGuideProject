@@ -29,9 +29,6 @@ class TGFestivalDetailViewController: UIViewController {
     
     func setUpViews() {
         
-        // 네비게이션 제목
-        self.navigationController?.navigationBar.topItem?.title = "상세화면"//dataInfo.title
-        
         // 이미지뷰
         self.view.addSubview(ivDetail)
         ivDetail.then {
@@ -44,15 +41,13 @@ class TGFestivalDetailViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-        /*
         let processor = DownsamplingImageProcessor(size: ivDetail.bounds.size)
-        ivDetail.kf.setImage(with: URL(string: imgFullHeart/*ataInfo.image!*/), options: [.processor(processor)])
+        ivDetail.kf.setImage(with: URL(string: dataInfo.image!), options: [.processor(processor)])
         
- */
         // 행사 이름
         self.view.addSubview(lbTitle)
         lbTitle.then {
-            $0.text = "행사 이름"//dataInfo.title
+            $0.text = dataInfo.title
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -62,20 +57,19 @@ class TGFestivalDetailViewController: UIViewController {
         }.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.ivDetail.snp.bottom).offset(25)
             make.centerX.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
         }
         
         // 관광지 주소 뷰
         self.view.addSubview(lbAddr)
         lbAddr.then {
-            /*
             if let str = dataInfo.addr1 {
                 $0.text = str
                 if let str2 = dataInfo.addr2 {
                     $0.text = str+str2
                 }
             }
-            */
-            $0.text = "주소"
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -92,7 +86,7 @@ class TGFestivalDetailViewController: UIViewController {
         // 관광지 전화번호 뷰
         self.view.addSubview(lbTel)
         lbTel.then {
-            $0.text = "01020562708"//dataInfo.tel
+            $0.text = dataInfo.tel
             
             $0.textAlignment = .center
             $0.numberOfLines = 0
@@ -111,7 +105,7 @@ class TGFestivalDetailViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        
+
         setUpViews()
         setNavItem()
     }
@@ -124,7 +118,6 @@ class TGFestivalDetailViewController: UIViewController {
     }
     
     @objc func selectHeart(_ sender: UIBarButtonItem) {
-        print("버튼이눌렸습니다.")
         
         // 꽉찬하트
         if(sender.image == imgFullHeart) {
@@ -136,18 +129,17 @@ class TGFestivalDetailViewController: UIViewController {
     
     func setNavItem(){
         
-        // 네비 제목
-       // self.navigationController?.navigationBar.topItem?.title = dataInfo.title
-        //self.navigationController?.navigationBar.topItem?.title = "테스트타이틀"
-        //print(self.navigationController?.navigationBar.topItem?.leftBarButtonItem)
+        // tabbar가 있는 형태가 아닌 이 컨트롤러만 있으니까 바로 navigationItem으로 접근
+        // 제목
+        self.navigationItem.title = dataInfo.title
         
+        // backbuttonItem에 관광지로 표기 -> 원래는 클릭한 cell의 title이 표기되었음
+        self.navigationController?.navigationBar.topItem?.title = "행사"
         
-        /*
         // 오른쪽 - 찜 아이콘
-        imgFullHeart = imgFullHeart?.resized(to: CGSize(width: (self.navigationController?.navigationBar.frame.width)! / 10, height: (self.navigationController?.navigationBar.frame.height)!))
-        imgEmptyHeart = imgEmptyHeart?.resized(to: CGSize(width: (self.navigationController?.navigationBar.frame.width)! / 10, height: (self.navigationController?.navigationBar.frame.height)!))
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(image: imgEmptyHeart, style: .plain, target: self, action: #selector(selectHeart(_:)))
-         */// 왼쪽 - 뒤로가기
+        imgFullHeart = imgFullHeart?.resized(to: CGSize(width: 30, height: 30))
+        imgEmptyHeart = imgEmptyHeart?.resized(to: CGSize(width: 30, height: 30))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: imgEmptyHeart, style: .plain, target: self, action: #selector(selectHeart(_:)))
     }
     
 
