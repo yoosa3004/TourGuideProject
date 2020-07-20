@@ -105,7 +105,6 @@ class TGFestivalDetailViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-
         setUpViews()
         setNavItem()
     }
@@ -129,13 +128,9 @@ class TGFestivalDetailViewController: UIViewController {
     
     func setNavItem(){
         
-        // tabbar가 있는 형태가 아닌 이 컨트롤러만 있으니까 바로 navigationItem으로 접근
         // 제목
-        self.navigationItem.title = dataInfo.title
-        
-        // backbuttonItem에 관광지로 표기 -> 원래는 클릭한 cell의 title이 표기되었음
-        self.navigationController?.navigationBar.topItem?.title = "행사"
-        
+        self.title = dataInfo.title
+
         // 오른쪽 - 찜 아이콘
         imgFullHeart = imgFullHeart?.resized(to: CGSize(width: 30, height: 30))
         imgEmptyHeart = imgEmptyHeart?.resized(to: CGSize(width: 30, height: 30))
