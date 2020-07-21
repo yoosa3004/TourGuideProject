@@ -123,6 +123,9 @@ class TGTourSpotDetailViewController: UIViewController {
     
     func setNavItem(){
 
+        // 배경
+        self.navigationController?.navigationBar.barTintColor = .orange
+        
         // tabbar가 있는 형태가 아닌 이 컨트롤러만 있으니까 바로 navigationItem으로 접근
         self.title = dataInfo.title
         
@@ -140,5 +143,12 @@ class TGTourSpotDetailViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // 배경
+        self.navigationController?.navigationBar.barTintColor = .white
     }
 }

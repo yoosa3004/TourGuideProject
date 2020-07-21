@@ -65,6 +65,7 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.frame.height/5

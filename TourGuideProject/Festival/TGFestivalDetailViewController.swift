@@ -13,6 +13,11 @@ import Kingfisher
 
 class TGFestivalDetailViewController: UIViewController {
 
+    // 스크롤뷰
+    var scvFestival = UIScrollView()
+    // 스택뷰
+    var stvFestival = UIStackView()
+    
     // 데이터
     var dataInfo = FestivalData()
     // 이미지뷰
@@ -29,22 +34,43 @@ class TGFestivalDetailViewController: UIViewController {
     
     func setUpViews() {
         
-        // 이미지뷰
-        self.view.addSubview(ivDetail)
+        self.view.addSubview(scvFestival)
+        scvFestival.then {
+            $0.delegate = self
+            $0.isScrollEnabled = true
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }.snp.makeConstraints { [unowned self] (make) -> Void in
+            
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        self.scvFestival.addSubview(stvFestival)
+        stvFestival.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.top.bottom.equalToSuperview()
+        }
+        
+        
+        // 행사 이미지
+        self.stvFestival.addSubview(ivDetail)
         ivDetail.then {
             $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.height/2)
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.contentMode = .scaleAspectFit
         }.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
-            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(15)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(300)
         }
         
         let processor = DownsamplingImageProcessor(size: ivDetail.bounds.size)
         ivDetail.kf.setImage(with: URL(string: dataInfo.image!), options: [.processor(processor)])
         
         // 행사 이름
-        self.view.addSubview(lbTitle)
+        self.scvFestival.addSubview(lbTitle)
         lbTitle.then {
             $0.text = dataInfo.title
             $0.textAlignment = .center
@@ -55,13 +81,13 @@ class TGFestivalDetailViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.ivDetail.snp.bottom).offset(25)
-            make.centerX.equalToSuperview()
+            make.height.equalTo(25)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }
         
         // 관광지 주소 뷰
-        self.view.addSubview(lbAddr)
+        self.scvFestival.addSubview(lbAddr)
         lbAddr.then {
             if let str = dataInfo.addr1 {
                 $0.text = str
@@ -79,11 +105,10 @@ class TGFestivalDetailViewController: UIViewController {
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalTo(self.lbTitle.snp.bottom).offset(25)
-            make.centerX.equalToSuperview()
         }
         
         // 관광지 전화번호 뷰
-        self.view.addSubview(lbTel)
+        self.scvFestival.addSubview(lbTel)
         lbTel.then {
             $0.text = dataInfo.tel
             
@@ -96,8 +121,8 @@ class TGFestivalDetailViewController: UIViewController {
         }.snp.makeConstraints { (make) -> Void in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.top.equalTo(self.lbAddr.snp.bottom).offset(25)
-            make.centerX.equalToSuperview()
+            make.top.equalTo(self.lbAddr.snp.bottom).offset(300)
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -150,4 +175,13 @@ class TGFestivalDetailViewController: UIViewController {
     }
 
 }
+
+extension TGFestivalDetailViewController: UIScrollViewDelegate {
+
+   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+   }
+
+}
+
 
