@@ -12,48 +12,45 @@ import SnapKit
 
 protocol TGTourSpotCellDelegate: class {
     func selected(_ detailInfo: TourData)
-//    func clearViews(_ view: UICollectionView)
 }
 
 class TGTourSpotCollectionView: UICollectionView {
     
     // 델리게이트
     weak var tapCellDelegate: TGTourSpotCellDelegate?
-
+    
     // 데이터
     var tourInfos = Array<TourData>()
     
     // API 요청변수 - 지역코드
     var areaNum: Int = 0
-
-    var numOfCell = numOfRows
     
     // 데이터 로드 실패시 띄울 라벨
     let lbFailed = UILabel()
     
     func loadData() {
-        do {
-            try TGNetworkingManager().loadTourSpotData(areaNum) { [unowned self] (apiData) -> Void in
-//                self.lbFailed.removeFromSuperview()
-                self.tourInfos = apiData
+        
+        TGNetworkingManager().loadTourSpotData(areaNum) { [unowned self] (apiData) -> Void in
+            
+            if apiData != nil {
+                self.lbFailed.removeFromSuperview()
+                self.tourInfos = apiData!
                 self.reloadData()
+            } else {
+                self.addSubview(self.lbFailed)
+                self.lbFailed.then {
+                    $0.text = "데이터 로드 실패"
+                }.snp.makeConstraints {
+                    $0.center.equalToSuperview()
+                }
             }
-        } catch NetworkingError.loadFailed {
-            self.addSubview(lbFailed)
-            lbFailed.then {
-                $0.text = "데이터 로드 실패"
-            }.snp.makeConstraints {
-                $0.center.equalToSuperview()
-            }
-        } catch {
         }
     }
-    
 }
 
 //MARK:- UICollectionViewDelegate, UICollectionViewDataSource
 extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionViewDelegate {
-
+    
     // 각 셀 채우기 - 지역 관광지들을 채워야함
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -73,8 +70,8 @@ extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionView
         
         return cell
     }
-
-
+    
+    
     // 각 섹션의 아이템 갯수 - 지역 관광지 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.tourInfos.count
@@ -84,7 +81,7 @@ extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionView
         print("셀이 눌렸습니다")
         
         if self.tourInfos.count > 0 {
-          tapCellDelegate?.selected(tourInfos[indexPath.row])
+            tapCellDelegate?.selected(tourInfos[indexPath.row])
         }
     }
 }

@@ -12,7 +12,10 @@ import Then
 
 class TGFestivalViewController: UIViewController {
 
+    // 테이블뷰
     var tbvFestival = TGFestivalTableView()
+    // 데이터로딩 실패
+    var lbFailed = UILabel()
 
     override func loadView() {
         super.loadView()
@@ -26,8 +29,18 @@ class TGFestivalViewController: UIViewController {
         
         
         TGNetworkingManager().loadFestivalData { [unowned self] (apiData) -> Void in
-           self.tbvFestival.festivalInfos = apiData
-           self.tbvFestival.reloadData()
+            if apiData != nil {
+                self.tbvFestival.festivalInfos = apiData!
+                self.tbvFestival.reloadData()
+            } else {
+                self.tbvFestival.removeFromSuperview()
+                self.view.addSubview(self.lbFailed)
+                self.lbFailed.then {
+                    $0.text = "데이터 로드 실패"
+                }.snp.makeConstraints {
+                    $0.center.equalToSuperview()
+                }
+            }
         }
     }
     

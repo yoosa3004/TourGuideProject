@@ -40,7 +40,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          
          tabBarVC.viewControllers = [v1,v2,v3]
          tabBarVC.tabBar.tintColor = UIColor.red
-        tabBarVC.selectedIndex = 1
     
          v1.tabBarItem.image = UIImage(named: "tour-guide.png")?.withRenderingMode(.alwaysOriginal)
          v2.tabBarItem.image = UIImage(named: "festival.png")?.withRenderingMode(.alwaysOriginal)

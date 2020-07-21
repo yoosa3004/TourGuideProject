@@ -13,9 +13,9 @@ import Then
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         if #available(iOS 13, *) {
@@ -34,13 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let v1 = TGTourSpotViewController()
             let v2 = TGFestivalViewController()
             let v3 = TGMyAccountViewController()
-
+            
             v1.tabBarItem.title = "관광지"
             v2.tabBarItem.title = "행사"
             v3.tabBarItem.title = "나의 계정"
             
-            
-            tabBarVC.selectedIndex = 1
             tabBarVC.viewControllers = [v1,v2,v3]
             
             tabBarVC.tabBar.tintColor = UIColor.red
@@ -63,10 +61,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         return true
     }
-
+    
     // MARK: UISceneSession Lifecycle
     // MARK: sceneSessions는 앱에서 생성한 모든 scene의 정보를 관리한다.
-
+    
     // scene을 만들 때 구성 객체를 반환해야 한다.
     @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -74,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-
+    
     // 사용자가 app switcher를 통해 scene을 닫을 때 호출된다.
     @available(iOS 13.0, *)
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
@@ -82,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
+    
+    
 }
 

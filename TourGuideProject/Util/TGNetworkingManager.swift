@@ -12,11 +12,6 @@ import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
 
-enum NetworkingError: Error {
-    case loadFailed
-}
-
-
 var contentTypeId = 12
 let numOfRows = 2
 let serviceKey = "tLN%2Bjilj3ZFHA2%2FpssG4J4hN82oI6Q2b0rF3pB5hrv3LVOccCkbBP2YcHlMqd7%2FqHejXWPsU0abYZ2y%2FnivcZQ%3D%3D"
@@ -35,14 +30,15 @@ let FestivalAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/s
 
 class TGNetworkingManager {
     
+    var loadFailed: Bool = false
+    
     // API 통신 후 받아온 json 파일을 변환해 최종적으로 쓰일 DataSet에 할당하는 함수
-    func loadTourSpotData(_ areaCode:Int, update: @escaping (_ a: [TourData]) -> Void) throws -> Void {
+    func loadTourSpotData(_ areaCode:Int, update: @escaping (_ a: [TourData]?) -> Void) {
         
         var validTourInfo = [TourData]()
-        var loadFailed: Bool = false
-        
+
         Alamofire.request(TourAPI + String(areaCode)).responseObject { (response: DataResponse<TourInfo>) in
-                 if let afResult = response.result.value?.response {
+            if let afResult = response.result.value?.response {
                      if let afHead = afResult.head {
                          switch afHead.resultMsg {
                          case "OK":
@@ -51,25 +47,20 @@ class TGNetworkingManager {
                                      let newTourInfo = TourData(title: afItem.title, areaCode: afItem.areaCode, addr1: afItem.addr1, addr2: afItem.addr2, image: afItem.image, thumbnail: afItem.thumbnail ,tel: afItem.tel, contenttypeid: afItem.contenttypeid)
                                      validTourInfo.append(newTourInfo)
                                  }
-                                 update(validTourInfo)
+                                
+                                update(validTourInfo)
                              }
                          default:
-                            loadFailed = true
-                            print("Tour Data Failed")
+                             print("Tour Data load failed")
+                            update(nil)
                          }
                     }
                 }
             }
-
-        // 실패 시 오류 던지기
-        if loadFailed {
-            throw NetworkingError.loadFailed
-        }
- 
     }
     
     // API 통신 후 받아온 json 파일을 변환해 최종적으로 쓰일 DataSet에 할당하는 함수
-    func loadFestivalData(update: @escaping (_ a: [FestivalData]) -> Void) {
+    func loadFestivalData(update: @escaping (_ a: [FestivalData]?) -> Void) {
         
         var validFestivalInfo = [FestivalData]()
         
@@ -90,10 +81,9 @@ class TGNetworkingManager {
                         }
                     default:
                         print("Festival Data load failed")
+                        update(nil)
                     }
                 }
-            } else {
-                print("API load failed")
             }
         }
     }
