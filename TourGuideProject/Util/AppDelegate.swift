@@ -9,6 +9,7 @@
 import UIKit
 import ESTabBarController_swift
 import Firebase
+import Then
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -38,7 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             v2.tabBarItem.title = "행사"
             v3.tabBarItem.title = "나의 계정"
             
+            
+            tabBarVC.selectedIndex = 1
             tabBarVC.viewControllers = [v1,v2,v3]
+            
+            tabBarVC.tabBar.tintColor = UIColor.red
             //----------------------------------------------------------
             
             // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.

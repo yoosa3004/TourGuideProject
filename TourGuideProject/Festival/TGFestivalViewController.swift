@@ -24,10 +24,10 @@ class TGFestivalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         TGNetworkingManager().loadFestivalData { [unowned self] (apiData) -> Void in
            self.tbvFestival.festivalInfos = apiData
            self.tbvFestival.reloadData()
-            
         }
     }
     

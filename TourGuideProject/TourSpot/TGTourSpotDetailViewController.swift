@@ -94,7 +94,6 @@ class TGTourSpotDetailViewController: UIViewController {
         self.view.addSubview(lbTel)
         lbTel.then {
             $0.text = dataInfo.tel
-            
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -128,9 +127,10 @@ class TGTourSpotDetailViewController: UIViewController {
         self.title = dataInfo.title
         
         // 오른쪽 - 찜 아이콘
-        imgFullHeart = imgFullHeart?.resized(to: CGSize(width: 30, height: 30))
-        imgEmptyHeart = imgEmptyHeart?.resized(to: CGSize(width: 30, height: 30))
+        imgFullHeart = imgFullHeart?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)
+        imgEmptyHeart = imgEmptyHeart?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: imgEmptyHeart, style: .plain, target: self, action: #selector(selectHeart(_:)))
+        
         
     }
     
@@ -138,4 +138,7 @@ class TGTourSpotDetailViewController: UIViewController {
         super.viewWillAppear(animated)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
 }

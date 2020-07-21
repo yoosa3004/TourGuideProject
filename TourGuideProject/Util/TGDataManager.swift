@@ -22,6 +22,8 @@ struct TourData: Hashable{
     var addr2: String?
     // 대표 이미지
     var image: String?
+    // 썸네일 이미지
+    var thumbnail: String?
     // 전화번호
     var tel: String?
     // 관광지코드 (관광지, 숙박, 행사 등)
@@ -146,6 +148,8 @@ class ItemInfo: Mappable {
     var addr2: String?
     // 대표 이미지
     var image: String?
+    // 썸네일
+    var thumbnail: String?
     // 전화번호
     var tel: String?
     //--
@@ -164,6 +168,7 @@ class ItemInfo: Mappable {
         addr1 <- map["addr1"]
         addr2 <- map["addr2"]
         image <- map["firstimage"]
+        thumbnail <- map["firstimage2"]
         tel <- map["tel"]
     }
 }
@@ -308,11 +313,44 @@ extension Int {
     }
 }
 
+// 이미지 크기 변환 익스텐션
 extension UIImage {
     func resized(to size: CGSize) -> UIImage {
         return UIGraphicsImageRenderer(size: size).image { _ in
             draw(in: CGRect(origin: .zero, size: size))
         }
+    }
+}
+
+// 타이틀에 "[ ]"가 있을 시 "[ ]" 안의 문자를 bold 처리
+extension NSAttributedString {
+    
+    func splitByBracket(_ text: String) -> NSAttributedString? {
+
+        let arr = text.components(separatedBy: "[")[1].components(separatedBy: "]")
+        let finalText = NSMutableAttributedString()
+        .bold(arr[0], fontSize: 15)
+        .normal(arr[1], fontSize: 15)
+        
+        return finalText
+    }
+ 
+}
+
+extension NSMutableAttributedString {
+    func bold(_ text: String, fontSize: CGFloat) -> NSMutableAttributedString {
+        let blackattrs: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: fontSize)]
+        let redattrs: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: fontSize), .foregroundColor:UIColor(red: 1, green: 0, blue: 0, alpha: 1)]
+        self.append(NSMutableAttributedString(string: "[", attributes: blackattrs))
+        self.append(NSMutableAttributedString(string: text, attributes: redattrs))
+        self.append(NSMutableAttributedString(string: "]", attributes: blackattrs))
+        return self
+    }
+
+    func normal(_ text: String, fontSize: CGFloat) -> NSMutableAttributedString {
+        let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize)]
+        self.append(NSMutableAttributedString(string: text, attributes: attrs))
+        return self
     }
 }
 

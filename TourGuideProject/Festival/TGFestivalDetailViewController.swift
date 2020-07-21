@@ -24,8 +24,8 @@ class TGFestivalDetailViewController: UIViewController {
     // 전화번호
     var lbTel = UILabel()
     // 찜아이콘
-    var imgFullHeart = UIImage(named: "heart_full.png")
-    var imgEmptyHeart = UIImage(named: "heart_empty.png")
+    var imgFullHeart = UIImage(named: "heart_full.png")?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)
+    var imgEmptyHeart = UIImage(named: "heart_empty.png")?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)
     
     func setUpViews() {
         
@@ -35,7 +35,6 @@ class TGFestivalDetailViewController: UIViewController {
             $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.height/2)
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.contentMode = .scaleAspectFit
-            $0.image = imgFullHeart
         }.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
             make.centerX.equalToSuperview()
@@ -117,6 +116,7 @@ class TGFestivalDetailViewController: UIViewController {
     }
     
     @objc func selectHeart(_ sender: UIBarButtonItem) {
+          
         
         // 꽉찬하트
         if(sender.image == imgFullHeart) {
@@ -128,19 +128,25 @@ class TGFestivalDetailViewController: UIViewController {
     
     func setNavItem(){
         
+        // 배경
+        self.navigationController?.navigationBar.barTintColor = .orange
+
         // 제목
         self.title = dataInfo.title
 
         // 오른쪽 - 찜 아이콘
-        imgFullHeart = imgFullHeart?.resized(to: CGSize(width: 30, height: 30))
-        imgEmptyHeart = imgEmptyHeart?.resized(to: CGSize(width: 30, height: 30))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: imgEmptyHeart, style: .plain, target: self, action: #selector(selectHeart(_:)))
+        
     }
-    
 
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.navigationBar.barTintColor = .white
     }
 
 }

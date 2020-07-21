@@ -39,10 +39,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          v3.tabBarItem.title = "나의 계정"
          
          tabBarVC.viewControllers = [v1,v2,v3]
+         tabBarVC.tabBar.tintColor = UIColor.red
+        tabBarVC.selectedIndex = 1
+    
+         v1.tabBarItem.image = UIImage(named: "tour-guide.png")?.withRenderingMode(.alwaysOriginal)
+         v2.tabBarItem.image = UIImage(named: "festival.png")?.withRenderingMode(.alwaysOriginal)
+         v3.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
         
          // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
-        
-        
          let navigationVC = UINavigationController(rootViewController: tabBarVC)
          // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
          window?.rootViewController = navigationVC

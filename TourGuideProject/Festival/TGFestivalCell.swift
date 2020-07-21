@@ -42,12 +42,13 @@ class TGFestivalCell: UITableViewCell {
         self.addSubview(self.ivFestival)
         ivFestival.then { [unowned self] in
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.frame = CGRect(x: 0, y: 0, width: 150, height: self.frame.height) // 150*100
-            $0.image = UIImage(named: "heart_full.png")
-            $0.contentMode = .scaleAspectFit
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
         }.snp.makeConstraints {
             $0.left.equalToSuperview().offset(25)
             $0.centerY.equalToSuperview()
+            $0.width.equalTo(150)
+            $0.height.equalTo(100) // 10*view.frame.width/320(SE해상도)
         }
         
         // 행사 이름
@@ -57,9 +58,9 @@ class TGFestivalCell: UITableViewCell {
             $0.textColor = .black
             $0.textAlignment = .left
         }.snp.makeConstraints { [unowned self] in
-            $0.left.equalTo(self.ivFestival.snp.right).offset(25)
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(25)
-            $0.right.equalToSuperview()
+            $0.left.equalTo(self.ivFestival.snp.right).offset(15)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.right.equalToSuperview().offset(-20)
         }
         
         // 행사 주소
@@ -71,7 +72,7 @@ class TGFestivalCell: UITableViewCell {
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.lbFestivalTitle.snp.bottom).offset(10)
             $0.left.equalTo(self.lbFestivalTitle.snp.left)
-            $0.right.equalToSuperview()
+            $0.right.equalTo(self.lbFestivalTitle)
         }
         
         // 행사 일정란
@@ -83,14 +84,14 @@ class TGFestivalCell: UITableViewCell {
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.lbFestivalAddr.snp.bottom).offset(10)
             $0.left.equalTo(self.lbFestivalTitle.snp.left)
-            $0.right.equalToSuperview()
+            $0.right.equalTo(self.lbFestivalTitle)
         }
     }
     
     // KingFisher를 통한 이미지 세팅
     func setImageView(_ url:String) {
         let url = URL(string: url)
-        let processor = DownsamplingImageProcessor(size: ivFestival.frame.size)
+        let processor = DownsamplingImageProcessor(size: CGSize(width: 150, height: 100))
         ivFestival.kf.setImage(with: url, options: [.processor(processor)])
     }
 }

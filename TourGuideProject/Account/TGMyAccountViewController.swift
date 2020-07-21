@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import Then
+import FirebaseAuth
 
 class TGMyAccountViewController: UIViewController {
 
@@ -21,8 +22,11 @@ class TGMyAccountViewController: UIViewController {
     // 이미지
     var ivAccount = UIImageView()
     
-    // 로그인버튼
+    // 로그인 버튼
     var btnLogin = UIButton()
+    
+    // 회원가입 버튼
+    var btnSignin = UIButton()
     
     override func loadView() {
         super.loadView()
@@ -84,22 +88,83 @@ class TGMyAccountViewController: UIViewController {
         btnLogin.then {
             $0.backgroundColor = .lightGray
             $0.setTitle("로그인", for: .normal)
-            $0.addTarget(self, action: #selector(onTapBtn(_:)), for: UIControl.Event.touchUpInside)
+            $0.addTarget(self, action: #selector(onTapLoginBtn(_:)), for: UIControl.Event.touchUpInside)
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.tfPassword.snp.bottom).offset(20)
             $0.left.equalTo(self.tfID.snp.left)
             $0.right.equalTo(self.tfID.snp.right)
         }
+        
+        // 회원가입 버튼
+         self.view.addSubview(btnSignin)
+         btnSignin.then {
+             $0.backgroundColor = .lightGray
+             $0.setTitle("회원가입", for: .normal)
+             $0.addTarget(self, action: #selector(onTapSigninBtn), for: UIControl.Event.touchUpInside)
+         }.snp.makeConstraints { [unowned self] in
+             $0.top.equalTo(self.btnLogin.snp.bottom).offset(15)
+             $0.left.equalTo(self.tfID.snp.left)
+             $0.right.equalTo(self.tfID.snp.right)
+         }
     }
     
-    // 버튼이벤트
-    @objc func onTapBtn(_ sender: UIButton) {
-        print("버튼눌림")
+    // 로그인 버튼이벤트
+    @objc func onTapLoginBtn(_ sender: UIButton) {
         
+        // 로그인
         if sender.title(for: .normal) == "로그인" {
-            sender.setTitle("로그아웃", for: .normal)
-        } else {
-            sender.setTitle("로그인", for: .normal)
+
+            
+            guard let email = tfID.text, let password = tfPassword.text else { return }
+            
+            Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
+                
+                if user != nil {
+                    // 로그인 성공
+                    print("로그인 성공")
+                    sender.setTitle("로그아웃", for: .normal)
+                } else {
+                    print("로그인 실패")
+                    
+                }
+            }
+        }
+        // 로그아웃
+        else {
+            do {
+                try Auth.auth().signOut()
+                sender.setTitle("로그인", for: .normal)
+                print("로그아웃 성공")
+            } catch let signOutError as NSError {
+                print("로그아웃 오류")
+            }
+        }
+        
+
+
+    }
+    
+    // 회원가입 버튼 이벤트
+    @objc func onTapSigninBtn(_ sender: UIButton) {
+        
+        guard let email = tfID.text, let password = tfPassword.text else { return }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+            
+            print("createuser")
+            guard let user = authResult?.user
+                else {
+                    print("잘못된 형식 or 이미 있는 계정이라는 alert 필요")
+                    return
+            }
+            
+            if error == nil {
+                // 회원가입 정상 처리 후 로그인
+                print(user)
+            } else {
+                // 회원가입 실패
+                return
+            }
         }
     }
     

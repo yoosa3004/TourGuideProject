@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import Then
+import SnapKit
 
 protocol TGTourSpotCellDelegate: class {
     func selected(_ detailInfo: TourData)
+//    func clearViews(_ view: UICollectionView)
 }
 
 class TGTourSpotCollectionView: UICollectionView {
@@ -22,13 +25,27 @@ class TGTourSpotCollectionView: UICollectionView {
     
     // API 요청변수 - 지역코드
     var areaNum: Int = 0
-    // API 요청변수 - 관광코드
-    var contentTypeId: Int = 12
+
+    var numOfCell = numOfRows
+    
+    // 데이터 로드 실패시 띄울 라벨
+    let lbFailed = UILabel()
     
     func loadData() {
-        TGNetworkingManager().loadTourSpotData(areaNum) { [unowned self] (apiData) -> Void in
-            self.tourInfos = apiData
-            self.reloadData()
+        do {
+            try TGNetworkingManager().loadTourSpotData(areaNum) { [unowned self] (apiData) -> Void in
+//                self.lbFailed.removeFromSuperview()
+                self.tourInfos = apiData
+                self.reloadData()
+            }
+        } catch NetworkingError.loadFailed {
+            self.addSubview(lbFailed)
+            lbFailed.then {
+                $0.text = "데이터 로드 실패"
+            }.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
+        } catch {
         }
     }
     
@@ -48,7 +65,7 @@ extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionView
                 $0.titleLabel.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: 50)
                 $0.titleLabel.text = self.tourInfos[indexPath.row].title
                 $0.imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width/1.5, height: cell.frame.height/1.5)
-                $0.setImageView(self.tourInfos[indexPath.row].image!)
+                $0.setImageView(self.tourInfos[indexPath.row].thumbnail!)
             }
         } else {
             cell.titleLabel.text = "데이터로드 전"
@@ -60,7 +77,7 @@ extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionView
 
     // 각 섹션의 아이템 갯수 - 지역 관광지 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numOfRows
+        return self.tourInfos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

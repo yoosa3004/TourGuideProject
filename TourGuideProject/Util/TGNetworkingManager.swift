@@ -12,8 +12,13 @@ import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
 
+enum NetworkingError: Error {
+    case loadFailed
+}
+
+
 var contentTypeId = 12
-let numOfRows = 10
+let numOfRows = 2
 let serviceKey = "tLN%2Bjilj3ZFHA2%2FpssG4J4hN82oI6Q2b0rF3pB5hrv3LVOccCkbBP2YcHlMqd7%2FqHejXWPsU0abYZ2y%2FnivcZQ%3D%3D"
 let TourAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?serviceKey="
             + serviceKey
@@ -31,33 +36,36 @@ let FestivalAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/s
 class TGNetworkingManager {
     
     // API 통신 후 받아온 json 파일을 변환해 최종적으로 쓰일 DataSet에 할당하는 함수
-    func loadTourSpotData(_ areaCode:Int, update: @escaping (_ a: [TourData]) -> Void) {
+    func loadTourSpotData(_ areaCode:Int, update: @escaping (_ a: [TourData]) -> Void) throws -> Void {
         
         var validTourInfo = [TourData]()
+        var loadFailed: Bool = false
         
         Alamofire.request(TourAPI + String(areaCode)).responseObject { (response: DataResponse<TourInfo>) in
-            if let afResult = response.result.value?.response {
-                if let afHead = afResult.head {
-                    // API 통신 결과가 OK인 경우에만 시도
-                    switch afHead.resultMsg {
-                    case "OK":
-                        if let afItems = afResult.body?.items?.item {
-                            for afItem in afItems {
-                                
-                                let newTourInfo = TourData(title: afItem.title, areaCode: afItem.areaCode, addr1: afItem.addr1, addr2: afItem.addr2, image: afItem.image, tel: afItem.tel, contenttypeid: afItem.contenttypeid)
-                                validTourInfo.append(newTourInfo)
-                            }
-        
-                            update(validTourInfo)
-                        }
-                    default:
-                        print("Tour Data load failed")
+                 if let afResult = response.result.value?.response {
+                     if let afHead = afResult.head {
+                         switch afHead.resultMsg {
+                         case "OK":
+                             if let afItems = afResult.body?.items?.item {
+                                 for afItem in afItems {
+                                     let newTourInfo = TourData(title: afItem.title, areaCode: afItem.areaCode, addr1: afItem.addr1, addr2: afItem.addr2, image: afItem.image, thumbnail: afItem.thumbnail ,tel: afItem.tel, contenttypeid: afItem.contenttypeid)
+                                     validTourInfo.append(newTourInfo)
+                                 }
+                                 update(validTourInfo)
+                             }
+                         default:
+                            loadFailed = true
+                            print("Tour Data Failed")
+                         }
                     }
                 }
-            } else {
-                print("API load failed")
             }
+
+        // 실패 시 오류 던지기
+        if loadFailed {
+            throw NetworkingError.loadFailed
         }
+ 
     }
     
     // API 통신 후 받아온 json 파일을 변환해 최종적으로 쓰일 DataSet에 할당하는 함수
@@ -66,6 +74,7 @@ class TGNetworkingManager {
         var validFestivalInfo = [FestivalData]()
         
         Alamofire.request(FestivalAPI).responseObject { (response: DataResponse<FestivalInfo>) in
+            
             if let afResult = response.result.value?.response {
                 if let afHead = afResult.head {
                     // API 통신 결과가 OK인 경우에만 시도
@@ -73,7 +82,6 @@ class TGNetworkingManager {
                     case "OK":
                         if let afItems = afResult.body?.items?.item {
                             for afItem in afItems {
-                            
                                 let newFestivalInfo = FestivalData(title: afItem.title, addr1: afItem.addr1, addr2: afItem.addr2, eventstartdate: afItem.eventstartdate, eventenddate: afItem.eventenddate, image: afItem.image, thumbnail: afItem.thumbnail, tel: afItem.tel)
                                 validFestivalInfo.append(newFestivalInfo)
                             }

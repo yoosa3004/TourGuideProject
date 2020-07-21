@@ -31,19 +31,31 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TGFestivalCell.reusableIdentifier, for: indexPath) as? TGFestivalCell else {return UITableViewCell()}
         
         if festivalInfos.count > 0 {
+            
             cell.then {
-                // 제목
-                $0.lbFestivalTitle.text = festivalInfos[indexPath.row].title
-                // 주소
+
+                // 행사 제목
+                if festivalInfos[indexPath.row].title!.contains("[") {
+
+                    let finalText = NSAttributedString().splitByBracket(festivalInfos[indexPath.row].title!)
+                    $0.lbFestivalTitle.attributedText = finalText
+                    
+                }else {
+                    $0.lbFestivalTitle.text = festivalInfos[indexPath.row].title
+                }
+            
+                // 행사 주소
                 if let str = festivalInfos[indexPath.row].addr1 {
                     $0.lbFestivalAddr.text = str
                     if let str2 = festivalInfos[indexPath.row].addr2 {
                         $0.lbFestivalAddr.text = str+str2
                     }
                 }
-                //날짜
+                
+                // 행사 날짜
                 $0.lbFestivalDate.text = String(festivalInfos[indexPath.row].eventstartdate!.changeDateFormat()) + " ~ " + String(festivalInfos[indexPath.row].eventenddate!.changeDateFormat())
-                //이미지
+                
+                // 행사 이미지
                 $0.setImageView(festivalInfos[indexPath.row].thumbnail!)
             }
             

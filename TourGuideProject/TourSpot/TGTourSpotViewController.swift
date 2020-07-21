@@ -44,7 +44,6 @@ class TGTourSpotViewController: UIViewController {
         // 스크롤 뷰
         self.view.addSubview(areaScrollView)
         areaScrollView.then {
-            $0.backgroundColor = .gray
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.delegate = self
             $0.isPagingEnabled = true
@@ -152,6 +151,7 @@ class TGTourSpotViewController: UIViewController {
 
 // 개별 셀 클릭 시 불리는 프로토콜
 extension TGTourSpotViewController: TGTourSpotCellDelegate {
+
     func selected(_ detailInfo: TourData) {
         let detailView = TGTourSpotDetailViewController().then {
             $0.dataInfo = detailInfo

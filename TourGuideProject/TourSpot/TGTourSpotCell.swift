@@ -14,11 +14,7 @@ import Kingfisher
 class TGTourSpotCell: UICollectionViewCell {
 
     // 관광지 이미지
-    var imageView = UIImageView().then {
-        $0.frame = .zero
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.contentMode = .scaleAspectFit
-    }
+    var imageView = UIImageView()
     
     // 관광지 제목
     var titleLabel = UILabel().then {
@@ -51,17 +47,24 @@ class TGTourSpotCell: UICollectionViewCell {
             make.bottom.equalTo(-40)
         }
         
+        // 이미지
         self.addSubview(imageView)
-        imageView.snp.makeConstraints { (make) -> Void in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(10)
+        imageView.then{
+            $0.frame = .zero
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
+        }.snp.makeConstraints {
+            $0.width.equalTo(200)
+            $0.top.equalToSuperview().offset(25)
+            $0.height.equalTo(125)
+            $0.centerX.equalToSuperview()
         }
     }
     
     func setImageView(_ url:String) {
         let url = URL(string: url)
-        let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
-        imageView.kf.setImage(with: url, options: [.processor(processor)])
+        imageView.kf.setImage(with: url, options: nil)//[.processor(processor)])
     }
 
 }
