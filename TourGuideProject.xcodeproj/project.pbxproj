@@ -177,8 +177,6 @@
 				0277A1A424C031FC00F13874 /* Festival */,
 				0277A1A324C02E7500F13874 /* TourSpot */,
 				0254A2B424B4155300945CEA /* Assets.xcassets */,
-				025B0E7824C1320400A80554 /* heart_empty.png */,
-				025B0E7724C1320400A80554 /* heart_full.png */,
 				0254A2B924B4155300945CEA /* Info.plist */,
 			);
 			path = TourGuideProject;
@@ -205,6 +203,8 @@
 		025B0E7B24C13A5D00A80554 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				025B0E7824C1320400A80554 /* heart_empty.png */,
+				025B0E7724C1320400A80554 /* heart_full.png */,
 				025956BA24C68C6A00B0CE2B /* user.png */,
 				025956B824C68BAB00B0CE2B /* tour-guide.png */,
 				025956B424C68AB400B0CE2B /* break-dance.png */,

@@ -14,6 +14,7 @@ class TGFestivalViewController: UIViewController {
 
     // 테이블뷰
     var tbvFestival = TGFestivalTableView()
+    
     // 데이터로딩 실패
     var lbFailed = UILabel()
 

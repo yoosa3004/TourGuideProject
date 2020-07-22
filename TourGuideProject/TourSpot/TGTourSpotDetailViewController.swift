@@ -13,6 +13,11 @@ import Kingfisher
 
 class TGTourSpotDetailViewController: UIViewController {
 
+    // 스크롤뷰
+    var scvFestival = UIScrollView()
+    // 스택뷰
+    var stvFestival = UIStackView()
+
     // 데이터
     var dataInfo = TourData()
     // 이미지뷰
@@ -38,23 +43,46 @@ class TGTourSpotDetailViewController: UIViewController {
 
     func setUpViews() {
 
-        // 이미지뷰
-        self.view.addSubview(ivDetail)
-        ivDetail.then {
-            $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.height/2)
+        // 스크롤뷰
+        self.view.addSubview(scvFestival)
+        scvFestival.then {
+            $0.delegate = self
+            $0.isScrollEnabled = true
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.contentMode = .scaleAspectFit
+        }.snp.makeConstraints { [unowned self] (make) -> Void in
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        // 스택뷰
+        self.scvFestival.addSubview(stvFestival)
+        stvFestival.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.top.bottom.equalToSuperview()
+            $0.left.right.equalToSuperview()
+        }
+        
+        // 이미지뷰
+        self.stvFestival.addSubview(ivDetail)
+        ivDetail.then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
         }.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
-            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(15)
+            make.left.equalToSuperview().offset(15)
+            make.right.equalToSuperview().offset(-15)
+            make.height.equalTo(300)
         }
         
         // 이미지 세팅
-        let processor = DownsamplingImageProcessor(size: ivDetail.bounds.size)
-        ivDetail.kf.setImage(with: URL(string: dataInfo.image!), options: [.processor(processor)])
+//        let processor = DownsamplingImageProcessor(size: ivDetail.bounds.size)
+        ivDetail.kf.setImage(with: URL(string: dataInfo.image!), options: nil)
         
         // 관광지 이름 뷰
-        self.view.addSubview(lbTitle)
+        self.scvFestival.addSubview(lbTitle)
         lbTitle.then {
             $0.text = dataInfo.title
             $0.textAlignment = .center
@@ -65,11 +93,13 @@ class TGTourSpotDetailViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.ivDetail.snp.bottom).offset(25)
-            make.centerX.equalToSuperview()
+            make.height.equalTo(25)
+            make.left.equalToSuperview().offset(25)
+            make.right.equalToSuperview().offset(-25)
         }
         
         // 관광지 주소 뷰
-        self.view.addSubview(lbAddr)
+        self.scvFestival.addSubview(lbAddr)
         lbAddr.then {
             if let str = dataInfo.addr1 {
                 $0.text = str
@@ -84,14 +114,12 @@ class TGTourSpotDetailViewController: UIViewController {
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { (make) -> Void in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
+            make.left.right.equalTo(self.lbTitle)
             make.top.equalTo(self.lbTitle.snp.bottom).offset(25)
-            make.centerX.equalToSuperview()
         }
         
         // 관광지 전화번호 뷰
-        self.view.addSubview(lbTel)
+        self.scvFestival.addSubview(lbTel)
         lbTel.then {
             $0.text = dataInfo.tel
             $0.textAlignment = .center
@@ -101,10 +129,9 @@ class TGTourSpotDetailViewController: UIViewController {
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { (make) -> Void in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.top.equalTo(self.lbAddr.snp.bottom).offset(25)
-            make.centerX.equalToSuperview()
+            make.left.right.equalTo(self.lbAddr)
+            make.top.equalTo(self.lbAddr.snp.bottom).offset(300)
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -151,4 +178,7 @@ class TGTourSpotDetailViewController: UIViewController {
         // 배경
         self.navigationController?.navigationBar.barTintColor = .white
     }
+}
+
+extension TGTourSpotDetailViewController: UIScrollViewDelegate {
 }

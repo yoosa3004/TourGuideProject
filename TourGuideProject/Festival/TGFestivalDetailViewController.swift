@@ -33,41 +33,44 @@ class TGFestivalDetailViewController: UIViewController {
     var imgEmptyHeart = UIImage(named: "heart_empty.png")?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)
     
     func setUpViews() {
-        
+      
+        // 스크롤뷰
         self.view.addSubview(scvFestival)
         scvFestival.then {
             $0.delegate = self
             $0.isScrollEnabled = true
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] (make) -> Void in
-            
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
         }
         
+        // 스택뷰
         self.scvFestival.addSubview(stvFestival)
         stvFestival.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.top.bottom.equalToSuperview()
+            $0.left.right.equalToSuperview()
         }
         
         
         // 행사 이미지
         self.stvFestival.addSubview(ivDetail)
         ivDetail.then {
-            $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.height/2)
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.contentMode = .scaleAspectFit
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
         }.snp.makeConstraints { (make) -> Void in
             make.top.equalToSuperview().offset(15)
-            make.left.right.equalToSuperview()
+            make.left.equalToSuperview().offset(15)
+            make.right.equalToSuperview().offset(-15)
             make.height.equalTo(300)
         }
         
-        let processor = DownsamplingImageProcessor(size: ivDetail.bounds.size)
-        ivDetail.kf.setImage(with: URL(string: dataInfo.image!), options: [.processor(processor)])
+//        let processor = DownsamplingImageProcessor(size: ivDetail.bounds.size)
+        ivDetail.kf.setImage(with: URL(string: dataInfo.image!), options: nil)//[.processor(processor)])
         
         // 행사 이름
         self.scvFestival.addSubview(lbTitle)
@@ -82,8 +85,8 @@ class TGFestivalDetailViewController: UIViewController {
         }.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.ivDetail.snp.bottom).offset(25)
             make.height.equalTo(25)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
+            make.left.equalToSuperview().offset(25)
+            make.right.equalToSuperview().offset(-25)
         }
         
         // 관광지 주소 뷰
@@ -102,8 +105,7 @@ class TGFestivalDetailViewController: UIViewController {
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { (make) -> Void in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
+            make.left.right.equalTo(self.lbTitle)
             make.top.equalTo(self.lbTitle.snp.bottom).offset(25)
         }
         
@@ -119,8 +121,7 @@ class TGFestivalDetailViewController: UIViewController {
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { (make) -> Void in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
+            make.left.right.equalTo(self.lbAddr)
             make.top.equalTo(self.lbAddr.snp.bottom).offset(300)
             make.bottom.equalToSuperview()
         }
@@ -177,11 +178,6 @@ class TGFestivalDetailViewController: UIViewController {
 }
 
 extension TGFestivalDetailViewController: UIScrollViewDelegate {
-
-   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-   }
-
 }
 
 
