@@ -7,6 +7,9 @@
 //
 
 import Foundation
+import Alamofire
+import AlamofireObjectMapper
+import ObjectMapper
 
 
 // 행사 정보를 저장할 구조체
@@ -41,34 +44,45 @@ let FestivalAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/s
 
 class TGFestivalNetworkingManager: TGNetworkingManager {
     
-    // API 통신으로 얻은 데이터
-    //var tempArr = [FestivalData]()
-
     // 각 월의 festival 구조체가 들어있는 배열 미리 생성
     var finalArr = Array(repeating: [FestivalData](), count: 12)
-        
-    // MARK: TEST
-    func getTempArr() -> Array<FestivalData> {
-        
-        // API 통신으로 얻은 데이터
-        var tempArr = [FestivalData]()
-        
-        tempArr.append(FestivalData(title: "1월", addr1: "", addr2: "", eventstartdate: 20200115, eventenddate: 20200116, image: "", thumbnail: "", tel: ""))
-        tempArr.append(FestivalData(title: "2월", addr1: "", addr2: "", eventstartdate: 20200215, eventenddate: 20200216, image: "", thumbnail: "", tel: ""))
-        tempArr.append(FestivalData(title: "3월", addr1: "", addr2: "", eventstartdate: 20200315, eventenddate: 20200316, image: "", thumbnail: "", tel: ""))
-        tempArr.append(FestivalData(title: "4월", addr1: "", addr2: "", eventstartdate: 20200415, eventenddate: 20200416, image: "", thumbnail: "", tel: ""))
-        tempArr.append(FestivalData(title: "5월", addr1: "", addr2: "", eventstartdate: 20200515, eventenddate: 20200516, image: "", thumbnail: "", tel: ""))
-        tempArr.append(FestivalData(title: "6월", addr1: "", addr2: "", eventstartdate: 20200615, eventenddate: 20200616, image: "", thumbnail: "", tel: ""))
-        tempArr.append(FestivalData(title: "7월", addr1: "", addr2: "", eventstartdate: 20200715, eventenddate: 20200716, image: "", thumbnail: "", tel: ""))
-        tempArr.append(FestivalData(title: "8월", addr1: "", addr2: "", eventstartdate: 20200815, eventenddate: 20200816, image: "", thumbnail: "", tel: ""))
     
-        return tempArr
+    override func loadData(update: @escaping (_ a: [Any]?) -> Void) {
+        
+        var validFestivalInfo = [FestivalData]()
+        
+        requestAPI(FestivalAPI) { (request) in
+            request.responseObject { (response: DataResponse<FestivalInfo>) in
+                if let afResult = response.result.value?.response {
+                    if let afHead = afResult.head {
+                        switch afHead.resultMsg {
+                        case "OK":
+                            if let afItems = afResult.body?.items?.item {
+                                for afItem in afItems {
+                                    let newFestivalInfo = FestivalData(title: afItem.title, addr1: afItem.addr1, addr2: afItem.addr2, eventstartdate: afItem.eventstartdate, eventenddate: afItem.eventenddate, image: afItem.image, thumbnail: afItem.thumbnail, tel: afItem.tel)
+                                    validFestivalInfo.append(newFestivalInfo)
+                                }
+                                
+                                update(validFestivalInfo)
+                            }
+                        default:
+                            print("Festival Data load Failed")
+                            update(nil)
+                        }
+                    }
+                }
+                
+            }
+            
+        }
     }
+    
+    
     
     
     func sortByDate(_ targetArr: Array<FestivalData>, update: @escaping(_ a: [[FestivalData]]) -> Void) {
         
-        var tempArr = targetArr//getTempArr()
+        var tempArr = targetArr
  
         // 3-1. 날짜순 정렬
         tempArr.sort { (left: FestivalData, right:FestivalData) -> Bool in

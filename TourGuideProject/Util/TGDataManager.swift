@@ -10,8 +10,18 @@
 import Foundation
 import ObjectMapper
 
+class TGMappable: Mappable {
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+    }
+}
+
+
 // 관광지 정보를 저장할 구조체 ( 구조체, 클래스 고민이 되는데 일단 상속 필요없고, callbyvalue 오버헤드 걱정될만한 크기가 아니므로 일단 구조체 )
-struct TourData: Hashable{
+
+struct TourData: Hashable {
     // 제목
     var title: String?
     // 지역 코드
@@ -30,6 +40,7 @@ struct TourData: Hashable{
     var contenttypeid: Int?
 }
 
+
 let areaMenu = ["서울", "경기도", "강원도", "전라도", "경상도", "제주도"]
 let areaMenuCode: Array<Int> = [1,31,32,37,36,39]
 //---------------------------------------------------------------------------
@@ -37,13 +48,14 @@ let areaMenuCode: Array<Int> = [1,31,32,37,36,39]
 // 관광지 데이터 json 파싱을 위한 class
 //---------------------------------------------------------------------------
 // API 통신 후 받는 json 파일
-class TourInfo: Mappable {
+class TourInfo: TGMappable {
     var response: ResponseInfo?
     
     required init?(map: Map) {
+        super.init(map: map)
     }
     
-    func mapping(map: Map) {
+    override func mapping(map: Map) {
         response <- map["response"]
     }
 }
@@ -157,13 +169,14 @@ class ItemInfo: Mappable {
 
 // 행사 데이터 json 파싱을 위한 class
 //---------------------------------------------------------------------------
-class FestivalInfo: Mappable {
+class FestivalInfo: TGMappable {
     var response: ResponseInfo2?
     
     required init?(map: Map) {
+        super.init(map: map)
     }
     
-    func mapping(map: Map) {
+    override func mapping(map: Map) {
         response <- map["response"]
     }
 }
@@ -333,7 +346,3 @@ extension NSMutableAttributedString {
         return self
     }
 }
-
-
-
-

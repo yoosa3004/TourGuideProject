@@ -22,23 +22,30 @@ let TourAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaB
             + "&MobileApp=AppTest&MobileOS=IOS&arrange=Q&cat1=&sigunguCode=&cat2=&cat3=&listYN=Y&modifiedtime=&_type=json&contentTypeId=12&areaCode="
 
 
-
-
 class TGNetworkingManager {
     
-    var loadFailed: Bool = false
+    // MARK: 1. 요청
+    func requestAPI(_ API: URLConvertible, update: @escaping (_ a: DataRequest) -> Void) {
+        update(Alamofire.request(API))
+    }
+    
+    // MARK: 2. 데이터 분해
+    func loadData(update: @escaping (_ a: [Any]?) -> Void) {}
+    
     
     // API 통신 후 받아온 json 파일을 변환해 최종적으로 쓰일 DataSet에 할당하는 함수
     func loadTourSpotData(_ areaCode:Int, update: @escaping (_ a: [TourData]?) -> Void) {
         
         var validTourInfo = [TourData]()
-
+        
         Alamofire.request(TourAPI + String(areaCode)).responseObject { (response: DataResponse<TourInfo>) in
             if let afResult = response.result.value?.response {
                      if let afHead = afResult.head {
                          switch afHead.resultMsg {
                          case "OK":
                              if let afItems = afResult.body?.items?.item {
+                                
+                                //--------------------------
                                  for afItem in afItems {
                                      let newTourInfo = TourData(title: afItem.title, areaCode: afItem.areaCode, addr1: afItem.addr1, addr2: afItem.addr2, image: afItem.image, thumbnail: afItem.thumbnail ,tel: afItem.tel, contenttypeid: afItem.contenttypeid)
                                      validTourInfo.append(newTourInfo)

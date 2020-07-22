@@ -28,10 +28,11 @@ class TGFestivalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        TGNetworkingManager().loadFestivalData { [unowned self] (apiData) -> Void in
+        TGFestivalNetworkingManager().loadData { [unowned self] (apiData) -> Void in
             if apiData != nil {
                 
-                TGFestivalNetworkingManager().sortByDate(apiData!) { (finalData) -> Void in
+                let final = apiData as! [FestivalData]
+                TGFestivalNetworkingManager().sortByDate(final) { (finalData) -> Void in
                     for idx in finalData.indices {
                         self.tbvFestival.festivalInfo[idx] = finalData[idx]
                     }

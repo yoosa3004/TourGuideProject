@@ -34,7 +34,7 @@ class TGTourSpotCollectionView: UICollectionView {
             
             if apiData != nil {
                 self.lbFailed.removeFromSuperview()
-                self.tourInfos = apiData!
+                self.tourInfos = apiData as! [TourData]
                 self.reloadData()
             } else {
                 self.addSubview(self.lbFailed)
