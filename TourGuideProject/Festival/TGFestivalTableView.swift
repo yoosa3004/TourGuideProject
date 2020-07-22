@@ -17,52 +17,48 @@ class TGFestivalTableView: UITableView {
     // 델리게이트
     weak var tapCellDelegate: TGFestivalDelegate?
     
-    // 데이터
-    var festivalInfos = Array<FestivalData>()
-    
     // MARK: 최종 데이터
-    var finalDataInfo = Array(repeating: [FestivalData](), count: 12)
+    var festivalInfo = Array(repeating: [FestivalData](), count: 12)
 
 }
 
 extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return festivalInfos.count
+        return festivalInfo[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TGFestivalCell.reusableIdentifier, for: indexPath) as? TGFestivalCell else {return UITableViewCell()}
         
-        if festivalInfos.count > 0 {
-            
+        // MARK: 섹션별로 나누기 작업
+        // 셀 세팅
+        if festivalInfo[indexPath.section].count > 0 {
             cell.then {
+                let cellData = festivalInfo[indexPath.section][indexPath.row]
+                
                 // 행사 제목
-                if festivalInfos[indexPath.row].title!.contains("[") {
+                if cellData.title!.contains("[") {
                     
-                    let finalText = NSAttributedString().splitByBracket(festivalInfos[indexPath.row].title!)
+                    let finalText = NSAttributedString().splitByBracket(cellData.title!)
                     $0.lbFestivalTitle.attributedText = finalText
-                    
-                }else {
-                    $0.lbFestivalTitle.text = festivalInfos[indexPath.row].title
+                } else {
+                    $0.lbFestivalTitle.text = cellData.title
                 }
-            
+             
                 // 행사 주소
-                if let str = festivalInfos[indexPath.row].addr1 {
+                if let str = cellData.addr1 {
                     $0.lbFestivalAddr.text = str
-                    if let str2 = festivalInfos[indexPath.row].addr2 {
+                    if let str2 = cellData.addr2 {
                         $0.lbFestivalAddr.text = str+str2
                     }
                 }
                 
                 // 행사 날짜
-                $0.lbFestivalDate.text = String(festivalInfos[indexPath.row].eventstartdate!.changeDateFormat()) + " ~ " + String(festivalInfos[indexPath.row].eventenddate!.changeDateFormat())
+                $0.lbFestivalDate.text = String(cellData.eventstartdate!.changeDateFormat()) + " ~ " + String(cellData.eventenddate!.changeDateFormat())
                 
                 // 행사 이미지
-                $0.setImageView(festivalInfos[indexPath.row].thumbnail!)
+                $0.setImageView(cellData.thumbnail!)
             }
-            
-        } else {
-            cell.lbFestivalTitle.text = "데이터 로드 전"
         }
         
         return cell
@@ -75,7 +71,7 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        tapCellDelegate?.selected(festivalInfos[indexPath.row])
+        tapCellDelegate?.selected(festivalInfo[indexPath.section][indexPath.row])
     }
     
     // 섹션 갯수
@@ -83,8 +79,38 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
         return 12
     }
     
-    // 섹션 별 헤더 title
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "\(section+1)월의 행사"
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if festivalInfo[section].count == 0 {
+            return CGFloat.leastNormalMagnitude
+        } else {
+            return 40
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 40))
+        view.backgroundColor = .systemGray5
+        
+        let ivHeader = UIImageView()
+        view.addSubview(ivHeader)
+        ivHeader.then {
+            $0.image = UIImage(named: "happiness.png")
+        }.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(10)
+            $0.top.bottom.equalToSuperview()
+        }
+        
+        let lbHeader = UILabel()
+        view.addSubview(lbHeader)
+        lbHeader.then {
+            $0.text = "\(section+1)월"
+            $0.textAlignment = .center
+            $0.textColor = .black
+        }.snp.makeConstraints {
+            $0.left.equalTo(ivHeader.snp.right).offset(10)
+            $0.top.bottom.equalToSuperview()
+        }
+        
+        return view
     }
 }

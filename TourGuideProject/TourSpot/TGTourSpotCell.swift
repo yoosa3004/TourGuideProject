@@ -32,7 +32,7 @@ class TGTourSpotCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.backgroundColor = .lightGray
+        self.backgroundColor = .systemGray5
     
         setView()
     }

@@ -101,13 +101,6 @@ class TGFestivalNetworkingManager: TGNetworkingManager {
             
             finalArr[idx].append(contentsOf: arr)
         }
-        /*
-        for idx in finalArr.indices {
-            print("-----------------------------------")
-            print(finalArr[idx])
-            print("-----------------------------------")
-        }
- */
         
         update(finalArr)
     }

@@ -28,26 +28,16 @@ class TGFestivalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         TGNetworkingManager().loadFestivalData { [unowned self] (apiData) -> Void in
             if apiData != nil {
                 
-                // MARK: 이차원 배열로 업데이트 하기
                 TGFestivalNetworkingManager().sortByDate(apiData!) { (finalData) -> Void in
-                    
                     for idx in finalData.indices {
-                        self.tbvFestival.finalDataInfo[idx] = finalData[idx]
-                    
-                        print("-----------------------------------")
-                        print(self.tbvFestival.finalDataInfo[idx])
-                        print("-----------------------------------")
+                        self.tbvFestival.festivalInfo[idx] = finalData[idx]
                     }
                 }
                 
-                self.tbvFestival.festivalInfos = apiData!
                 self.tbvFestival.reloadData()
-                
-                
                 
             } else {
                 self.tbvFestival.removeFromSuperview()
@@ -59,11 +49,6 @@ class TGFestivalViewController: UIViewController {
                 }
             }
         }
-        
-        /*
-        TGFestivalNetworkingManager().sortByDate()
-        TGFestivalNetworkingManager().sortByDate()
-        */
     }
     
     override func viewWillAppear(_ animated: Bool) {
