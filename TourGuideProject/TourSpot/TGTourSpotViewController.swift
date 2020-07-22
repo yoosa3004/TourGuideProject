@@ -33,8 +33,7 @@ class TGTourSpotViewController: UIViewController {
             $0.selectedSegmentIndex = 0
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] (make) -> Void in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.left.right.equalToSuperview()
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.height.equalTo(60)
 
@@ -48,9 +47,8 @@ class TGTourSpotViewController: UIViewController {
             $0.delegate = self
             $0.isPagingEnabled = true
         }.snp.makeConstraints { [unowned self] (make) -> Void in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.top.equalTo(self.areaSegmentControl.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.areaSegmentControl.snp.bottom).offset(10)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
         }
         
@@ -65,8 +63,7 @@ class TGTourSpotViewController: UIViewController {
             $0.distribution = .fillEqually
             $0.alignment = .fill
         }.snp.makeConstraints { [unowned self] (make) -> Void in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
+            make.left.right.equalToSuperview()
             make.top.equalTo(self.areaScrollView.snp.top)
             make.bottom.equalTo(self.areaScrollView.snp.bottom)
             make.height.equalTo(self.areaScrollView.snp.height)

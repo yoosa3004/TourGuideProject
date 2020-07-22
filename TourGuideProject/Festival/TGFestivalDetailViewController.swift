@@ -20,6 +20,7 @@ class TGFestivalDetailViewController: UIViewController {
     
     // 데이터
     var dataInfo = FestivalData()
+    
     // 이미지뷰
     var ivDetail = UIImageView()
     // 제목

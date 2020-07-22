@@ -19,6 +19,9 @@ class TGFestivalTableView: UITableView {
     
     // 데이터
     var festivalInfos = Array<FestivalData>()
+    
+    // MARK: 최종 데이터
+    var finalDataInfo = Array(repeating: [FestivalData](), count: 12)
 
 }
 
@@ -33,10 +36,9 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
         if festivalInfos.count > 0 {
             
             cell.then {
-
                 // 행사 제목
                 if festivalInfos[indexPath.row].title!.contains("[") {
-
+                    
                     let finalText = NSAttributedString().splitByBracket(festivalInfos[indexPath.row].title!)
                     $0.lbFestivalTitle.attributedText = finalText
                     
@@ -74,5 +76,15 @@ extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         tapCellDelegate?.selected(festivalInfos[indexPath.row])
+    }
+    
+    // 섹션 갯수
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 12
+    }
+    
+    // 섹션 별 헤더 title
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "\(section+1)월의 행사"
     }
 }

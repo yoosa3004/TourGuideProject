@@ -22,11 +22,7 @@ let TourAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaB
             + "&MobileApp=AppTest&MobileOS=IOS&arrange=Q&cat1=&sigunguCode=&cat2=&cat3=&listYN=Y&modifiedtime=&_type=json&contentTypeId=12&areaCode="
 
 
-let FestivalAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey="
-                + serviceKey
-                + "&MobileOS=IOS&pageNo=1&MobileApp=AppTest&arrange=P&listYN=Y&_type=json&numOfRows="
-                + String(numOfRows)
-                + "&eventStartDate=20200101"
+
 
 class TGNetworkingManager {
     

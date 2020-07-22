@@ -35,6 +35,7 @@
 		02D3EC3D24B7134F00446F7C /* TGTourSpotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */; };
 		02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */; };
 		02D3EC4124B7138E00446F7C /* TGMyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */; };
+		02F4412C24C7D48600BB6A98 /* TGFestivalNetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F4412B24C7D48600BB6A98 /* TGFestivalNetworkingManager.swift */; };
 		1B2DAAE203B3C55F7DB08810 /* Pods_TourGuideProject_TourGuideProjectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */; };
 		8CB24100C60F92A299031221 /* Pods_TourGuideProjectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5078FB52E117B4CFC33DE7D4 /* Pods_TourGuideProjectTests.framework */; };
 		C1DA969FB55A4B8B53F30DA4 /* Pods_TourGuideProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF26D61086C15BE86A78587A /* Pods_TourGuideProject.framework */; };
@@ -92,6 +93,7 @@
 		02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotViewController.swift; sourceTree = "<group>"; };
 		02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGFestivalViewController.swift; sourceTree = "<group>"; };
 		02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGMyAccountViewController.swift; sourceTree = "<group>"; };
+		02F4412B24C7D48600BB6A98 /* TGFestivalNetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGFestivalNetworkingManager.swift; sourceTree = "<group>"; };
 		4AD49760D0171AE8282A7613 /* Pods-TourGuideProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProject.release.xcconfig"; path = "Target Support Files/Pods-TourGuideProject/Pods-TourGuideProject.release.xcconfig"; sourceTree = "<group>"; };
 		4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TourGuideProject_TourGuideProjectUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5078FB52E117B4CFC33DE7D4 /* Pods_TourGuideProjectTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TourGuideProjectTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +236,7 @@
 				025B0E7D24C1417900A80554 /* TGFestivalCell.xib */,
 				025B0E8024C1541A00A80554 /* TGFestivalTableView.swift */,
 				025B0E8224C18F3200A80554 /* TGFestivalDetailViewController.swift */,
+				02F4412B24C7D48600BB6A98 /* TGFestivalNetworkingManager.swift */,
 			);
 			path = Festival;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 			files = (
 				02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */,
 				02315B0724B5995C00166294 /* TGNetworkingManager.swift in Sources */,
+				02F4412C24C7D48600BB6A98 /* TGFestivalNetworkingManager.swift in Sources */,
 				025B0E8324C18F3200A80554 /* TGFestivalDetailViewController.swift in Sources */,
 				0277A1A224C02B9600F13874 /* TGTourSpotCollectionView.swift in Sources */,
 				0277A1A824C0374300F13874 /* TGTourSpotDetailViewController.swift in Sources */,
