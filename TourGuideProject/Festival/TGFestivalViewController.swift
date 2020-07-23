@@ -31,9 +31,11 @@ class TGFestivalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mFestivals.loadData { [unowned self] (apiData) -> Void in
+        mFestivals.eventStartDate = 20200101
+        mFestivals.arrange = "P"
+        
+        mFestivals.requestAPI { [unowned self] (apiData) -> Void in
             if apiData != nil {
-                
                 let final = apiData as! [FestivalData]
                 self.mFestivals.sortByDate(final) { (finalData) -> Void in
                     for idx in finalData.indices {

@@ -8,8 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0209293C24B865AC004C3C7F /* TGIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0209293B24B865AC004C3C7F /* TGIdentifier.swift */; };
-		02315B0524B57AB900166294 /* TGDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0424B57AB900166294 /* TGDataManager.swift */; };
-		02315B0724B5995C00166294 /* TMNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* TMNetworking.swift */; };
+		02315B0724B5995C00166294 /* TMNetworkingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* TMNetworkingViewModel.swift */; };
 		02528F3E24C5327900DD1EF3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */; };
 		0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AB24B4155100945CEA /* AppDelegate.swift */; };
 		0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AD24B4155100945CEA /* SceneDelegate.swift */; };
@@ -31,12 +30,15 @@
 		026E603B24BD5D45001CB5D4 /* TGTourSpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */; };
 		026E603C24BD5D45001CB5D4 /* TGTourSpotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 026E603A24BD5D45001CB5D4 /* TGTourSpotCell.xib */; };
 		0277A1A224C02B9600F13874 /* TGTourSpotCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0277A1A124C02B9600F13874 /* TGTourSpotCollectionView.swift */; };
-		0277A1A824C0374300F13874 /* TGTourSpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0277A1A724C0374300F13874 /* TGTourSpotDetailViewController.swift */; };
-		027F90CF24C91A11009899A3 /* TMTourSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90CE24C91A11009899A3 /* TMTourSpots.swift */; };
-		02D3EC3D24B7134F00446F7C /* TGTourSpotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */; };
+		0277A1A824C0374300F13874 /* TourSpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0277A1A724C0374300F13874 /* TourSpotDetailViewController.swift */; };
+		027F90CF24C91A11009899A3 /* TMTourSpotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90CE24C91A11009899A3 /* TMTourSpotViewModel.swift */; };
+		027F90D124C95A01009899A3 /* TMTourSpotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D024C95A01009899A3 /* TMTourSpotModel.swift */; };
+		027F90D324C95A17009899A3 /* TMFestivalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D224C95A17009899A3 /* TMFestivalModel.swift */; };
+		027F90D724C98119009899A3 /* TGExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D624C98119009899A3 /* TGExtensions.swift */; };
+		02D3EC3D24B7134F00446F7C /* TourSpotListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */; };
 		02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */; };
 		02D3EC4124B7138E00446F7C /* TGMyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */; };
-		02F4412C24C7D48600BB6A98 /* TMFestivals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F4412B24C7D48600BB6A98 /* TMFestivals.swift */; };
+		02F4412C24C7D48600BB6A98 /* TMFestivalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F4412B24C7D48600BB6A98 /* TMFestivalViewModel.swift */; };
 		02F4412E24C8087900BB6A98 /* sing.png in Resources */ = {isa = PBXBuildFile; fileRef = 02F4412D24C8087800BB6A98 /* sing.png */; };
 		02F4413024C80BED00BB6A98 /* happiness.png in Resources */ = {isa = PBXBuildFile; fileRef = 02F4412F24C80BED00BB6A98 /* happiness.png */; };
 		1B2DAAE203B3C55F7DB08810 /* Pods_TourGuideProject_TourGuideProjectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */; };
@@ -63,8 +65,7 @@
 
 /* Begin PBXFileReference section */
 		0209293B24B865AC004C3C7F /* TGIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGIdentifier.swift; sourceTree = "<group>"; };
-		02315B0424B57AB900166294 /* TGDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGDataManager.swift; sourceTree = "<group>"; };
-		02315B0624B5995C00166294 /* TMNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMNetworking.swift; sourceTree = "<group>"; };
+		02315B0624B5995C00166294 /* TMNetworkingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMNetworkingViewModel.swift; sourceTree = "<group>"; };
 		02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0254A2A824B4155100945CEA /* TourGuideProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TourGuideProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0254A2AB24B4155100945CEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -92,12 +93,15 @@
 		026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotCell.swift; sourceTree = "<group>"; };
 		026E603A24BD5D45001CB5D4 /* TGTourSpotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TGTourSpotCell.xib; sourceTree = "<group>"; };
 		0277A1A124C02B9600F13874 /* TGTourSpotCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotCollectionView.swift; sourceTree = "<group>"; };
-		0277A1A724C0374300F13874 /* TGTourSpotDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotDetailViewController.swift; sourceTree = "<group>"; };
-		027F90CE24C91A11009899A3 /* TMTourSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMTourSpots.swift; sourceTree = "<group>"; };
-		02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGTourSpotViewController.swift; sourceTree = "<group>"; };
+		0277A1A724C0374300F13874 /* TourSpotDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotDetailViewController.swift; sourceTree = "<group>"; };
+		027F90CE24C91A11009899A3 /* TMTourSpotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMTourSpotViewModel.swift; sourceTree = "<group>"; };
+		027F90D024C95A01009899A3 /* TMTourSpotModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMTourSpotModel.swift; sourceTree = "<group>"; };
+		027F90D224C95A17009899A3 /* TMFestivalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMFestivalModel.swift; sourceTree = "<group>"; };
+		027F90D624C98119009899A3 /* TGExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGExtensions.swift; sourceTree = "<group>"; };
+		02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotListViewController.swift; sourceTree = "<group>"; };
 		02D3EC3E24B7137500446F7C /* TGFestivalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGFestivalViewController.swift; sourceTree = "<group>"; };
 		02D3EC4024B7138E00446F7C /* TGMyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGMyAccountViewController.swift; sourceTree = "<group>"; };
-		02F4412B24C7D48600BB6A98 /* TMFestivals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMFestivals.swift; sourceTree = "<group>"; };
+		02F4412B24C7D48600BB6A98 /* TMFestivalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMFestivalViewModel.swift; sourceTree = "<group>"; };
 		02F4412D24C8087800BB6A98 /* sing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sing.png; sourceTree = "<group>"; };
 		02F4412F24C80BED00BB6A98 /* happiness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = happiness.png; sourceTree = "<group>"; };
 		4AD49760D0171AE8282A7613 /* Pods-TourGuideProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProject.release.xcconfig"; path = "Target Support Files/Pods-TourGuideProject/Pods-TourGuideProject.release.xcconfig"; sourceTree = "<group>"; };
@@ -230,9 +234,10 @@
 				0209293B24B865AC004C3C7F /* TGIdentifier.swift */,
 				026E603924BD5D45001CB5D4 /* TGTourSpotCell.swift */,
 				0277A1A124C02B9600F13874 /* TGTourSpotCollectionView.swift */,
-				02D3EC3C24B7134F00446F7C /* TGTourSpotViewController.swift */,
-				0277A1A724C0374300F13874 /* TGTourSpotDetailViewController.swift */,
-				027F90CE24C91A11009899A3 /* TMTourSpots.swift */,
+				02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */,
+				0277A1A724C0374300F13874 /* TourSpotDetailViewController.swift */,
+				027F90CE24C91A11009899A3 /* TMTourSpotViewModel.swift */,
+				027F90D024C95A01009899A3 /* TMTourSpotModel.swift */,
 			);
 			path = TourSpot;
 			sourceTree = "<group>";
@@ -245,7 +250,8 @@
 				025B0E7D24C1417900A80554 /* TGFestivalCell.xib */,
 				025B0E8024C1541A00A80554 /* TGFestivalTableView.swift */,
 				025B0E8224C18F3200A80554 /* TGFestivalDetailViewController.swift */,
-				02F4412B24C7D48600BB6A98 /* TMFestivals.swift */,
+				02F4412B24C7D48600BB6A98 /* TMFestivalViewModel.swift */,
+				027F90D224C95A17009899A3 /* TMFestivalModel.swift */,
 			);
 			path = Festival;
 			sourceTree = "<group>";
@@ -256,8 +262,8 @@
 				0254A2B624B4155300945CEA /* LaunchScreen.storyboard */,
 				0254A2AB24B4155100945CEA /* AppDelegate.swift */,
 				0254A2AD24B4155100945CEA /* SceneDelegate.swift */,
-				02315B0424B57AB900166294 /* TGDataManager.swift */,
-				02315B0624B5995C00166294 /* TMNetworking.swift */,
+				02315B0624B5995C00166294 /* TMNetworkingViewModel.swift */,
+				027F90D624C98119009899A3 /* TGExtensions.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -530,17 +536,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				027F90CF24C91A11009899A3 /* TMTourSpots.swift in Sources */,
+				027F90CF24C91A11009899A3 /* TMTourSpotViewModel.swift in Sources */,
 				02D3EC3F24B7137500446F7C /* TGFestivalViewController.swift in Sources */,
-				02315B0724B5995C00166294 /* TMNetworking.swift in Sources */,
-				02F4412C24C7D48600BB6A98 /* TMFestivals.swift in Sources */,
+				027F90D724C98119009899A3 /* TGExtensions.swift in Sources */,
+				02315B0724B5995C00166294 /* TMNetworkingViewModel.swift in Sources */,
+				02F4412C24C7D48600BB6A98 /* TMFestivalViewModel.swift in Sources */,
 				025B0E8324C18F3200A80554 /* TGFestivalDetailViewController.swift in Sources */,
 				0277A1A224C02B9600F13874 /* TGTourSpotCollectionView.swift in Sources */,
-				0277A1A824C0374300F13874 /* TGTourSpotDetailViewController.swift in Sources */,
+				0277A1A824C0374300F13874 /* TourSpotDetailViewController.swift in Sources */,
+				027F90D124C95A01009899A3 /* TMTourSpotModel.swift in Sources */,
+				027F90D324C95A17009899A3 /* TMFestivalModel.swift in Sources */,
 				025B0E7E24C1417900A80554 /* TGFestivalCell.swift in Sources */,
 				0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */,
-				02D3EC3D24B7134F00446F7C /* TGTourSpotViewController.swift in Sources */,
-				02315B0524B57AB900166294 /* TGDataManager.swift in Sources */,
+				02D3EC3D24B7134F00446F7C /* TourSpotListViewController.swift in Sources */,
 				0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */,
 				02D3EC4124B7138E00446F7C /* TGMyAccountViewController.swift in Sources */,
 				0209293C24B865AC004C3C7F /* TGIdentifier.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  TMTourSpots.swift
+//  TMFestivalModel.swift
 //  TourGuideProject
 //
 //  Created by hyunndy on 2020/07/23.
@@ -7,54 +7,12 @@
 //
 
 import Foundation
-import Alamofire
-import AlamofireObjectMapper
 import ObjectMapper
 
-let TourAPI = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?serviceKey="
-            + serviceKey
-            + "&MobileApp=AppTest&MobileOS=IOS&listYN=Y&_type=json&contentTypeId=12&areaCode="
-
-let areaMenu = ["서울", "경기도", "강원도", "전라도", "경상도", "제주도"]
-let areaMenuCode: Array<Int> = [1,31,32,37,36,39]
-
-class TMTourSpots: TMNetworking {
-    
-    var areaCode = 0
-    
-    override func loadData(update: @escaping ([Any]?) -> Void) {
-        request(numOfRows: 2, arrange: "Q") { (request) in
-            request.responseObject { (response: DataResponse<TourResponse>) in
-                if let afResult = response.result.value?.response {
-                    if let afHead = afResult.head {
-                        switch afHead.resultMsg {
-                        case "OK":
-                            if let afItems = afResult.body?.items?.item {
-                                update(afItems)
-                            } else {
-                                print("Tour Data is Empty")
-                                update(nil)
-                            }
-                        default:
-                            print("Tour Data load failed")
-                            update(nil)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    override func getAPIKey() -> String {
-        return TourAPI + String(self.areaCode)
-    }
-}
-
-// 관광지 데이터 json 파싱을 위한 class
+// 행사 데이터 json 파싱을 위한 class
 //---------------------------------------------------------------------------
-// API 통신 후 받는 json 파일
-class TourResponse: Mappable {
-    var response: ResponseInfo?
+class FestivalResponse: Mappable {
+    var response: ResponseInfo2?
     
     required init?(map: Map) {
     }
@@ -63,11 +21,10 @@ class TourResponse: Mappable {
         response <- map["response"]
     }
 }
-
 // "response"
-class ResponseInfo: Mappable {
-    var head: HeadInfo?
-    var body: BodyInfo?
+class ResponseInfo2: Mappable {
+    var head: HeadInfo2?
+    var body: BodyInfo2?
     
     
     required init?(map: Map) {
@@ -80,7 +37,7 @@ class ResponseInfo: Mappable {
 }
 
 // "header" -> header에서 받는 응답코드 / 응답메세지로 데이터 로드 성공/실패 구분 가능
-class HeadInfo: Mappable {
+class HeadInfo2: Mappable {
     var resultCode: String?
     var resultMsg: String?
     
@@ -93,9 +50,8 @@ class HeadInfo: Mappable {
     }
 }
 
-// "body"
-class BodyInfo: Mappable {
-    var items: ItemsInfo?
+class BodyInfo2: Mappable {
+    var items: ItemsInfo2?
     var numOfRows: Int?
     var pageNo: Int?
     var totalCount: Int?
@@ -112,8 +68,8 @@ class BodyInfo: Mappable {
 }
 
 // "body" - "items" <아이템 목록>
-class ItemsInfo: Mappable {
-    var item: [TourData]?
+class ItemsInfo2: Mappable {
+    var item: [FestivalData]?
     
     required init?(map: Map) {
     }
@@ -121,10 +77,13 @@ class ItemsInfo: Mappable {
     func mapping(map: Map) {
         item <- map["item"]
     }
+    
 }
 
 // "body" - "item" <아이템> - 최종적으로 쓰이게될 데이터
-class TourData: Mappable {
+class FestivalData: Mappable {
+    
+    required init?(map: Map) {}
     
     //-- 필수 정보
     var contentid: Int?
@@ -132,6 +91,8 @@ class TourData: Mappable {
     var createdtime: Int?
     var modifiedtime: Int?
     var title: String?
+    var eventstartdate: Int?
+    var eventenddate: Int?
     //--
     
     //-- 부가 정보
@@ -149,15 +110,14 @@ class TourData: Mappable {
     var tel: String?
     //--
     
-    required init?(map: Map) {
-    }
-    
     func mapping(map: Map) {
         contentid <- map["contentid"]
         contenttypeid <- map["contenttypeid"]
         createdtime <- map["createdtime"]
         modifiedtime <- map["modifiedtime"]
         title <- map["title"]
+        eventstartdate <- map["eventstartdate"]
+        eventenddate <- map["eventenddate"]
         
         areaCode <- map["areacode"]
         addr1 <- map["addr1"]
@@ -168,3 +128,4 @@ class TourData: Mappable {
     }
 }
 //---------------------------------------------------------------------------
+

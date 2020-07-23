@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import ScrollableSegmentedControl
 
-class TGTourSpotViewController: UIViewController {
+class TourSpotListViewController: UIViewController {
     
     // 스택뷰 안에 들어갈 컬렉션뷰 배열
     var collectionViewArray = Array<TGTourSpotCollectionView>()
@@ -86,6 +86,7 @@ class TGTourSpotViewController: UIViewController {
             let collectionView = TGTourSpotCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then { [weak self] in
                 $0.tapCellDelegate = self
                 $0.mTourSpots.areaCode = areaMenuCode[idx]
+                $0.mTourSpots.arrange = "P"
                 let layout = UICollectionViewFlowLayout()
                 layout.scrollDirection = .vertical
                 
@@ -132,7 +133,7 @@ class TGTourSpotViewController: UIViewController {
 }
  
  // 스크롤뷰
- extension TGTourSpotViewController: UIScrollViewDelegate {
+ extension TourSpotListViewController: UIScrollViewDelegate {
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
@@ -147,7 +148,7 @@ class TGTourSpotViewController: UIViewController {
  }
 
 // 개별 셀 클릭 시 불리는 프로토콜
-extension TGTourSpotViewController: TGTourSpotCellDelegate {
+extension TourSpotListViewController: TGTourSpotCellDelegate {
 
     func selected(_ detailInfo: TourData) {
         let detailView = TGTourSpotDetailViewController().then {

@@ -1,14 +1,13 @@
-/*
- 파일명: TGDataManager.swift
- 작성자: 2020/07/08 유현지
-
- 설멍:
- AlamofireObjectManager 라이브러리를 통한 Json 데이터 파싱에 사용되는 데이터 클래스
- ObjectMapper의 Mappable 프로토콜을 반드시 채택해야함
-*/
+//
+//  TGExtensions.swift
+//  TourGuideProject
+//
+//  Created by hyunndy on 2020/07/23.
+//  Copyright © 2020 hyunndy. All rights reserved.
+//
 
 import Foundation
-import ObjectMapper
+import UIKit
 
 // 20201515 -> 2015.15.15 변환 익스텐션
 extension Int {
@@ -48,7 +47,6 @@ extension NSAttributedString {
         
         return finalText
     }
- 
 }
 
 extension NSMutableAttributedString {

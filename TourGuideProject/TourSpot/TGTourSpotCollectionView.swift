@@ -25,14 +25,11 @@ class TGTourSpotCollectionView: UICollectionView {
     // 데이터
     var tourInfos = Array<TourData>()
 
-    
     // 데이터 로드 실패시 띄울 라벨
     let lbFailed = UILabel()
     
     func loadData() {
-        
-        mTourSpots.loadData { [unowned self] (apiData) -> Void in
-            
+        mTourSpots.requestAPI { [unowned self] (apiData) -> Void in
             if apiData != nil {
                 self.lbFailed.removeFromSuperview()
                 self.tourInfos = apiData as! [TourData]
