@@ -19,7 +19,7 @@ class TGFestivalDetailViewController: UIViewController {
     var stvFestival = UIStackView()
     
     // 데이터
-    var dataInfo = FestivalData()
+    var dataInfo = [FestivalData]()
     
     // 이미지뷰
     var ivDetail = UIImageView()
@@ -71,12 +71,12 @@ class TGFestivalDetailViewController: UIViewController {
         }
         
 //        let processor = DownsamplingImageProcessor(size: ivDetail.bounds.size)
-        ivDetail.kf.setImage(with: URL(string: dataInfo.image!), options: nil)//[.processor(processor)])
+        ivDetail.kf.setImage(with: URL(string: dataInfo[0].image!), options: nil)//[.processor(processor)])
         
         // 행사 이름
         self.scvFestival.addSubview(lbTitle)
         lbTitle.then {
-            $0.text = dataInfo.title
+            $0.text = dataInfo[0].title
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -93,9 +93,9 @@ class TGFestivalDetailViewController: UIViewController {
         // 관광지 주소 뷰
         self.scvFestival.addSubview(lbAddr)
         lbAddr.then {
-            if let str = dataInfo.addr1 {
+            if let str = dataInfo[0].addr1 {
                 $0.text = str
-                if let str2 = dataInfo.addr2 {
+                if let str2 = dataInfo[0].addr2 {
                     $0.text = str+str2
                 }
             }
@@ -113,7 +113,7 @@ class TGFestivalDetailViewController: UIViewController {
         // 관광지 전화번호 뷰
         self.scvFestival.addSubview(lbTel)
         lbTel.then {
-            $0.text = dataInfo.tel
+            $0.text = dataInfo[0].tel
             
             $0.textAlignment = .center
             $0.numberOfLines = 0
@@ -159,7 +159,7 @@ class TGFestivalDetailViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = .orange
 
         // 제목
-        self.title = dataInfo.title
+        self.title = dataInfo[0].title
 
         // 오른쪽 - 찜 아이콘
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: imgEmptyHeart, style: .plain, target: self, action: #selector(selectHeart(_:)))

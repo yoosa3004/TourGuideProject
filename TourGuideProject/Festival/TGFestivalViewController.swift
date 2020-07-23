@@ -12,6 +12,9 @@ import Then
 
 class TGFestivalViewController: UIViewController {
 
+    // 모델
+    let mFestivals = TMFestivals()
+    
     // 테이블뷰
     var tbvFestival = TGFestivalTableView()
     
@@ -28,11 +31,11 @@ class TGFestivalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        TGFestivalNetworkingManager().loadData { [unowned self] (apiData) -> Void in
+        mFestivals.loadData { [unowned self] (apiData) -> Void in
             if apiData != nil {
                 
                 let final = apiData as! [FestivalData]
-                TGFestivalNetworkingManager().sortByDate(final) { (finalData) -> Void in
+                self.mFestivals.sortByDate(final) { (finalData) -> Void in
                     for idx in finalData.indices {
                         self.tbvFestival.festivalInfo[idx] = finalData[idx]
                     }
@@ -80,7 +83,7 @@ class TGFestivalViewController: UIViewController {
 extension TGFestivalViewController: TGFestivalDelegate {
     func selected(_ detailInfo: FestivalData) {
         let detailView = TGFestivalDetailViewController().then {
-            $0.dataInfo = detailInfo
+            $0.dataInfo.append(detailInfo)
         }
         
         self.navigationController?.pushViewController(detailView, animated: true)

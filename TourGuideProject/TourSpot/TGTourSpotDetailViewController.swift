@@ -19,7 +19,8 @@ class TGTourSpotDetailViewController: UIViewController {
     var stvFestival = UIStackView()
 
     // 데이터
-    var dataInfo = TourData()
+    var dataInfo = [TourData]()
+    
     // 이미지뷰
     var ivDetail = UIImageView()
     // 제목
@@ -79,12 +80,12 @@ class TGTourSpotDetailViewController: UIViewController {
         
         // 이미지 세팅
 //        let processor = DownsamplingImageProcessor(size: ivDetail.bounds.size)
-        ivDetail.kf.setImage(with: URL(string: dataInfo.image!), options: nil)
+        ivDetail.kf.setImage(with: URL(string: dataInfo[0].image!), options: nil)
         
         // 관광지 이름 뷰
         self.scvFestival.addSubview(lbTitle)
         lbTitle.then {
-            $0.text = dataInfo.title
+            $0.text = dataInfo[0].title
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -101,9 +102,9 @@ class TGTourSpotDetailViewController: UIViewController {
         // 관광지 주소 뷰
         self.scvFestival.addSubview(lbAddr)
         lbAddr.then {
-            if let str = dataInfo.addr1 {
+            if let str = dataInfo[0].addr1 {
                 $0.text = str
-                if let str2 = dataInfo.addr2 {
+                if let str2 = dataInfo[0].addr2 {
                     $0.text = str+str2
                 }
             }
@@ -121,7 +122,7 @@ class TGTourSpotDetailViewController: UIViewController {
         // 관광지 전화번호 뷰
         self.scvFestival.addSubview(lbTel)
         lbTel.then {
-            $0.text = dataInfo.tel
+            $0.text = dataInfo[0].tel
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -154,7 +155,7 @@ class TGTourSpotDetailViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = .orange
         
         // tabbar가 있는 형태가 아닌 이 컨트롤러만 있으니까 바로 navigationItem으로 접근
-        self.title = dataInfo.title
+        self.title = dataInfo[0].title
         
         // 오른쪽 - 찜 아이콘
         imgFullHeart = imgFullHeart?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)

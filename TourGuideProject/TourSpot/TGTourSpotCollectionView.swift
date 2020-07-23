@@ -19,18 +19,19 @@ class TGTourSpotCollectionView: UICollectionView {
     // 델리게이트
     weak var tapCellDelegate: TGTourSpotCellDelegate?
     
+    // 모델
+    var mTourSpots = TMTourSpots()
+    
     // 데이터
     var tourInfos = Array<TourData>()
-    
-    // API 요청변수 - 지역코드
-    var areaNum: Int = 0
+
     
     // 데이터 로드 실패시 띄울 라벨
     let lbFailed = UILabel()
     
     func loadData() {
         
-        TGNetworkingManager().loadTourSpotData(areaNum) { [unowned self] (apiData) -> Void in
+        mTourSpots.loadData { [unowned self] (apiData) -> Void in
             
             if apiData != nil {
                 self.lbFailed.removeFromSuperview()

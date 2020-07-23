@@ -84,8 +84,8 @@ class TGTourSpotViewController: UIViewController {
         for idx in areaMenuCode.indices {
             
             let collectionView = TGTourSpotCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then { [weak self] in
-                $0.areaNum = areaMenuCode[idx]
                 $0.tapCellDelegate = self
+                $0.mTourSpots.areaCode = areaMenuCode[idx]
                 let layout = UICollectionViewFlowLayout()
                 layout.scrollDirection = .vertical
                 
@@ -151,7 +151,7 @@ extension TGTourSpotViewController: TGTourSpotCellDelegate {
 
     func selected(_ detailInfo: TourData) {
         let detailView = TGTourSpotDetailViewController().then {
-            $0.dataInfo = detailInfo
+            $0.dataInfo.append(detailInfo)
         }
         
         self.navigationController?.pushViewController(detailView, animated: true)
