@@ -10,13 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
-class TGFestivalViewController: UIViewController {
+class FestivalListViewController: UIViewController {
 
     // 모델
     let mFestivals = TMFestivals()
     
     // 테이블뷰
-    var tbvFestival = TGFestivalTableView()
+    var tbvFestival = FestivalTableView()
     
     // 데이터로딩 실패
     var lbFailed = UILabel()
@@ -72,7 +72,7 @@ class TGFestivalViewController: UIViewController {
             $0.dataSource = $0
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.tapCellDelegate = self
-            $0.register(UINib(nibName: TGFestivalCell.reusableIdentifier, bundle: nil), forCellReuseIdentifier: TGFestivalCell.reusableIdentifier)
+            $0.register(UINib(nibName: FestivalCell.reusableIdentifier, bundle: nil), forCellReuseIdentifier: FestivalCell.reusableIdentifier)
         }.snp.makeConstraints { [unowned self] (make) -> Void in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.left.equalToSuperview()
@@ -82,9 +82,9 @@ class TGFestivalViewController: UIViewController {
     }
 }
 
-extension TGFestivalViewController: TGFestivalDelegate {
+extension FestivalListViewController: FestivalDelegate {
     func selected(_ detailInfo: FestivalData) {
-        let detailView = TGFestivalDetailViewController().then {
+        let detailView = FestivalDetailViewController().then {
             $0.dataInfo.append(detailInfo)
         }
         

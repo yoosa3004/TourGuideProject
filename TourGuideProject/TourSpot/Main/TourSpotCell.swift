@@ -11,7 +11,7 @@ import Then
 import SnapKit
 import Kingfisher
 
-class TGTourSpotCell: UICollectionViewCell {
+class TourSpotCell: UICollectionViewCell {
 
     // 관광지 이미지
     var imageView = UIImageView()

@@ -21,65 +21,66 @@ class TourResponse: Mappable {
     func mapping(map: Map) {
         response <- map["response"]
     }
-}
+    
+    // "response"
+    class ResponseInfo: Mappable {
+        var head: HeadInfo?
+        var body: BodyInfo?
+        
+        
+        required init?(map: Map) {
+        }
+        
+        func mapping(map: Map) {
+            head <- map["header"]
+            body <- map["body"]
+        }
+    }
+    
+    // "header" -> header에서 받는 응답코드 / 응답메세지로 데이터 로드 성공/실패 구분 가능
+    class HeadInfo: Mappable {
+        var resultCode: String?
+        var resultMsg: String?
+        
+        required init?(map: Map) {
+        }
+        
+        func mapping(map: Map) {
+            resultCode <- map["resultCode"]
+            resultMsg <- map["resultMsg"]
+        }
+    }
+    
+    // "body"
+    class BodyInfo: Mappable {
+        var items: ItemsInfo?
+        var numOfRows: Int?
+        var pageNo: Int?
+        var totalCount: Int?
+        
+        required init?(map: Map) {
+        }
+        
+        func mapping(map: Map) {
+            items <- map["items"]
+            numOfRows <- map["numOfRows"]
+            pageNo <- map["pageNo"]
+            totalCount <- map["totalCount"]
+        }
+    }
 
-// "response"
-class ResponseInfo: Mappable {
-    var head: HeadInfo?
-    var body: BodyInfo?
-    
-    
-    required init?(map: Map) {
+    // "body" - "items" <아이템 목록>
+    class ItemsInfo: Mappable {
+        var item: [TourData]?
+        
+        required init?(map: Map) {
+        }
+        
+        func mapping(map: Map) {
+            item <- map["item"]
+        }
     }
     
-    func mapping(map: Map) {
-        head <- map["header"]
-        body <- map["body"]
-    }
-}
-
-// "header" -> header에서 받는 응답코드 / 응답메세지로 데이터 로드 성공/실패 구분 가능
-class HeadInfo: Mappable {
-    var resultCode: String?
-    var resultMsg: String?
-    
-    required init?(map: Map) {
-    }
-    
-    func mapping(map: Map) {
-        resultCode <- map["resultCode"]
-        resultMsg <- map["resultMsg"]
-    }
-}
-
-// "body"
-class BodyInfo: Mappable {
-    var items: ItemsInfo?
-    var numOfRows: Int?
-    var pageNo: Int?
-    var totalCount: Int?
-    
-    required init?(map: Map) {
-    }
-    
-    func mapping(map: Map) {
-        items <- map["items"]
-        numOfRows <- map["numOfRows"]
-        pageNo <- map["pageNo"]
-        totalCount <- map["totalCount"]
-    }
-}
-
-// "body" - "items" <아이템 목록>
-class ItemsInfo: Mappable {
-    var item: [TourData]?
-    
-    required init?(map: Map) {
-    }
-    
-    func mapping(map: Map) {
-        item <- map["item"]
-    }
 }
 
 // "body" - "item" <아이템> - 최종적으로 쓰이게될 데이터

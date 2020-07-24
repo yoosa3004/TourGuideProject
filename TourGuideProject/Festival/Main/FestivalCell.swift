@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 
 
-class TGFestivalCell: UITableViewCell {
+class FestivalCell: UITableViewCell {
 
     // 행사 이미지
     let ivFestival = UIImageView()

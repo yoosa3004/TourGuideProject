@@ -10,14 +10,14 @@ import UIKit
 import Then
 import SnapKit
 
-protocol TGTourSpotCellDelegate: class {
+protocol TourSpotCellDelegate: class {
     func selected(_ detailInfo: TourData)
 }
 
-class TGTourSpotCollectionView: UICollectionView {
+class TourSpotCollectionView: UICollectionView {
     
     // 델리게이트
-    weak var tapCellDelegate: TGTourSpotCellDelegate?
+    weak var tapCellDelegate: TourSpotCellDelegate?
     
     // 모델
     var mTourSpots = TMTourSpots()
@@ -47,13 +47,13 @@ class TGTourSpotCollectionView: UICollectionView {
 }
 
 //MARK:- UICollectionViewDelegate, UICollectionViewDataSource
-extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionViewDelegate {
+extension TourSpotCollectionView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     // 각 셀 채우기 - 지역 관광지들을 채워야함
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // TGAreaTourSpotView를 셀로 이용한다.
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TGTourSpotCell.reusableIdentifier, for: indexPath) as? TGTourSpotCell else { return TGTourSpotCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TourSpotCell.reusableIdentifier, for: indexPath) as? TourSpotCell else { return TourSpotCell() }
         
         if self.tourInfos.count > 0 {
             cell.then { [unowned self] in
@@ -85,7 +85,7 @@ extension TGTourSpotCollectionView: UICollectionViewDataSource, UICollectionView
 }
 
 //MARK:- UICollectionViewDelegateFlowLayout
-extension TGTourSpotCollectionView: UICollectionViewDelegateFlowLayout {
+extension TourSpotCollectionView: UICollectionViewDelegateFlowLayout {
     
     // 각 셀의 사이즈
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {

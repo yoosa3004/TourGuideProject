@@ -9,6 +9,12 @@
 import Foundation
 import UIKit
 
+extension NSObject {
+    static var reusableIdentifier: String {
+        return String(describing: self)
+    }
+}
+
 // 20201515 -> 2015.15.15 변환 익스텐션
 extension Int {
     func changeDateFormat() -> String {
@@ -65,3 +71,4 @@ extension NSMutableAttributedString {
         return self
     }
 }
+

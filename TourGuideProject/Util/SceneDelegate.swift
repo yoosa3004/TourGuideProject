@@ -30,8 +30,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          // 루트 뷰 컨트롤러가 될 뷰 컨트롤러를 생성한다.
          let tabBarVC = ESTabBarController()
          
-         let v1 = TGTourSpotViewController()
-         let v2 = TGFestivalViewController()
+         let v1 = TourSpotListViewController()
+         let v2 = FestivalListViewController()
          let v3 = TGMyAccountViewController()
         
          v1.tabBarItem.title = "관광지"

@@ -11,7 +11,7 @@ import Then
 import SnapKit
 import Kingfisher
 
-class TGFestivalDetailViewController: UIViewController {
+class FestivalDetailViewController: UIViewController {
 
     // 스크롤뷰
     var scvFestival = UIScrollView()
@@ -178,7 +178,7 @@ class TGFestivalDetailViewController: UIViewController {
 
 }
 
-extension TGFestivalDetailViewController: UIScrollViewDelegate {
+extension FestivalDetailViewController: UIScrollViewDelegate {
 }
 
 

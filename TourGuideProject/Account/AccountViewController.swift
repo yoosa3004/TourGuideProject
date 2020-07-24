@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import FirebaseAuth
 
-class TGMyAccountViewController: UIViewController {
+class AccountViewController: UIViewController {
 
     // 아이디 텍스트필드
     var tfID = UITextField()

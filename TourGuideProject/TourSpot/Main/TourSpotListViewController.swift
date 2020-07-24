@@ -14,7 +14,7 @@ import ScrollableSegmentedControl
 class TourSpotListViewController: UIViewController {
     
     // 스택뷰 안에 들어갈 컬렉션뷰 배열
-    var collectionViewArray = Array<TGTourSpotCollectionView>()
+    var collectionViewArray = Array<TourSpotCollectionView>()
     
     // 세그먼트 컨트롤
     let areaSegmentControl = UISegmentedControl(items: areaMenu)
@@ -83,7 +83,7 @@ class TourSpotListViewController: UIViewController {
         
         for idx in areaMenuCode.indices {
             
-            let collectionView = TGTourSpotCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then { [weak self] in
+            let collectionView = TourSpotCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then { [weak self] in
                 $0.tapCellDelegate = self
                 $0.mTourSpots.areaCode = areaMenuCode[idx]
                 $0.mTourSpots.arrange = "P"
@@ -98,7 +98,7 @@ class TourSpotListViewController: UIViewController {
                 
                 $0.delegate = $0
                 $0.dataSource = $0
-                $0.register(UINib(nibName: TGTourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TGTourSpotCell.reusableIdentifier)
+                $0.register(UINib(nibName: TourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TourSpotCell.reusableIdentifier)
             }
             
             collectionViewArray.append(collectionView)
@@ -148,10 +148,10 @@ class TourSpotListViewController: UIViewController {
  }
 
 // 개별 셀 클릭 시 불리는 프로토콜
-extension TourSpotListViewController: TGTourSpotCellDelegate {
+extension TourSpotListViewController: TourSpotCellDelegate {
 
     func selected(_ detailInfo: TourData) {
-        let detailView = TGTourSpotDetailViewController().then {
+        let detailView = TourSpotDetailViewController().then {
             $0.dataInfo.append(detailInfo)
         }
         

@@ -44,8 +44,8 @@ class TMNetworking {
         
         var param = Dictionary<String, Any>()
         
-        if pageNo != nil {
-            param.updateValue(pageNo!, forKey: "pageNo")
+        if let actualpageNo = pageNo {
+             param.updateValue(actualpageNo, forKey: "pageNo")
         }
         
         if numOfRows != nil {

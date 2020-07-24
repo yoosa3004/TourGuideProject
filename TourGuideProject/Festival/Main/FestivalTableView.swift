@@ -8,27 +8,27 @@
 
 import UIKit
 
-protocol TGFestivalDelegate: class {
+protocol FestivalDelegate: class {
     func selected(_ detailInfo: FestivalData)
 }
 
-class TGFestivalTableView: UITableView {
+class FestivalTableView: UITableView {
     
     // 델리게이트
-    weak var tapCellDelegate: TGFestivalDelegate?
+    weak var tapCellDelegate: FestivalDelegate?
     
     // MARK: 최종 데이터
     var festivalInfo = Array(repeating: [FestivalData](), count: 12)
 
 }
 
-extension TGFestivalTableView: UITableViewDelegate, UITableViewDataSource {
+extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return festivalInfo[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TGFestivalCell.reusableIdentifier, for: indexPath) as? TGFestivalCell else {return UITableViewCell()}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FestivalCell.reusableIdentifier, for: indexPath) as? FestivalCell else {return UITableViewCell()}
         
         // MARK: 섹션별로 나누기 작업
         // 셀 세팅
