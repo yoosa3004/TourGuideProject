@@ -35,6 +35,7 @@
 		027F90D324C95A17009899A3 /* TMFestivalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D224C95A17009899A3 /* TMFestivalModel.swift */; };
 		027F90D724C98119009899A3 /* TGExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D624C98119009899A3 /* TGExtensions.swift */; };
 		027F90F224CADD24009899A3 /* FestivalDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90F124CADD24009899A3 /* FestivalDetailView.swift */; };
+		027F90F424CAE151009899A3 /* TourSpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90F324CAE151009899A3 /* TourSpotDetailView.swift */; };
 		02D3EC3D24B7134F00446F7C /* TourSpotListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */; };
 		02D3EC3F24B7137500446F7C /* FestivalListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3E24B7137500446F7C /* FestivalListViewController.swift */; };
 		02D3EC4124B7138E00446F7C /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC4024B7138E00446F7C /* AccountViewController.swift */; };
@@ -98,6 +99,7 @@
 		027F90D224C95A17009899A3 /* TMFestivalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMFestivalModel.swift; sourceTree = "<group>"; };
 		027F90D624C98119009899A3 /* TGExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGExtensions.swift; sourceTree = "<group>"; };
 		027F90F124CADD24009899A3 /* FestivalDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalDetailView.swift; sourceTree = "<group>"; };
+		027F90F324CAE151009899A3 /* TourSpotDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotDetailView.swift; sourceTree = "<group>"; };
 		02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotListViewController.swift; sourceTree = "<group>"; };
 		02D3EC3E24B7137500446F7C /* FestivalListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalListViewController.swift; sourceTree = "<group>"; };
 		02D3EC4024B7138E00446F7C /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				0277A1A724C0374300F13874 /* TourSpotDetailViewController.swift */,
+				027F90F324CAE151009899A3 /* TourSpotDetailView.swift */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -592,6 +595,7 @@
 				025B0E8324C18F3200A80554 /* FestivalDetailViewController.swift in Sources */,
 				0277A1A224C02B9600F13874 /* TourSpotCollectionView.swift in Sources */,
 				0277A1A824C0374300F13874 /* TourSpotDetailViewController.swift in Sources */,
+				027F90F424CAE151009899A3 /* TourSpotDetailView.swift in Sources */,
 				027F90D124C95A01009899A3 /* TMTourSpotModel.swift in Sources */,
 				027F90D324C95A17009899A3 /* TMFestivalModel.swift in Sources */,
 				025B0E7E24C1417900A80554 /* FestivalCell.swift in Sources */,
