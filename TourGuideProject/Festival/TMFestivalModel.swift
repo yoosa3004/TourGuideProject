@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-// 행사 데이터 json 파싱을 위한 class
+// 행사 관련 JSON 매핑을 위한 클래스
 class FestivalResponse: Mappable {
     var response: ResponseInfo?
     
@@ -19,7 +19,7 @@ class FestivalResponse: Mappable {
     func mapping(map: Map) {
         response <- map["response"]
     }
-    // "response"
+
     class ResponseInfo: Mappable {
         var head: HeadInfo?
         var body: BodyInfo?
@@ -34,7 +34,6 @@ class FestivalResponse: Mappable {
         }
     }
     
-    // "header" -> header에서 받는 응답코드 / 응답메세지로 데이터 로드 성공/실패 구분 가능
     class HeadInfo: Mappable {
         var resultCode: String?
         var resultMsg: String?
@@ -65,9 +64,8 @@ class FestivalResponse: Mappable {
         }
     }
     
-    // "body" - "items" <아이템 목록>
     class ItemsInfo: Mappable {
-        var item: [FestivalData]?
+        var item: [FestivalInfo]?
         
         required init?(map: Map) {
         }
@@ -75,16 +73,16 @@ class FestivalResponse: Mappable {
         func mapping(map: Map) {
             item <- map["item"]
         }
-        
     }
 }
 
-// "body" - "item" <아이템> - 최종적으로 쓰이게될 데이터
-class FestivalData: Mappable {
+// 최종적으로 사용할 행사 정보 클래스
+class FestivalInfo: Mappable {
     
+    init() {}
     required init?(map: Map) {}
     
-    //-- 필수 정보
+    // 필수 요청 변수
     var contentid: Int?
     var contenttypeid: Int?
     var createdtime: Int?
@@ -92,9 +90,7 @@ class FestivalData: Mappable {
     var title: String?
     var eventstartdate: Int?
     var eventenddate: Int?
-    //--
     
-    //-- 부가 정보
     // 지역 코드
     var areaCode: Int?
     // 전체 주소
@@ -107,7 +103,6 @@ class FestivalData: Mappable {
     var thumbnail: String?
     // 전화번호
     var tel: String?
-    //--
     
     func mapping(map: Map) {
         contentid <- map["contentid"]

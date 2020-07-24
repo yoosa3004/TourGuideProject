@@ -124,8 +124,8 @@ class TourSpotListViewController: UIViewController {
             self.stvTourSpotList.addArrangedSubview(listCollectionView[idx])
             listCollectionView[idx].then { (cv) -> Void in
                 // API 요청 후 데이터 받아오기
-                mTourSpots.requestAPI {
-                    if let result = $0 as? [TourSpotInfo] {
+                mTourSpots.requestAPI { (apiResult) -> Void in
+                    if let result = apiResult as? [TourSpotInfo] {
                         cv.listTourSpot = result
                         cv.lbFailed.removeFromSuperview()
                         cv.reloadData()

@@ -19,7 +19,7 @@ class TMNetworking {
     let serviceKey = "tLN%2Bjilj3ZFHA2%2FpssG4J4hN82oI6Q2b0rF3pB5hrv3LVOccCkbBP2YcHlMqd7%2FqHejXWPsU0abYZ2y%2FnivcZQ%3D%3D"
     
     var pageNo: Int? = 1
-    var numOfRows: Int? = 2
+    var numOfRows: Int? = 10
     var arrange: String?
     
     var APIKey = ""

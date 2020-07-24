@@ -24,68 +24,113 @@ class FestivalListViewController: UIViewController {
     override func loadView() {
         super.loadView()
 
-        self.view.backgroundColor = .white
-        setUpView()
+        setViews()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.title = "행사"
+    }
+    
+    func loadData() {
         mFestivals.eventStartDate = 20200101
         mFestivals.arrange = "P"
         
-        mFestivals.requestAPI { [unowned self] (apiData) -> Void in
-            if apiData != nil {
-                let final = apiData as! [FestivalData]
-                self.mFestivals.sortByDate(final) { (finalData) -> Void in
-                    for idx in finalData.indices {
-                        self.tbvFestival.festivalInfo[idx] = finalData[idx]
+        mFestivals.requestAPI { [unowned self] (apiResult) -> Void in
+            if let result = apiResult as? [FestivalInfo] {
+                // API로부터 데이터 받은 후 날짜순으로 정렬 후 월 단위로 쪼갬
+                self.sortByStartDate(result) { (sortedInfos) -> Void in
+                    for idx in sortedInfos.indices {
+                        self.tbvFestival.listFestivalInfo[idx] = sortedInfos[idx]
                     }
+                    
+                    self.tbvFestival.reloadData()
                 }
-                
-                self.tbvFestival.reloadData()
-                
             } else {
-                self.tbvFestival.removeFromSuperview()
-                self.view.addSubview(self.lbDataLoadFailed)
-                self.lbDataLoadFailed.then {
-                    $0.text = "데이터 로드 실패"
-                }.snp.makeConstraints {
-                    $0.center.equalToSuperview()
-                }
+                self.loadDataFailed()
             }
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        // MARK: iOS 계층구조에 있다고해서 모든 상위 계층에 접근할 수 있는게 아님. 이 경우 바로 상위계층인 tabBarController에서 title 세팅 필요.
-        self.tabBarController?.title = "행사"
+    func loadDataFailed() {
+        self.tbvFestival.removeFromSuperview()
+        self.view.addSubview(self.lbDataLoadFailed)
+        self.lbDataLoadFailed.then {
+            $0.text = "데이터 로드 실패"
+        }.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
-    
 
-    private func setUpView() {
+    func setViews() {
+        // 배경
+        self.view.backgroundColor = .white
+        
+        // 테이블 뷰
         self.view.addSubview(self.tbvFestival)
         tbvFestival.then { [unowned self] in
-            $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
             $0.delegate = $0
             $0.dataSource = $0
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.tapCellDelegate = self
             $0.register(UINib(nibName: FestivalCell.reusableIdentifier, bundle: nil), forCellReuseIdentifier: FestivalCell.reusableIdentifier)
-        }.snp.makeConstraints { [unowned self] (make) -> Void in
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+        }.snp.makeConstraints { [unowned self] in
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            $0.left.right.bottom.equalToSuperview()
         }
+    }
+    
+    // MARK: API로부터 받은 데이터를 날짜순으로 정렬 후 월 단위로 쪼개어 테이블 뷰 데이터에 넣어줄 행사 정보 배열 생성 (1월 행사, 2월 행사, 3월 행사, ...)
+    func sortByStartDate(_ targetArr: Array<FestivalInfo>, update: @escaping(_ a: [[FestivalInfo]]) -> Void) {
+        
+        var sortedArr = Array(repeating: [FestivalInfo](), count: 12)
+        var tempArr = targetArr
+        
+        // 날짜순 정렬
+        tempArr.sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
+            
+            return left.eventstartdate! < right.eventstartdate!
+        }
+        
+        // 월 단위로 쪼개어 적재
+        for idx in 0 ... 8 {
+            
+            let test = "2020" + "0" + String(idx+1)
+            
+            let arr = tempArr.filter {
+                $0.eventstartdate! >= Int(test+"01")! && $0.eventstartdate! <= Int(test+"31")!
+            }
+            
+            sortedArr[idx].append(contentsOf: arr)
+        }
+        
+        for idx in 9 ... 11 {
+            
+            let test = "2020" + String(idx+1)
+            
+            let arr = tempArr.filter {
+                $0.eventstartdate! >= Int(test+"01")! && $0.eventstartdate! <= Int(test+"31")!
+            }
+            
+            sortedArr[idx].append(contentsOf: arr)
+        }
+        
+        // 클로저에서 테이블 뷰 reload
+        update(sortedArr)
     }
 }
 
 extension FestivalListViewController: FestivalDelegate {
-    func selected(_ detailInfo: FestivalData) {
+    func selected(_ detailInfo: FestivalInfo) {
         let detailView = FestivalDetailViewController().then {
-            $0.dataInfo.append(detailInfo)
+            $0.festivalInfo = detailInfo
         }
         
         self.navigationController?.pushViewController(detailView, animated: true)

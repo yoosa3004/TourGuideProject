@@ -238,10 +238,9 @@
 		0277A1A424C031FC00F13874 /* Festival */ = {
 			isa = PBXGroup;
 			children = (
-				027F90E524CAB51D009899A3 /* New Group */,
-				027F90E324CAB32D009899A3 /* Model */,
-				027F90DF24CA704A009899A3 /* Detail */,
-				027F90DE24CA703E009899A3 /* Main */,
+				027F90F024CAD058009899A3 /* Model */,
+				027F90ED24CACF08009899A3 /* Main */,
+				027F90EC24CACC4A009899A3 /* Detail */,
 			);
 			path = Festival;
 			sourceTree = "<group>";
@@ -285,7 +284,24 @@
 			name = Detail;
 			sourceTree = "<group>";
 		};
-		027F90DE24CA703E009899A3 /* Main */ = {
+		027F90E224CAB318009899A3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				027F90CE24C91A11009899A3 /* TMTourSpotViewModel.swift */,
+				027F90D024C95A01009899A3 /* TMTourSpotModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		027F90EC24CACC4A009899A3 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				025B0E8224C18F3200A80554 /* FestivalDetailViewController.swift */,
+			);
+			name = Detail;
+			sourceTree = "<group>";
+		};
+		027F90ED24CACF08009899A3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				025B0E7C24C1417900A80554 /* FestivalCell.swift */,
@@ -296,37 +312,13 @@
 			name = Main;
 			sourceTree = "<group>";
 		};
-		027F90DF24CA704A009899A3 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				025B0E8224C18F3200A80554 /* FestivalDetailViewController.swift */,
-			);
-			name = Detail;
-			sourceTree = "<group>";
-		};
-		027F90E224CAB318009899A3 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				027F90CE24C91A11009899A3 /* TMTourSpotViewModel.swift */,
-				027F90D024C95A01009899A3 /* TMTourSpotModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		027F90E324CAB32D009899A3 /* Model */ = {
+		027F90F024CAD058009899A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				02F4412B24C7D48600BB6A98 /* TMFestivalViewModel.swift */,
 				027F90D224C95A17009899A3 /* TMFestivalModel.swift */,
 			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		027F90E524CAB51D009899A3 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
+			name = Model;
 			sourceTree = "<group>";
 		};
 		1D98D3F9D5CB21CD217D5BE2 /* Frameworks */ = {

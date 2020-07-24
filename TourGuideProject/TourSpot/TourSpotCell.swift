@@ -41,7 +41,6 @@ class TourSpotCell: UICollectionViewCell {
             make.bottom.equalTo(-40)
         }
         
-        // 이미지
         self.addSubview(ivThumbnail)
         ivThumbnail.then{
             $0.frame = .zero

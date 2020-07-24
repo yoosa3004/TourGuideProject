@@ -7,62 +7,64 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol FestivalDelegate: class {
-    func selected(_ detailInfo: FestivalData)
+    func selected(_ detailInfo: FestivalInfo)
 }
 
 class FestivalTableView: UITableView {
     
-    // 델리게이트
     weak var tapCellDelegate: FestivalDelegate?
-    
-    // MARK: 최종 데이터
-    var festivalInfo = Array(repeating: [FestivalData](), count: 12)
+
+    var listFestivalInfo = Array(repeating: [FestivalInfo](), count: 12)
 }
-
-
 
 extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return festivalInfo[section].count
+        return listFestivalInfo[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FestivalCell.reusableIdentifier, for: indexPath) as? FestivalCell else {return UITableViewCell()}
-        
-        // MARK: 섹션별로 나누기 작업
+        guard let cclFestivalInfo = tableView.dequeueReusableCell(withIdentifier: FestivalCell.reusableIdentifier, for: indexPath) as? FestivalCell else {return UITableViewCell()}
+
         // 셀 세팅
-        if festivalInfo[indexPath.section].count > 0 {
-            cell.then {
-                let cellData = festivalInfo[indexPath.section][indexPath.row]
+        if listFestivalInfo[indexPath.section].count > 0 {
+            return cclFestivalInfo.then {
+                let data = listFestivalInfo[indexPath.section][indexPath.row]
                 
                 // 행사 제목
-                if cellData.title!.contains("[") {
-                    
-                    let finalText = NSAttributedString().splitByBracket(cellData.title!)
-                    $0.lbFestivalTitle.attributedText = finalText
-                } else {
-                    $0.lbFestivalTitle.text = cellData.title
+                if let title = data.title {
+                    if title.contains("[") {
+                        $0.lbTitle.attributedText = NSAttributedString().splitByBracket(title)
+                    } else {
+                       $0.lbTitle.text = title
+                    }
                 }
-             
+
                 // 행사 주소
-                if let str = cellData.addr1 {
-                    $0.lbFestivalAddr.text = str
-                    if let str2 = cellData.addr2 {
-                        $0.lbFestivalAddr.text = str+str2
+                if let str = data.addr1 {
+                    $0.lbAddr.text = str
+                    if let str2 = data.addr2 {
+                        $0.lbAddr.text = str+str2
                     }
                 }
                 
                 // 행사 날짜
-                $0.lbFestivalDate.text = String(cellData.eventstartdate!.changeDateFormat()) + " ~ " + String(cellData.eventenddate!.changeDateFormat())
+                if let startDate = data.eventstartdate {
+                    if let endDate = data.eventenddate {
+                        $0.lbDate.text = String(startDate.changeDateFormat()) + " ~ " + String(endDate.changeDateFormat())
+                    }
+                }
                 
                 // 행사 이미지
-                $0.setImageView(cellData.thumbnail!)
+                if let thumbnail = data.thumbnail {
+                    $0.ivFestival.kf.setImage(with: URL(string: thumbnail), options: nil)
+                }
             }
+        } else {
+            return cclFestivalInfo
         }
-        
-        return cell
     }
 
     
@@ -70,9 +72,13 @@ extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {
         return self.frame.height/5
     }
     
+    // 셀 클릭시 델리게이트 호출
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        tapCellDelegate?.selected(festivalInfo[indexPath.section][indexPath.row])
+        
+        if listFestivalInfo.count > 0 {
+            tapCellDelegate?.selected(listFestivalInfo[indexPath.section][indexPath.row])
+        }
     }
     
     // 섹션 갯수
@@ -80,14 +86,16 @@ extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {
         return 12
     }
     
+    // 행사가 없는 달의 섹션은 보이지 않게함
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if festivalInfo[section].count == 0 {
+        if listFestivalInfo[section].count == 0 {
             return CGFloat.leastNormalMagnitude
         } else {
             return 40
         }
     }
     
+    // 헤더 뷰
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 40))
         view.backgroundColor = .systemGray5
