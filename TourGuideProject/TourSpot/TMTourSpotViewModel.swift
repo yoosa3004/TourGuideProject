@@ -1,5 +1,5 @@
 //
-//  TMTourSpots.swift
+//  TMTourSpot.swift
 //  TourGuideProject
 //
 //  Created by hyunndy on 2020/07/23.
@@ -11,10 +11,7 @@ import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
 
-let areaMenu = ["서울", "경기도", "강원도", "전라도", "경상도", "제주도"]
-let areaMenuCode: Array<Int> = [1,31,32,37,36,39]
-
-class TMTourSpots: TMNetworking {
+class TMTourSpot: TMNetworking {
     
     var areaCode: Int? = 0
     
@@ -31,10 +28,17 @@ class TMTourSpots: TMNetworking {
     
     override func requestAPI(update: @escaping(_ update: [Any]?) -> Void){
         super.request(requestParam: getParam()) { (response:Any?) in
-            if let result = Mapper<TourResponse>().map(JSONObject: response) {
-                update(result.response?.body?.items?.item)
+            
+            if let result = Mapper<TourSpotResponse>().map(JSONObject: response) {
+                if result.response?.head?.resultMsg == "OK" {
+                    update(result.response?.body?.items?.item)
+                } else {
+                    print("Tour Data load Failed")
+                    update(nil)
+                }
             } else {
                 print("Tour Data load Failed")
+                update(nil)
             }
         }
     }
@@ -43,12 +47,10 @@ class TMTourSpots: TMNetworking {
         
         var param = super.getParam()
         
-        if areaCode != nil {
-            param.updateValue(areaCode!, forKey: "areaCode")
+        if let validAreaCode = areaCode {
+            param.updateValue(validAreaCode, forKey: "areaCode")
         }
         
         return param
     }
-
-    
 }

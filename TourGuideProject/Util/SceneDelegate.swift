@@ -32,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          
          let v1 = TourSpotListViewController()
          let v2 = FestivalListViewController()
-         let v3 = TGMyAccountViewController()
+         let v3 = AccountViewController()
         
          v1.tabBarItem.title = "관광지"
          v2.tabBarItem.title = "행사"

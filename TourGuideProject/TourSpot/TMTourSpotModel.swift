@@ -9,10 +9,11 @@
 import Foundation
 import ObjectMapper
 
-// 관광지 데이터 json 파싱을 위한 class
-//---------------------------------------------------------------------------
-// API 통신 후 받는 json 파일
-class TourResponse: Mappable {
+// 각 지역 별 관광지를 받아오기 위한 API 요청 변수(areaCode)에 들어갈 Dictionary
+let areaCategory = ["서울": 1, "경기도": 31, "강원도": 32, "충청도": 34, "경상도": 36, "전라도": 37, "제주도": 39].sorted { (first, second) -> Bool in return first.value < second.value }
+
+// 관광지 데이터 JSON Mapping Class
+class TourSpotResponse: Mappable {
     var response: ResponseInfo?
     
     required init?(map: Map) {
@@ -22,7 +23,6 @@ class TourResponse: Mappable {
         response <- map["response"]
     }
     
-    // "response"
     class ResponseInfo: Mappable {
         var head: HeadInfo?
         var body: BodyInfo?
@@ -36,8 +36,7 @@ class TourResponse: Mappable {
             body <- map["body"]
         }
     }
-    
-    // "header" -> header에서 받는 응답코드 / 응답메세지로 데이터 로드 성공/실패 구분 가능
+
     class HeadInfo: Mappable {
         var resultCode: String?
         var resultMsg: String?
@@ -50,8 +49,7 @@ class TourResponse: Mappable {
             resultMsg <- map["resultMsg"]
         }
     }
-    
-    // "body"
+
     class BodyInfo: Mappable {
         var items: ItemsInfo?
         var numOfRows: Int?
@@ -69,9 +67,8 @@ class TourResponse: Mappable {
         }
     }
 
-    // "body" - "items" <아이템 목록>
     class ItemsInfo: Mappable {
-        var item: [TourData]?
+        var item: [TourSpotInfo]?
         
         required init?(map: Map) {
         }
@@ -80,21 +77,18 @@ class TourResponse: Mappable {
             item <- map["item"]
         }
     }
-    
 }
 
-// "body" - "item" <아이템> - 최종적으로 쓰이게될 데이터
-class TourData: Mappable {
+// JSON Mapping 후 최종적으로 쓰이게될 데이터
+class TourSpotInfo: Mappable {
     
-    //-- 필수 정보
+    //-- 필수 응답 변수
     var contentid: Int?
     var contenttypeid: Int?
     var createdtime: Int?
     var modifiedtime: Int?
     var title: String?
-    //--
     
-    //-- 부가 정보
     // 지역 코드
     var areaCode: Int?
     // 전체 주소
@@ -107,7 +101,8 @@ class TourData: Mappable {
     var thumbnail: String?
     // 전화번호
     var tel: String?
-    //--
+    
+    init() {}
     
     required init?(map: Map) {
     }
@@ -127,4 +122,3 @@ class TourData: Mappable {
         tel <- map["tel"]
     }
 }
-//---------------------------------------------------------------------------

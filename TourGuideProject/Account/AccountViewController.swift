@@ -135,7 +135,7 @@ class AccountViewController: UIViewController {
                 try Auth.auth().signOut()
                 sender.setTitle("로그인", for: .normal)
                 print("로그아웃 성공")
-            } catch let signOutError as NSError {
+            } catch _ as NSError {
                 print("로그아웃 오류")
             }
         }

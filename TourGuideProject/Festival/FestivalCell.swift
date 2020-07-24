@@ -40,7 +40,7 @@ class FestivalCell: UITableViewCell {
         
         // 행사 이미지
         self.addSubview(self.ivFestival)
-        ivFestival.then { [unowned self] in
+        ivFestival.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
