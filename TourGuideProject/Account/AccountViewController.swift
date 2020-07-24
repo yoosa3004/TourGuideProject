@@ -13,19 +13,14 @@ import FirebaseAuth
 
 class AccountViewController: UIViewController {
 
-    // 아이디 텍스트필드
     var tfID = UITextField()
     
-    // 비밀번호 텍스트필드
     var tfPassword = UITextField()
     
-    // 이미지
     var ivAccount = UIImageView()
     
-    // 로그인 버튼
     var btnLogin = UIButton()
     
-    // 회원가입 버튼
     var btnSignin = UIButton()
     
     override func loadView() {
@@ -35,11 +30,17 @@ class AccountViewController: UIViewController {
         setUpView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.title = "계정정보"
+    }
+    
     func setUpView(){
         
-        // 아이디 텍스트필드
+        // 아이디
         self.view.addSubview(tfID)
-        tfID.then {
+        tfID.then { [unowned self] in
             $0.placeholder = "아이디"
             $0.textAlignment = .center
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -55,9 +56,9 @@ class AccountViewController: UIViewController {
             $0.right.equalToSuperview().offset(-25)
         }
         
-        // 비밀번호 텍스트필드
+        // 비밀번호
         self.view.addSubview(tfPassword)
-        tfPassword.then {
+        tfPassword.then { [unowned self] in
             $0.placeholder = "비밀번호"
             $0.textAlignment = .center
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -70,62 +71,54 @@ class AccountViewController: UIViewController {
             $0.isSecureTextEntry = true
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.tfID.snp.bottom).offset(20)
-            $0.left.equalTo(self.tfID.snp.left)
-            $0.right.equalTo(self.tfID.snp.right)
+            $0.left.right.equalTo(self.tfID)
         }
         
         // 이미지
         self.view.addSubview(ivAccount)
         ivAccount.then {
             $0.image = UIImage(named: "heart_full.png")
-        }.snp.makeConstraints {
+        }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(70)
             $0.centerX.equalToSuperview()
         }
         
         // 로그인 버튼
         self.view.addSubview(btnLogin)
-        btnLogin.then {
+        btnLogin.then { [unowned self] in
             $0.backgroundColor = .lightGray
             $0.setTitle("로그인", for: .normal)
-            $0.addTarget(self, action: #selector(onTapLoginBtn(_:)), for: UIControl.Event.touchUpInside)
+            $0.addTarget(self, action: #selector(onLoginBtnClicked(_:)), for: UIControl.Event.touchUpInside)
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.tfPassword.snp.bottom).offset(20)
-            $0.left.equalTo(self.tfID.snp.left)
-            $0.right.equalTo(self.tfID.snp.right)
+            $0.left.right.equalTo(self.tfID)
         }
         
         // 회원가입 버튼
          self.view.addSubview(btnSignin)
-         btnSignin.then {
-             $0.backgroundColor = .lightGray
-             $0.setTitle("회원가입", for: .normal)
-             $0.addTarget(self, action: #selector(onTapSigninBtn), for: UIControl.Event.touchUpInside)
+         btnSignin.then { [unowned self] in
+            $0.backgroundColor = .lightGray
+            $0.setTitle("회원가입", for: .normal)
+            $0.addTarget(self, action: #selector(onSigninBtnClicked(_:)), for: UIControl.Event.touchUpInside)
          }.snp.makeConstraints { [unowned self] in
              $0.top.equalTo(self.btnLogin.snp.bottom).offset(15)
-             $0.left.equalTo(self.tfID.snp.left)
-             $0.right.equalTo(self.tfID.snp.right)
+             $0.left.right.equalTo(self.tfID)
          }
     }
     
-    // 로그인 버튼이벤트
-    @objc func onTapLoginBtn(_ sender: UIButton) {
+    @objc func onLoginBtnClicked(_ sender: UIButton) {
         
         // 로그인
         if sender.title(for: .normal) == "로그인" {
-
             
             guard let email = tfID.text, let password = tfPassword.text else { return }
             
             Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
-                
                 if user != nil {
-                    // 로그인 성공
                     print("로그인 성공")
                     sender.setTitle("로그아웃", for: .normal)
                 } else {
                     print("로그인 실패")
-                    
                 }
             }
         }
@@ -139,19 +132,14 @@ class AccountViewController: UIViewController {
                 print("로그아웃 오류")
             }
         }
-        
-
-
     }
     
     // 회원가입 버튼 이벤트
-    @objc func onTapSigninBtn(_ sender: UIButton) {
+    @objc func onSigninBtnClicked(_ sender: UIButton) {
         
         guard let email = tfID.text, let password = tfPassword.text else { return }
         
         Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
-            
-            print("createuser")
             guard let user = authResult?.user
                 else {
                     print("잘못된 형식 or 이미 있는 계정이라는 alert 필요")
@@ -159,23 +147,11 @@ class AccountViewController: UIViewController {
             }
             
             if error == nil {
-                // 회원가입 정상 처리 후 로그인
-                print(user)
+                print("회원 가입 완료")
             } else {
-                // 회원가입 실패
+                print("회원 가입 실패")
                 return
             }
         }
-    }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-        // MARK: iOS 계층구조에 있다고해서 모든 상위 계층에 접근할 수 있는게 아님. 이 경우 바로 상위계층인 tabBarController에서 title 세팅 필요.
-        self.tabBarController?.title = "계정정보"
     }
 }
