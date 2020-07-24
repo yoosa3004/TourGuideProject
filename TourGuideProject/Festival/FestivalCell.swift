@@ -24,7 +24,6 @@ class FestivalCell: UITableViewCell {
     // 행사 일정
     let lbFestivalDate = UILabel()
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         

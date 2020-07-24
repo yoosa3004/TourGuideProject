@@ -18,8 +18,8 @@ class FestivalListViewController: UIViewController {
     // 테이블뷰
     var tbvFestival = FestivalTableView()
     
-    // 데이터로딩 실패
-    var lbFailed = UILabel()
+    // 데이터 로딩 실패 시 띄울 라벨
+    var lbDataLoadFailed = UILabel()
 
     override func loadView() {
         super.loadView()
@@ -47,8 +47,8 @@ class FestivalListViewController: UIViewController {
                 
             } else {
                 self.tbvFestival.removeFromSuperview()
-                self.view.addSubview(self.lbFailed)
-                self.lbFailed.then {
+                self.view.addSubview(self.lbDataLoadFailed)
+                self.lbDataLoadFailed.then {
                     $0.text = "데이터 로드 실패"
                 }.snp.makeConstraints {
                     $0.center.equalToSuperview()

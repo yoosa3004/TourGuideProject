@@ -19,27 +19,12 @@ class TourSpotCollectionView: UICollectionView {
     
     // 델리게이트
     weak var tapCellDelegate: TourSpotCellDelegate?
-    
-    // 모델
-    var mTourSpots = TMTourSpot()
-    
+
     // 데이터
     var listTourSpot = Array<TourSpotInfo>()
     
     // 데이터 로드 실패 시 띄울 라벨
     let lbFailed = UILabel()
-    
-    func loadData() {
-        mTourSpots.requestAPI { [unowned self] in
-            if let result = $0 as? [TourSpotInfo] {
-                self.listTourSpot = result
-                self.lbFailed.removeFromSuperview()
-                self.reloadData()
-            } else {
-                self.dataLoadFailed()
-            }
-        }
-    }
     
     func dataLoadFailed() {
         self.addSubview(self.lbFailed)

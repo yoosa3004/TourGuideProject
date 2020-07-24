@@ -19,8 +19,9 @@ class FestivalTableView: UITableView {
     
     // MARK: 최종 데이터
     var festivalInfo = Array(repeating: [FestivalData](), count: 12)
-
 }
+
+
 
 extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

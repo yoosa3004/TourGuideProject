@@ -10,9 +10,8 @@ import Foundation
 import ObjectMapper
 
 // 행사 데이터 json 파싱을 위한 class
-//---------------------------------------------------------------------------
 class FestivalResponse: Mappable {
-    var response: ResponseInfo2?
+    var response: ResponseInfo?
     
     required init?(map: Map) {
     }
@@ -20,64 +19,64 @@ class FestivalResponse: Mappable {
     func mapping(map: Map) {
         response <- map["response"]
     }
-}
-// "response"
-class ResponseInfo2: Mappable {
-    var head: HeadInfo2?
-    var body: BodyInfo2?
-    
-    
-    required init?(map: Map) {
+    // "response"
+    class ResponseInfo: Mappable {
+        var head: HeadInfo?
+        var body: BodyInfo?
+        
+        
+        required init?(map: Map) {
+        }
+        
+        func mapping(map: Map) {
+            head <- map["header"]
+            body <- map["body"]
+        }
     }
     
-    func mapping(map: Map) {
-        head <- map["header"]
-        body <- map["body"]
-    }
-}
-
-// "header" -> header에서 받는 응답코드 / 응답메세지로 데이터 로드 성공/실패 구분 가능
-class HeadInfo2: Mappable {
-    var resultCode: String?
-    var resultMsg: String?
-    
-    required init?(map: Map) {
-    }
-    
-    func mapping(map: Map) {
-        resultCode <- map["resultCode"]
-        resultMsg <- map["resultMsg"]
-    }
-}
-
-class BodyInfo2: Mappable {
-    var items: ItemsInfo2?
-    var numOfRows: Int?
-    var pageNo: Int?
-    var totalCount: Int?
-    
-    required init?(map: Map) {
+    // "header" -> header에서 받는 응답코드 / 응답메세지로 데이터 로드 성공/실패 구분 가능
+    class HeadInfo: Mappable {
+        var resultCode: String?
+        var resultMsg: String?
+        
+        required init?(map: Map) {
+        }
+        
+        func mapping(map: Map) {
+            resultCode <- map["resultCode"]
+            resultMsg <- map["resultMsg"]
+        }
     }
     
-    func mapping(map: Map) {
-        items <- map["items"]
-        numOfRows <- map["numOfRows"]
-        pageNo <- map["pageNo"]
-        totalCount <- map["totalCount"]
-    }
-}
-
-// "body" - "items" <아이템 목록>
-class ItemsInfo2: Mappable {
-    var item: [FestivalData]?
-    
-    required init?(map: Map) {
-    }
-    
-    func mapping(map: Map) {
-        item <- map["item"]
+    class BodyInfo: Mappable {
+        var items: ItemsInfo?
+        var numOfRows: Int?
+        var pageNo: Int?
+        var totalCount: Int?
+        
+        required init?(map: Map) {
+        }
+        
+        func mapping(map: Map) {
+            items <- map["items"]
+            numOfRows <- map["numOfRows"]
+            pageNo <- map["pageNo"]
+            totalCount <- map["totalCount"]
+        }
     }
     
+    // "body" - "items" <아이템 목록>
+    class ItemsInfo: Mappable {
+        var item: [FestivalData]?
+        
+        required init?(map: Map) {
+        }
+        
+        func mapping(map: Map) {
+            item <- map["item"]
+        }
+        
+    }
 }
 
 // "body" - "item" <아이템> - 최종적으로 쓰이게될 데이터
@@ -127,5 +126,4 @@ class FestivalData: Mappable {
         tel <- map["tel"]
     }
 }
-//---------------------------------------------------------------------------
 

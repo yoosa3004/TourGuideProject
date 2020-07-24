@@ -22,9 +22,12 @@ class TourSpotListViewController: UIViewController {
     // 관광지 정보를 담을 컬렉션 뷰
     var listCollectionView = Array<TourSpotCollectionView>()
     
+    // 모델
+    var mTourSpots = TMTourSpot()
+    
     override func loadView() {
         super.loadView()
-    
+        
         self.view.backgroundColor = .white
         
         setFrameViews()
@@ -97,8 +100,8 @@ class TourSpotListViewController: UIViewController {
                 $0.dataSource = $0
                 
                 // API 요청 변수 세팅
-                $0.mTourSpots.areaCode = value
-                $0.mTourSpots.arrange = "P"
+                mTourSpots.areaCode = value
+                mTourSpots.arrange = "P"
                 
                 // 세그먼트 컨트롤
                 scAreaCategory.insertSegment(withTitle: key, at: idx, animated: true)
@@ -119,8 +122,17 @@ class TourSpotListViewController: UIViewController {
             listCollectionView.append(cvToutSpot)
             
             self.stvTourSpotList.addArrangedSubview(listCollectionView[idx])
-            listCollectionView[idx].then {
-                $0.loadData() // API 통신
+            listCollectionView[idx].then { (cv) -> Void in
+                // API 요청 후 데이터 받아오기
+                mTourSpots.requestAPI {
+                    if let result = $0 as? [TourSpotInfo] {
+                        cv.listTourSpot = result
+                        cv.lbFailed.removeFromSuperview()
+                        cv.reloadData()
+                    } else {
+                        cv.dataLoadFailed()
+                    }
+                }
             }.snp.makeConstraints { [unowned self] in
                 $0.width.equalTo(self.view)
             }
@@ -136,11 +148,15 @@ class TourSpotListViewController: UIViewController {
         
         scvTourSpotList.contentOffset.x = screenWidth*idx
     }
+    
+    func loadCollectionViewData() {
+        
+    }
 }
- 
 
- extension TourSpotListViewController: UIScrollViewDelegate {
 
+extension TourSpotListViewController: UIScrollViewDelegate {
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         // 스크롤뷰의 사이즈
         let x = scrollView.contentOffset.x
@@ -149,11 +165,11 @@ class TourSpotListViewController: UIViewController {
         // 스크롤뷰에서 현재 보여지고있는 뷰의 위치
         scAreaCategory.selectedSegmentIndex = Int(x/screenWidth)
     }
-
- }
+    
+}
 
 extension TourSpotListViewController: TourSpotCellDelegate {
-
+    
     // MARK: 셀이 눌린 후 상세화면으로 이동.
     func selected(_ detailInfo: TourSpotInfo) {
         let vDetail = TourSpotDetailViewController().then {
