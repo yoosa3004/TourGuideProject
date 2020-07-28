@@ -77,16 +77,12 @@ class FestivalListViewController: UIViewController {
         mFestivals.eventStartDate = 20200101
         mFestivals.arrange = "P"
         
-        mFestivals.requestAPI { [unowned self] (apiResult) -> Void in
-            if let result = apiResult as? [FestivalInfo] {
-                // API로부터 데이터 받은 후 날짜순으로 정렬 후 월 단위로 쪼갬
-                self.sortByStartDate(result) { (sortedInfos) -> Void in
-                    for idx in sortedInfos.indices {
-                        self.tbvFestival.listFestivalInfo[idx] = sortedInfos[idx]
-                    }
-                    
-                    self.tbvFestival.reloadData()
+        mFestivals.requestAPI { [unowned self] in
+            if let sortedInfo = $0 as? [[FestivalInfo]] {
+                for idx in sortedInfo.indices {
+                    self.tbvFestival.listFestivalInfo[idx] = sortedInfo[idx]
                 }
+                self.tbvFestival.reloadData()
             } else {
                 self.loadDataFailed()
             }
@@ -101,45 +97,6 @@ class FestivalListViewController: UIViewController {
         }.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
-    }
-    
-    // MARK: API로부터 받은 데이터를 날짜순으로 정렬 후 월 단위로 쪼개어 테이블 뷰 데이터에 넣어줄 행사 정보 배열 생성 (1월 행사, 2월 행사, 3월 행사, ...)
-    func sortByStartDate(_ targetArr: Array<FestivalInfo>, update: @escaping(_ a: [[FestivalInfo]]) -> Void) {
-        
-        var sortedArr = Array(repeating: [FestivalInfo](), count: 12)
-        var tempArr = targetArr
-        
-        // 날짜순 정렬
-        tempArr.sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
-            
-            return left.eventstartdate! < right.eventstartdate!
-        }
-        
-        // 월 단위로 쪼개어 적재
-        for idx in 0 ... 8 {
-            
-            let test = "2020" + "0" + String(idx+1)
-            
-            let arr = tempArr.filter {
-                $0.eventstartdate! >= Int(test+"01")! && $0.eventstartdate! <= Int(test+"31")!
-            }
-            
-            sortedArr[idx].append(contentsOf: arr)
-        }
-        
-        for idx in 9 ... 11 {
-            
-            let test = "2020" + String(idx+1)
-            
-            let arr = tempArr.filter {
-                $0.eventstartdate! >= Int(test+"01")! && $0.eventstartdate! <= Int(test+"31")!
-            }
-            
-            sortedArr[idx].append(contentsOf: arr)
-        }
-        
-        // 클로저에서 테이블 뷰 reload
-        update(sortedArr)
     }
 }
 
