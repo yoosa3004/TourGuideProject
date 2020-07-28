@@ -30,11 +30,11 @@ class TMTourSpot: TMNetworking {
                 if result.response?.head?.resultMsg == "OK" {
                     update(result.response?.body?.items?.item)
                 } else {
-                    print("Tour Data load Failed")
+                    tgLog("Tour Data load Failed")
                     update(nil)
                 }
             } else {
-                print("Tour Data load Failed")
+                tgLog("Tour Data load Failed")
                 update(nil)
             }
         }

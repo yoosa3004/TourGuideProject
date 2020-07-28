@@ -28,6 +28,7 @@ class TMNetworking {
             if response.result.isSuccess {
                 update(response.result.value)
             } else {
+                tgLog("API Networing Failed")
                 update(nil)
             }
         }

@@ -72,3 +72,10 @@ extension NSMutableAttributedString {
     }
 }
 
+public func tgLog(_ str: String) {
+    #if DEBUG
+    print(str)
+    #else
+    #endif
+}
+
