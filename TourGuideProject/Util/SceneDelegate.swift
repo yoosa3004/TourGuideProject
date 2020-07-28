@@ -10,50 +10,45 @@
 
 import UIKit
 import ESTabBarController_swift
-import Firebase
+import FirebaseCore
 
+@available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    // scene이 앱에 추가될 때 호출
-    @available(iOS 13.0, *)
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        
+        // 파이어베이스
+        FirebaseApp.configure()
+        
         guard let scene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: scene)
-         
-        // -----------------------------------------------
+
          // 루트 뷰 컨트롤러가 될 뷰 컨트롤러를 생성한다.
          let tabBarVC = ESTabBarController()
          
-         let v1 = TourSpotListViewController()
-         let v2 = FestivalListViewController()
-         let v3 = AccountViewController()
+         let vcTourSpot = TourSpotListViewController()
+         let vcFestival = FestivalListViewController()
+         let vcAccount = AccountViewController()
         
-         v1.tabBarItem.title = "관광지"
-         v2.tabBarItem.title = "행사"
-         v3.tabBarItem.title = "나의 계정"
+         vcTourSpot.tabBarItem.title = "관광지"
+         vcFestival.tabBarItem.title = "행사"
+         vcAccount.tabBarItem.title = "나의 계정"
          
-         tabBarVC.viewControllers = [v1,v2,v3]
+         tabBarVC.viewControllers = [vcTourSpot,vcFestival,vcAccount]
          tabBarVC.tabBar.tintColor = UIColor.red
     
-         v1.tabBarItem.image = UIImage(named: "tour-guide.png")?.withRenderingMode(.alwaysOriginal)
-         v2.tabBarItem.image = UIImage(named: "festival.png")?.withRenderingMode(.alwaysOriginal)
-         v3.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
+         vcTourSpot.tabBarItem.image = UIImage(named: "tour-guide.png")?.withRenderingMode(.alwaysOriginal)
+         vcFestival.tabBarItem.image = UIImage(named: "festival.png")?.withRenderingMode(.alwaysOriginal)
+         vcAccount.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
         
          // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
          let navigationVC = UINavigationController(rootViewController: tabBarVC)
          // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
          window?.rootViewController = navigationVC
          window?.makeKeyAndVisible()
-        
-        // 파이어베이스
-        FirebaseApp.configure()
-        
     }
 
     // scene의 연결이 해제될 때 호출된다. 연결은 다시 연결될수도 있음

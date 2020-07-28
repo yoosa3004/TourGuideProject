@@ -52,12 +52,17 @@ class TourSpotDetailView: UIView {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] in
             $0.left.right.equalToSuperview()
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            $0.top.bottom.equalTo(self.safeAreaLayoutGuide)
         }
 
+        // ** 스택뷰 설정은 가급적 모든곳에서.
         self.scvDetailTourSpot.addSubview(stvDetailTourSpot)
-        stvDetailTourSpot.snp.makeConstraints {
+        stvDetailTourSpot.then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.axis = .horizontal
+            $0.distribution = .fillEqually
+            $0.alignment = .fill
+        }.snp.makeConstraints {
             $0.centerX.width.equalToSuperview()
             $0.top.bottom.equalToSuperview()
             $0.left.right.equalToSuperview()

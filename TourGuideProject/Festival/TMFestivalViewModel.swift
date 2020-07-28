@@ -15,16 +15,12 @@ import ObjectMapper
 class TMFestivals: TMNetworking {
     
     var eventStartDate: Int? = 202001010
-    
+  
     override var APIKey: String {
-        get {
-            let key = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey="
-                     + serviceKey
-                     + "&MobileOS=IOS&MobileApp=AppTest&listYN=Y&_type=json"
-            return key
-        }
-        set {
-        }
+        let key = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey="
+                  + serviceKey
+                  + "&MobileOS=IOS&MobileApp=AppTest&listYN=Y&_type=json"
+        return key
     }
 
     override func requestAPI(update: @escaping(_ update: [Any]?) -> Void){

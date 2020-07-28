@@ -8,7 +8,7 @@
 
 import UIKit
 import ESTabBarController_swift
-import Firebase
+import FirebaseCore
 import Then
 
 @UIApplicationMain
@@ -18,45 +18,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        if #available(iOS 13, *) {
-            
-            // iOS 13 이상인 경우 AppDelegate와 SceneDelegate가 모두 호출되기 때문에 여기서 새로 생성하면 중복이 발생하므로 SceneDelegate만 처리되도록 분기해야함
-            
-        }else {
-            
-            window = UIWindow(frame: UIScreen.main.bounds)
-            
-            // ESTabBarController 넣기
-            //----------------------------------------------------------
-            // 루트 뷰 컨트롤러가 될 뷰 컨트롤러를 생성한다.
-            let tabBarVC = ESTabBarController()
-            
-            let v1 = TourSpotListViewController()
-            let v2 = FestivalListViewController()
-            let v3 = AccountViewController()
-            
-            v1.tabBarItem.title = "관광지"
-            v2.tabBarItem.title = "행사"
-            v3.tabBarItem.title = "나의 계정"
-            
-            tabBarVC.viewControllers = [v1,v2,v3]
-            
-            tabBarVC.tabBar.tintColor = UIColor.red
-            //----------------------------------------------------------
-            
-            // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
-            let navigationVC = UINavigationController(rootViewController: tabBarVC)
-            
-            // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
-            window?.rootViewController = navigationVC
-            window?.makeKeyAndVisible()
-            //----------------------------------------------------------
-            
-            // 파이어베이스
-            FirebaseApp.configure()
-            
-            
-        }
+        // iOS 버전 13 이상은 SceneDelegate에서
+        if #available(iOS 13, *){ return true }
+        
+        // 파이어베이스
+        FirebaseApp.configure()
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        
+        // 루트 뷰 컨트롤러가 될 뷰 컨트롤러를 생성한다.
+        let tabBarVC = ESTabBarController()
+        
+        let vcTourSpot = TourSpotListViewController()
+        let vcFestival = FestivalListViewController()
+        let vcAccount = AccountViewController()
+        
+        vcTourSpot.tabBarItem.title = "관광지"
+        vcFestival.tabBarItem.title = "행사"
+        vcAccount.tabBarItem.title = "나의 계정"
+        
+        tabBarVC.viewControllers = [vcTourSpot,vcFestival,vcAccount]
+        tabBarVC.tabBar.tintColor = UIColor.red
+        
+        vcTourSpot.tabBarItem.image = UIImage(named: "tour-guide.png")?.withRenderingMode(.alwaysOriginal)
+        vcFestival.tabBarItem.image = UIImage(named: "festival.png")?.withRenderingMode(.alwaysOriginal)
+        vcAccount.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
+        
+        // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
+        let navigationVC = UINavigationController(rootViewController: tabBarVC)
+        // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
+        window?.rootViewController = navigationVC
+        window?.makeKeyAndVisible()
         
         // Override point for customization after application launch.
         return true

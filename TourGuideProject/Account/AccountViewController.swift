@@ -12,6 +12,8 @@ import Then
 import FirebaseAuth
 
 class AccountViewController: UIViewController {
+    
+    var scvAccount = UIScrollView()
 
     var tfID = UITextField()
     
@@ -27,8 +29,23 @@ class AccountViewController: UIViewController {
         super.loadView()
       
         self.view.backgroundColor = UIColor.white
+        setFrameView()
         setUpView()
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // 제스처 등록
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapScreenForHidingKeyboard)).then {
+            $0.numberOfTouchesRequired = 1
+            $0.isEnabled = true
+            $0.cancelsTouchesInView = false
+        }
+        
+        scvAccount.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -36,28 +53,51 @@ class AccountViewController: UIViewController {
         self.tabBarController?.title = "계정정보"
     }
     
+    func setFrameView() {
+        // 스크롤뷰
+        self.view.addSubview(scvAccount)
+        scvAccount.then {
+            $0.isScrollEnabled = true
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }.snp.makeConstraints { [unowned self] in
+            $0.left.right.equalToSuperview()
+            $0.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
+        }
+    }
+    
     func setUpView(){
         
+        // 이미지
+        self.scvAccount.addSubview(ivAccount)
+        ivAccount.then {
+            $0.image = UIImage(named: "heart_full.png")
+        }.snp.makeConstraints { [unowned self] in
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
+            $0.centerX.equalToSuperview()
+        }
+        
+        
         // 아이디
-        self.view.addSubview(tfID)
+        self.scvAccount.addSubview(tfID)
         tfID.then { [unowned self] in
-            $0.placeholder = "아이디"
+            $0.placeholder = "이메일"
             $0.textAlignment = .center
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.textAlignment = .left
             $0.layer.borderWidth = 1.0
             $0.borderStyle = .roundedRect
             $0.layer.borderColor = CGColor(srgbRed: 255, green: 192, blue: 203, alpha: 0)
-            $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/5, height: self.view.frame.height/5)
             $0.autocorrectionType = .no
+            $0.delegate = self
+            $0.returnKeyType = .next
         }.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.left.equalToSuperview().offset(25)
-            $0.right.equalToSuperview().offset(-25)
+            $0.top.equalTo(ivAccount.snp.bottom).offset(50)
+            $0.left.equalTo(self.view.safeAreaLayoutGuide).offset(25)
+            $0.right.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
         }
         
         // 비밀번호
-        self.view.addSubview(tfPassword)
+        self.scvAccount.addSubview(tfPassword)
         tfPassword.then { [unowned self] in
             $0.placeholder = "비밀번호"
             $0.textAlignment = .center
@@ -69,33 +109,25 @@ class AccountViewController: UIViewController {
             $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/5, height: self.view.frame.height/5)
             $0.autocorrectionType = .no
             $0.isSecureTextEntry = true
+            $0.delegate = self
+            $0.returnKeyType = .done
         }.snp.makeConstraints { [unowned self] in
-            $0.top.equalTo(self.tfID.snp.bottom).offset(20)
+            $0.top.equalTo(self.tfID.snp.bottom).offset(10)
             $0.left.right.equalTo(self.tfID)
         }
-        
-        // 이미지
-        self.view.addSubview(ivAccount)
-        ivAccount.then {
-            $0.image = UIImage(named: "heart_full.png")
-        }.snp.makeConstraints { [unowned self] in
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(70)
-            $0.centerX.equalToSuperview()
-        }
-        
         // 로그인 버튼
-        self.view.addSubview(btnLogin)
+        self.scvAccount.addSubview(btnLogin)
         btnLogin.then { [unowned self] in
             $0.backgroundColor = .lightGray
             $0.setTitle("로그인", for: .normal)
             $0.addTarget(self, action: #selector(onLoginBtnClicked(_:)), for: UIControl.Event.touchUpInside)
         }.snp.makeConstraints { [unowned self] in
-            $0.top.equalTo(self.tfPassword.snp.bottom).offset(20)
+            $0.top.equalTo(self.tfPassword.snp.bottom).offset(25)
             $0.left.right.equalTo(self.tfID)
         }
         
         // 회원가입 버튼
-         self.view.addSubview(btnSignin)
+         self.scvAccount.addSubview(btnSignin)
          btnSignin.then { [unowned self] in
             $0.backgroundColor = .lightGray
             $0.setTitle("회원가입", for: .normal)
@@ -103,6 +135,7 @@ class AccountViewController: UIViewController {
          }.snp.makeConstraints { [unowned self] in
              $0.top.equalTo(self.btnLogin.snp.bottom).offset(15)
              $0.left.right.equalTo(self.tfID)
+             $0.bottom.equalToSuperview()
          }
     }
     
@@ -153,5 +186,22 @@ class AccountViewController: UIViewController {
                 return
             }
         }
+    }
+    
+    @objc func tapScreenForHidingKeyboard(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+}
+
+extension AccountViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == tfID {
+            tfPassword.becomeFirstResponder()
+        } else {
+            tfPassword.resignFirstResponder()
+        }
+        
+        return true
     }
 }

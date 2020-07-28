@@ -11,7 +11,9 @@ class TMNetworking {
     var numOfRows: Int = 10
     var arrange: String?
     
-    var APIKey = ""
+    var APIKey: String {
+        return ""
+    }
     
     func requestAPI(update: @escaping(_ update: [Any]?) -> Void) {}
     
@@ -25,6 +27,8 @@ class TMNetworking {
         Alamofire.request(urlString).responseJSON { response in
             if response.result.isSuccess {
                 update(response.result.value)
+            } else {
+                update(nil)
             }
         }
     }

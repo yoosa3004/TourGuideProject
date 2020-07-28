@@ -56,7 +56,13 @@ class FestivalDetailView: UIView {
         
         // 스택뷰
         self.scvFestival.addSubview(stvFestival)
-        stvFestival.snp.makeConstraints {
+        
+        stvFestival.then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.axis = .horizontal
+            $0.distribution = .fillEqually
+            $0.alignment = .fill
+        }.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.top.bottom.equalToSuperview()
             $0.left.right.equalToSuperview()

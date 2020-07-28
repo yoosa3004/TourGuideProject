@@ -80,7 +80,8 @@ class FestivalListViewController: UIViewController {
             $0.dataSource = $0
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.tapCellDelegate = self
-            $0.register(UINib(nibName: FestivalCell.reusableIdentifier, bundle: nil), forCellReuseIdentifier: FestivalCell.reusableIdentifier)
+            
+            $0.register(FestivalCell.self, forCellReuseIdentifier: FestivalCell.reusableIdentifier)
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             $0.left.right.bottom.equalToSuperview()

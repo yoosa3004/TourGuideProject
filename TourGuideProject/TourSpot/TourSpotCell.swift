@@ -17,12 +17,16 @@ class TourSpotCell: UICollectionViewCell {
 
     let lbTitle = UILabel()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
 
-        self.backgroundColor = .systemGray5
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     
+        self.backgroundColor = .systemGray5
         setView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setView(){

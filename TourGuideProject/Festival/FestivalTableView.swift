@@ -18,6 +18,8 @@ class FestivalTableView: UITableView {
     weak var tapCellDelegate: FestivalDelegate?
 
     var listFestivalInfo = Array(repeating: [FestivalInfo](), count: 12)
+    
+    
 }
 
 extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {

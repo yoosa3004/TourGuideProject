@@ -78,7 +78,6 @@ class TourSpotListViewController: UIViewController {
         stvTourSpotList.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.axis = .horizontal
-            $0.backgroundColor = .white
             $0.distribution = .fillEqually
             $0.alignment = .fill
         }.snp.makeConstraints { [unowned self] in
@@ -90,7 +89,8 @@ class TourSpotListViewController: UIViewController {
     }
     
     func setCollectionViewList() {
-        
+        // ** 1) 무의미한 통신 : 화면 별로 따로 구성. 클래스 생성. 그 안에 콜렉션뷰, 에이피아이 관리, 인디케이터 넣기.
+        // ** 2) 이 코드를 모듈화.
         var idx = 0
         for (key, value) in areaCategory {
             let cvToutSpot = TourSpotCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then { [weak self] in
@@ -112,10 +112,9 @@ class TourSpotListViewController: UIViewController {
                 $0.collectionViewLayout = layout
                 $0.translatesAutoresizingMaskIntoConstraints = false
                 $0.showsHorizontalScrollIndicator = false
-                $0.isPagingEnabled = true
                 
                 // 셀
-                $0.register(UINib(nibName: TourSpotCell.reusableIdentifier, bundle: nil), forCellWithReuseIdentifier: TourSpotCell.reusableIdentifier)
+                $0.register(TourSpotCell.self, forCellWithReuseIdentifier: TourSpotCell.reusableIdentifier)
                 $0.tapCellDelegate = self
             }
             
@@ -147,10 +146,6 @@ class TourSpotListViewController: UIViewController {
         let idx = CGFloat(segmentedControl.selectedSegmentIndex)
         
         scvTourSpotList.contentOffset.x = screenWidth*idx
-    }
-    
-    func loadCollectionViewData() {
-        
     }
 }
 
