@@ -12,7 +12,7 @@ import SnapKit
 import Kingfisher
 
 class TourSpotDetailViewController: UIViewController {
-
+    
     // 데이터
     var tourSpotInfo = TourSpotInfo()
     
@@ -20,7 +20,7 @@ class TourSpotDetailViewController: UIViewController {
     var vDetail = TourSpotDetailView()
     
     // 찜 아이콘
-    var imgFullHeart = UIImage(named: "heart_full.png")
+    var imgFullHeart = UIImage(named: "heart_full")
     var imgEmptyHeart = UIImage(named: "heart_empty.png")
     
     override func loadView() {

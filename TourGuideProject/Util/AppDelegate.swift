@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarVC.viewControllers = [vcTourSpot,vcFestival,vcAccount]
         tabBarVC.tabBar.tintColor = UIColor.red
         
-        vcTourSpot.tabBarItem.image = UIImage(named: "tour-guide.png")?.withRenderingMode(.alwaysOriginal)
+        vcTourSpot.tabBarItem.image = UIImage(named: "tour_guide.png")?.withRenderingMode(.alwaysOriginal)
         vcFestival.tabBarItem.image = UIImage(named: "festival.png")?.withRenderingMode(.alwaysOriginal)
         vcAccount.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
         

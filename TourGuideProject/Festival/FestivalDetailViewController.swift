@@ -20,7 +20,7 @@ class FestivalDetailViewController: UIViewController {
     var festivalInfo = FestivalInfo()
     
     // 찜 아이콘
-    var imgFullHeart = UIImage(named: "heart_full.png")?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)
+    var imgFullHeart = UIImage(named: "heart_full")?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)
     var imgEmptyHeart = UIImage(named: "heart_empty.png")?.resized(to: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysOriginal)
     
     

@@ -17,12 +17,6 @@
 		0254A2C324B4155300945CEA /* TourGuideProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2C224B4155300945CEA /* TourGuideProjectTests.swift */; };
 		0254A2CE24B4155300945CEA /* TourGuideProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2CD24B4155300945CEA /* TourGuideProjectUITests.swift */; };
 		0254A2DC24B415D600945CEA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2DB24B415D600945CEA /* .gitignore */; };
-		025956B524C68AB400B0CE2B /* break-dance.png in Resources */ = {isa = PBXBuildFile; fileRef = 025956B424C68AB400B0CE2B /* break-dance.png */; };
-		025956B724C68B4100B0CE2B /* festival.png in Resources */ = {isa = PBXBuildFile; fileRef = 025956B624C68B4100B0CE2B /* festival.png */; };
-		025956B924C68BAB00B0CE2B /* tour-guide.png in Resources */ = {isa = PBXBuildFile; fileRef = 025956B824C68BAB00B0CE2B /* tour-guide.png */; };
-		025956BB24C68C6A00B0CE2B /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 025956BA24C68C6A00B0CE2B /* user.png */; };
-		025B0E7924C1320400A80554 /* heart_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 025B0E7724C1320400A80554 /* heart_full.png */; };
-		025B0E7A24C1320400A80554 /* heart_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 025B0E7824C1320400A80554 /* heart_empty.png */; };
 		025B0E7E24C1417900A80554 /* FestivalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025B0E7C24C1417900A80554 /* FestivalCell.swift */; };
 		025B0E8124C1541A00A80554 /* FestivalTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025B0E8024C1541A00A80554 /* FestivalTableView.swift */; };
 		025B0E8324C18F3200A80554 /* FestivalDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025B0E8224C18F3200A80554 /* FestivalDetailViewController.swift */; };
@@ -39,8 +33,6 @@
 		02D3EC3F24B7137500446F7C /* FestivalListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3E24B7137500446F7C /* FestivalListViewController.swift */; };
 		02D3EC4124B7138E00446F7C /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC4024B7138E00446F7C /* AccountViewController.swift */; };
 		02F4412C24C7D48600BB6A98 /* TMFestivalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F4412B24C7D48600BB6A98 /* TMFestivalViewModel.swift */; };
-		02F4412E24C8087900BB6A98 /* sing.png in Resources */ = {isa = PBXBuildFile; fileRef = 02F4412D24C8087800BB6A98 /* sing.png */; };
-		02F4413024C80BED00BB6A98 /* happiness.png in Resources */ = {isa = PBXBuildFile; fileRef = 02F4412F24C80BED00BB6A98 /* happiness.png */; };
 		1B2DAAE203B3C55F7DB08810 /* Pods_TourGuideProject_TourGuideProjectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */; };
 		8CB24100C60F92A299031221 /* Pods_TourGuideProjectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5078FB52E117B4CFC33DE7D4 /* Pods_TourGuideProjectTests.framework */; };
 		C1DA969FB55A4B8B53F30DA4 /* Pods_TourGuideProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF26D61086C15BE86A78587A /* Pods_TourGuideProject.framework */; };
@@ -80,12 +72,6 @@
 		0254A2CD24B4155300945CEA /* TourGuideProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourGuideProjectUITests.swift; sourceTree = "<group>"; };
 		0254A2CF24B4155300945CEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0254A2DB24B415D600945CEA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		025956B424C68AB400B0CE2B /* break-dance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "break-dance.png"; sourceTree = "<group>"; };
-		025956B624C68B4100B0CE2B /* festival.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = festival.png; sourceTree = "<group>"; };
-		025956B824C68BAB00B0CE2B /* tour-guide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tour-guide.png"; sourceTree = "<group>"; };
-		025956BA24C68C6A00B0CE2B /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
-		025B0E7724C1320400A80554 /* heart_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart_full.png; sourceTree = "<group>"; };
-		025B0E7824C1320400A80554 /* heart_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart_empty.png; sourceTree = "<group>"; };
 		025B0E7C24C1417900A80554 /* FestivalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalCell.swift; sourceTree = "<group>"; };
 		025B0E8024C1541A00A80554 /* FestivalTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalTableView.swift; sourceTree = "<group>"; };
 		025B0E8224C18F3200A80554 /* FestivalDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalDetailViewController.swift; sourceTree = "<group>"; };
@@ -102,8 +88,6 @@
 		02D3EC3E24B7137500446F7C /* FestivalListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalListViewController.swift; sourceTree = "<group>"; };
 		02D3EC4024B7138E00446F7C /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		02F4412B24C7D48600BB6A98 /* TMFestivalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMFestivalViewModel.swift; sourceTree = "<group>"; };
-		02F4412D24C8087800BB6A98 /* sing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sing.png; sourceTree = "<group>"; };
-		02F4412F24C80BED00BB6A98 /* happiness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = happiness.png; sourceTree = "<group>"; };
 		4AD49760D0171AE8282A7613 /* Pods-TourGuideProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProject.release.xcconfig"; path = "Target Support Files/Pods-TourGuideProject/Pods-TourGuideProject.release.xcconfig"; sourceTree = "<group>"; };
 		4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TourGuideProject_TourGuideProjectUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5078FB52E117B4CFC33DE7D4 /* Pods_TourGuideProjectTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TourGuideProjectTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,7 +167,6 @@
 		0254A2AA24B4155100945CEA /* TourGuideProject */ = {
 			isa = PBXGroup;
 			children = (
-				025B0E7B24C13A5D00A80554 /* Resources */,
 				0277A1A624C0322500F13874 /* Account */,
 				0277A1A524C0321800F13874 /* Util */,
 				0277A1A424C031FC00F13874 /* Festival */,
@@ -210,21 +193,6 @@
 				0254A2CF24B4155300945CEA /* Info.plist */,
 			);
 			path = TourGuideProjectUITests;
-			sourceTree = "<group>";
-		};
-		025B0E7B24C13A5D00A80554 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				02F4412F24C80BED00BB6A98 /* happiness.png */,
-				02F4412D24C8087800BB6A98 /* sing.png */,
-				025B0E7824C1320400A80554 /* heart_empty.png */,
-				025B0E7724C1320400A80554 /* heart_full.png */,
-				025956BA24C68C6A00B0CE2B /* user.png */,
-				025956B824C68BAB00B0CE2B /* tour-guide.png */,
-				025956B424C68AB400B0CE2B /* break-dance.png */,
-				025956B624C68B4100B0CE2B /* festival.png */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		0277A1A324C02E7500F13874 /* TourSpot */ = {
@@ -443,19 +411,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				025B0E7924C1320400A80554 /* heart_full.png in Resources */,
 				0250D7A324CE78BC00415E89 /* TourSpotCell.xib in Resources */,
-				025956B524C68AB400B0CE2B /* break-dance.png in Resources */,
-				025956BB24C68C6A00B0CE2B /* user.png in Resources */,
-				025B0E7A24C1320400A80554 /* heart_empty.png in Resources */,
-				02F4412E24C8087900BB6A98 /* sing.png in Resources */,
-				025956B924C68BAB00B0CE2B /* tour-guide.png in Resources */,
 				0254A2DC24B415D600945CEA /* .gitignore in Resources */,
-				02F4413024C80BED00BB6A98 /* happiness.png in Resources */,
 				0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */,
 				0254A2B524B4155300945CEA /* Assets.xcassets in Resources */,
 				02528F3E24C5327900DD1EF3 /* GoogleService-Info.plist in Resources */,
-				025956B724C68B4100B0CE2B /* festival.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

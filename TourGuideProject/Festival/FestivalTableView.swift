@@ -108,7 +108,8 @@ extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {
             $0.image = UIImage(named: "happiness.png")
         }.snp.makeConstraints {
             $0.left.equalToSuperview().offset(10)
-            $0.top.bottom.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            //$0.top.bottom.equalToSuperview()
         }
         
         let lbHeader = UILabel()

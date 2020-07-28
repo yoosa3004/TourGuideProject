@@ -70,7 +70,7 @@ class AccountViewController: UIViewController {
         // 이미지
         self.scvAccount.addSubview(ivAccount)
         ivAccount.then {
-            $0.image = UIImage(named: "heart_full.png")
+            $0.image = UIImage(named: "heart_full")
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
             $0.centerX.equalToSuperview()
