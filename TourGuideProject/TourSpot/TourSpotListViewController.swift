@@ -118,6 +118,15 @@ class TourSpotListViewController: UIViewController {
                 $0.tapCellDelegate = self
             }
             
+            // 리프레쉬 컨트롤
+            let rcrTourSpot = UIRefreshControl()
+            rcrTourSpot.addTarget(self, action: #selector(refreshTourSpotData(_:)), for: .valueChanged)
+            if #available(iOS 10.0, *) {
+                cvToutSpot.refreshControl = rcrTourSpot
+            } else {
+                cvToutSpot.addSubview(rcrTourSpot)
+            }
+            
             listCollectionView.append(cvToutSpot)
             
             self.stvTourSpotList.addArrangedSubview(listCollectionView[idx])
@@ -138,6 +147,10 @@ class TourSpotListViewController: UIViewController {
             
             idx += 1
         }
+    }
+  
+    @objc func refreshTourSpotData(_ sender: UIRefreshControl) {
+        sender.endRefreshing()
     }
     
     @objc func changeAreaCategory(_ segmentedControl: UISegmentedControl) {

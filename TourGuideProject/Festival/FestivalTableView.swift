@@ -18,13 +18,15 @@ class FestivalTableView: UITableView {
     weak var tapCellDelegate: FestivalDelegate?
 
     var listFestivalInfo = Array(repeating: [FestivalInfo](), count: 12)
-    
-    
 }
 
 extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listFestivalInfo[section].count
+        if listFestivalInfo.count > 0 {
+            return listFestivalInfo[section].count
+        }else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -90,6 +92,8 @@ extension FestivalTableView: UITableViewDelegate, UITableViewDataSource {
     
     // 행사가 없는 달의 섹션은 보이지 않게함
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if listFestivalInfo.count == 0 { return 0 }
+        
         if listFestivalInfo[section].count == 0 {
             return CGFloat.leastNormalMagnitude
         } else {
