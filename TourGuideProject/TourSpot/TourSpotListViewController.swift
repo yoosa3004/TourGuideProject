@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Then
 import ScrollableSegmentedControl
+import KYDrawerController
 
 class TourSpotListViewController: UIViewController {
     
@@ -38,12 +39,24 @@ class TourSpotListViewController: UIViewController {
         super.viewDidLoad()
         
         self.scAreaCategory.selectedSegmentIndex = 0
+        setDrawerView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.tabBarController?.title = "관광지"
+    }
+    
+    // 드로어 메뉴
+    func setDrawerView()  {
+        self.tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "drawer.png")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(tabDrawerIcon(_:)) )
+    }
+    
+    @objc func tabDrawerIcon(_ sender: UIBarButtonItem) {
+        if let drawerController = self.navigationController?.parent as? KYDrawerController {
+            drawerController.setDrawerState(.opened, animated: true)
+        }
     }
     
     // MARK: 실제 데이터가 보여질 CollectionView를 제외한 나머지 Frame이 되는 View 세팅
