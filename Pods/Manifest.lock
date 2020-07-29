@@ -86,6 +86,7 @@ PODS:
   - PromisesObjC (1.2.9)
   - ScrollableSegmentedControl (1.5.0)
   - SnapKit (4.0.1)
+  - SpringIndicator (5.0.0)
   - Then (2.7.0)
 
 DEPENDENCIES:
@@ -99,6 +100,7 @@ DEPENDENCIES:
   - ObjectMapperAdditions/Core (~> 4.1)
   - ScrollableSegmentedControl (~> 1.5.0)
   - SnapKit (~> 4.0.0)
+  - SpringIndicator
   - Then
 
 SPEC REPOS:
@@ -125,6 +127,7 @@ SPEC REPOS:
     - PromisesObjC
     - ScrollableSegmentedControl
     - SnapKit
+    - SpringIndicator
     - Then
 
 SPEC CHECKSUMS:
@@ -150,8 +153,9 @@ SPEC CHECKSUMS:
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   ScrollableSegmentedControl: 2e64bbe8968a7fcd8aae5014434481464fcdfe60
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  SpringIndicator: 111bf862e1415e5ac7b3a43c0cd09633d5715fd6
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: eaa11898397fb13564bb7e61077eeaea16d3bb4f
+PODFILE CHECKSUM: 03d5fdc7b8b781c8921b8c5313ef38d69bd06fce
 
 COCOAPODS: 1.9.3

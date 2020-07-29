@@ -75,7 +75,7 @@ class TourSpotListViewController: UIViewController {
             $0.distribution = .fillEqually
             $0.alignment = .fill
         }.snp.makeConstraints {
-            $0.left.right.equalToSuperview()
+            $0.top.bottom.left.right.height.equalToSuperview()
         }
     }
     
@@ -97,6 +97,7 @@ class TourSpotListViewController: UIViewController {
             self.stvTourSpotList.addArrangedSubview(vcTourSpot.view)
             vcTourSpot.view.snp.makeConstraints {
                 $0.height.width.equalTo(self.scvTourSpotList)
+                $0.top.bottom.equalToSuperview()
             }
             vcTourSpot.didMove(toParent: self)
             

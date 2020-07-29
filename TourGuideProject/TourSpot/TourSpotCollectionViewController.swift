@@ -10,8 +10,12 @@ import UIKit
 import Then
 import SnapKit
 import CRRefresh
+import SpringIndicator
 
 class TourSpotCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    
+    // 인디케이터
+    let avTourSpotLoading = SpringIndicator(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     
     // API 로드 모델
     var mTourSpot = TMTourSpot()
@@ -36,6 +40,15 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     override func loadView() {
         super.loadView()
         
+        // 인디케이터
+        self.view.addSubview(avTourSpotLoading)
+        avTourSpotLoading.then {
+            // MARK: center가 왜 내가 생각하는 center와 다른지 확인 요망....
+            let validCenter = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
+            $0.center = validCenter
+            $0.lineColor = .red
+        }
+        
         // 콜렉션 뷰 세팅
         setCollectionView()
     }
@@ -43,6 +56,8 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     func setCollectionView() {
         
         self.collectionView.then { [weak self] in
+            
+            $0.backgroundColor = .white
             
             // 델리게이트
             $0.delegate = self
@@ -80,6 +95,8 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     
     func loadData() {
         
+        avTourSpotLoading.start()
+        
         mTourSpot.requestAPI { (apiResult) -> Void in
             if let result = apiResult as? [TourSpotInfo] {
                 self.listTourSpot = result
@@ -88,6 +105,8 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             } else {
                 self.dataLoadFailed()
             }
+            
+            self.avTourSpotLoading.stop()
         }
     }
     
