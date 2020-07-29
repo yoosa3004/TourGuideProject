@@ -3,6 +3,7 @@ PODS:
   - AlamofireObjectMapper (5.2.1):
     - Alamofire (~> 4.7)
     - ObjectMapper (~> 3.4)
+  - CRRefresh (1.1.3)
   - ESTabBarController-swift (2.6.4)
   - Firebase/Analytics (6.28.1):
     - Firebase/Core
@@ -89,6 +90,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireObjectMapper (~> 5.2)
+  - CRRefresh
   - ESTabBarController-swift (= 2.6.4)
   - Firebase/Analytics
   - Firebase/Auth
@@ -103,6 +105,7 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireObjectMapper
+    - CRRefresh
     - ESTabBarController-swift
     - Firebase
     - FirebaseAnalytics
@@ -127,6 +130,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireObjectMapper: 1989f690e982b71921b9253f53a4f33a9bc00d88
+  CRRefresh: 1415d4ae06837fa7bb064c44f2e102f3ef517044
   ESTabBarController-swift: 58cca4ab7de980657d99a02181c1ff310983e975
   Firebase: ed042590caa0029392257529a8003c25ee82bc18
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
@@ -148,6 +152,6 @@ SPEC CHECKSUMS:
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: 5eb2ee3f9d81c64743150e6519995a0d536afbfc
+PODFILE CHECKSUM: eaa11898397fb13564bb7e61077eeaea16d3bb4f
 
 COCOAPODS: 1.9.3

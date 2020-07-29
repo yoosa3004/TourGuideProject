@@ -11,6 +11,7 @@ import SnapKit
 import Then
 import ScrollableSegmentedControl
 import KYDrawerController
+import CRRefresh
 
 class TourSpotListViewController: UIViewController {
     
@@ -106,11 +107,11 @@ class TourSpotListViewController: UIViewController {
         // ** 2) 이 코드를 모듈화.
         var idx = 0
         for (key, value) in areaCategory {
-            let cvToutSpot = TourSpotCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then { [weak self] in
+            let cvToutSpot = TourSpotCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then { [weak self] (cv) -> Void in
                 
-                $0.backgroundColor = .white
-                $0.delegate = $0
-                $0.dataSource = $0
+                cv.backgroundColor = .white
+                cv.delegate = cv
+                cv.dataSource = cv
                 
                 // API 요청 변수 세팅
                 mTourSpots.areaCode = value
@@ -122,22 +123,22 @@ class TourSpotListViewController: UIViewController {
                 // 레이아웃
                 let layout = UICollectionViewFlowLayout()
                 layout.scrollDirection = .vertical
-                $0.collectionViewLayout = layout
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.showsHorizontalScrollIndicator = false
+                cv.collectionViewLayout = layout
+                cv.translatesAutoresizingMaskIntoConstraints = false
+                cv.showsHorizontalScrollIndicator = false
                 
                 // 셀
-                $0.register(TourSpotCell.self, forCellWithReuseIdentifier: TourSpotCell.reusableIdentifier)
-                $0.tapCellDelegate = self
-            }
-            
-            // 리프레쉬 컨트롤
-            let rcrTourSpot = UIRefreshControl()
-            rcrTourSpot.addTarget(self, action: #selector(refreshTourSpotData(_:)), for: .valueChanged)
-            if #available(iOS 10.0, *) {
-                cvToutSpot.refreshControl = rcrTourSpot
-            } else {
-                cvToutSpot.addSubview(rcrTourSpot)
+                cv.register(TourSpotCell.self, forCellWithReuseIdentifier: TourSpotCell.reusableIdentifier)
+                cv.tapCellDelegate = self
+                
+                // 리프레쉬 컨트롤
+                cv.cr.addHeadRefresh(animator: NormalFooterAnimator()) { [weak self] in
+                    self?.refreshFestivalData(cv)
+                }
+                
+                cv.cr.addFootRefresh(animator: NormalFooterAnimator()) { [weak self] in
+                    self?.loadMoreFestivalData(cv)
+                }
             }
             
             listCollectionView.append(cvToutSpot)
@@ -162,8 +163,12 @@ class TourSpotListViewController: UIViewController {
         }
     }
   
-    @objc func refreshTourSpotData(_ sender: UIRefreshControl) {
-        sender.endRefreshing()
+    func refreshFestivalData(_ sender: TourSpotCollectionView) {
+        sender.cr.endHeaderRefresh()
+    }
+    
+    func loadMoreFestivalData(_ sender: TourSpotCollectionView) {
+        sender.cr.endLoadingMore()
     }
     
     @objc func changeAreaCategory(_ segmentedControl: UISegmentedControl) {
@@ -186,7 +191,6 @@ extension TourSpotListViewController: UIScrollViewDelegate {
         // 스크롤뷰에서 현재 보여지고있는 뷰의 위치
         scAreaCategory.selectedSegmentIndex = Int(x/screenWidth)
     }
-    
 }
 
 extension TourSpotListViewController: TourSpotCellDelegate {

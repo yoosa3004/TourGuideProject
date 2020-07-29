@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import Then
+import CRRefresh
 
 class FestivalListViewController: UIViewController {
 
@@ -26,7 +27,7 @@ class FestivalListViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
-
+        
         setViews()
     }
     
@@ -55,22 +56,26 @@ class FestivalListViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.tapCellDelegate = self
             $0.register(FestivalCell.self, forCellReuseIdentifier: FestivalCell.reusableIdentifier)
+            
+            $0.cr.addHeadRefresh(animator: NormalFooterAnimator()) { [weak self] in
+                self?.refreshFestivalData()
+            }
+            
+            $0.cr.addFootRefresh(animator: NormalFooterAnimator()) { [weak self] in
+                self?.loadMoreFestivalData()
+            }
         }.snp.makeConstraints { [unowned self] in
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            $0.left.right.bottom.equalToSuperview()
-        }
-    
-        // 테이블 뷰 리프레쉬 컨트롤
-        rcrFestical.addTarget(self, action: #selector(refreshFestivalData(_:)), for: .valueChanged)
-        if #available(iOS 10.0, *) {
-            tbvFestival.refreshControl = rcrFestical
-        } else {
-            tbvFestival.addSubview(rcrFestical)
+            $0.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            $0.left.right.equalToSuperview()
         }
     }
     
-    @objc func refreshFestivalData(_ sender: UIRefreshControl) {
-        sender.endRefreshing()
+    func refreshFestivalData() {
+        tbvFestival.cr.endHeaderRefresh()
+    }
+    
+    func loadMoreFestivalData() {
+        tbvFestival.cr.endLoadingMore()
     }
 
     func loadData() {
@@ -109,4 +114,3 @@ extension FestivalListViewController: FestivalDelegate {
         self.navigationController?.pushViewController(detailView, animated: true)
     }
 }
-
