@@ -11,10 +11,11 @@ import SnapKit
 import Then
 import FirebaseAuth
 
+
 class AccountViewController: UIViewController {
     
     var scvAccount = UIScrollView()
-
+    
     var tfID = UITextField()
     
     var tfPassword = UITextField()
@@ -27,7 +28,7 @@ class AccountViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-      
+        
         self.view.backgroundColor = UIColor.white
         setFrameView()
         setUpView()
@@ -75,7 +76,6 @@ class AccountViewController: UIViewController {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(50)
             $0.centerX.equalToSuperview()
         }
-        
         
         // 아이디
         self.scvAccount.addSubview(tfID)
@@ -127,16 +127,16 @@ class AccountViewController: UIViewController {
         }
         
         // 회원가입 버튼
-         self.scvAccount.addSubview(btnSignin)
-         btnSignin.then { [unowned self] in
+        self.scvAccount.addSubview(btnSignin)
+        btnSignin.then { [unowned self] in
             $0.backgroundColor = .lightGray
             $0.setTitle("회원가입", for: .normal)
             $0.addTarget(self, action: #selector(onSigninBtnClicked(_:)), for: UIControl.Event.touchUpInside)
-         }.snp.makeConstraints { [unowned self] in
-             $0.top.equalTo(self.btnLogin.snp.bottom).offset(15)
-             $0.left.right.equalTo(self.tfID)
-             $0.bottom.equalToSuperview()
-         }
+        }.snp.makeConstraints { [unowned self] in
+            $0.top.equalTo(self.btnLogin.snp.bottom).offset(15)
+            $0.left.right.equalTo(self.tfID)
+            $0.bottom.equalToSuperview()
+        }
     }
     
     @objc func onLoginBtnClicked(_ sender: UIButton) {
@@ -148,21 +148,21 @@ class AccountViewController: UIViewController {
             
             Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
                 if user != nil {
-                    print("로그인 성공")
+                    self.presentUserAlert(message: "로그인 성공!")
                     sender.setTitle("로그아웃", for: .normal)
                 } else {
-                    print("로그인 실패")
+                    self.presentUserAlert(message: "로그인 실패!")
                 }
             }
         }
-        // 로그아웃
+            // 로그아웃
         else {
             do {
                 try Auth.auth().signOut()
+                self.presentUserAlert(message: "로그아웃 성공!")
                 sender.setTitle("로그인", for: .normal)
-                print("로그아웃 성공")
             } catch _ as NSError {
-                print("로그아웃 오류")
+                self.presentUserAlert(message: "로그아웃 실패!")
             }
         }
     }
@@ -173,19 +173,25 @@ class AccountViewController: UIViewController {
         guard let email = tfID.text, let password = tfPassword.text else { return }
         
         Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
-            guard let user = authResult?.user
-                else {
-                    print("잘못된 형식 or 이미 있는 계정이라는 alert 필요")
-                    return
+            guard let user = authResult?.user else {
+                self.presentUserAlert(message: "잘못된 형식의 이메일이거나 이미 존재하는 계정입니다.")
+                return
             }
             
             if error == nil {
-                print("회원 가입 완료")
+                self.presentUserAlert(message: "회원가입 완료!")
             } else {
-                print("회원 가입 실패")
+                self.presentUserAlert(message: "회원가입 실패!")
                 return
             }
         }
+    }
+    
+    func presentUserAlert(message: String?) {
+        // alert
+        let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        self.present(alert, animated: false, completion: nil)
     }
     
     @objc func tapScreenForHidingKeyboard(sender: UITapGestureRecognizer) {
