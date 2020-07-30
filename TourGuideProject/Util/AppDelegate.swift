@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarVC = ESTabBarController()
         
         let vcTourSpot = TourSpotListViewController()
-        let vcFestival = FestivalListViewController()
+        let vcFestival = FestivaListTableViewController()
         let vcAccount = AccountViewController()
         
         vcTourSpot.tabBarItem.title = "관광지"

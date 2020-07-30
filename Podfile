@@ -14,6 +14,7 @@ target 'TourGuideProject' do
   pod 'KYDrawerController', :inhibit_warnings => true #, :binary => true
   pod 'CRRefresh', :inhibit_warnings => true #, :binary => true
   pod 'SpringIndicator', :inhibit_warnings => true #, :binary => true
+  pod 'KRPullLoader', :inhibit_warnings => true #, :binary => true
   # add the Firebase pod for Google Analytics
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'

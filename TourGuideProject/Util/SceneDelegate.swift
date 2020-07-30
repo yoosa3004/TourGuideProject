@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarVC = ESTabBarController()
         
         let vcTourSpot = TourSpotListViewController()
-        let vcFestival = FestivalListViewController()
+        let vcFestival = FestivaListTableViewController()//FestivalListViewController()
         let vcAccount = AccountViewController()
         
         vcTourSpot.tabBarItem.title = "관광지"

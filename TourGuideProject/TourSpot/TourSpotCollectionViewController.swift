@@ -47,7 +47,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             let validCenter = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             $0.center = validCenter
             $0.lineColor = .red
-        }
+        }.start()
         
         // 콜렉션 뷰 세팅
         setCollectionView()
@@ -94,8 +94,6 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     }
     
     func loadData() {
-        
-        avTourSpotLoading.start()
         
         mTourSpot.requestAPI { (apiResult) -> Void in
             if let result = apiResult as? [TourSpotInfo] {
