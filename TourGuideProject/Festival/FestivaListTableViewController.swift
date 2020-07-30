@@ -20,9 +20,6 @@ class FestivaListTableViewController: UITableViewController {
     // 리프레쉬 컨트롤
     let rcrFestical = UIRefreshControl()
     
-    // 데이터 로딩 실패 시 띄울 라벨
-    var lbDataLoadFailed = UILabel()
-    
     // 데이터
     var listFestivalInfo = Array(repeating: [FestivalInfo](), count: 12)
     
@@ -51,7 +48,6 @@ class FestivaListTableViewController: UITableViewController {
     }
     
     func loadData() {
-
         mFestivals.eventStartDate = 20200101
         mFestivals.arrange = "P"
         
@@ -70,16 +66,13 @@ class FestivaListTableViewController: UITableViewController {
     }
     
     func loadDataFailed() {
-        self.lbDataLoadFailed.removeFromSuperview()
-        self.view.addSubview(self.lbDataLoadFailed)
-        self.lbDataLoadFailed.then {
-            $0.text = "데이터 로드 실패"
-        }.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
+        let lbDataLoadFailed = UILabel(frame: self.tableView.bounds)
+        lbDataLoadFailed.text = "데이터 로드 실패"
+        lbDataLoadFailed.textAlignment = .center
+        self.tableView.backgroundView = UIView(frame: tableView.bounds)
+        self.tableView.backgroundView?.addSubview(lbDataLoadFailed)
     }
-    
-    
+
     func setViews() {
         self.view.backgroundColor = .white
         
@@ -124,7 +117,7 @@ class FestivaListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cclFestivalInfo = tableView.dequeueReusableCell(withIdentifier: FestivalCell.reusableIdentifier, for: indexPath) as? FestivalCell else {return UITableViewCell()}
+        guard let cclFestivalInfo = tableView.dequeueReusableCell(withIdentifier: FestivalCell.reusableIdentifier, for: indexPath) as? FestivalCell else {return FestivalCell()}
         // 셀 세팅
         if listFestivalInfo[indexPath.section].count > 0 {
             return cclFestivalInfo.then {
