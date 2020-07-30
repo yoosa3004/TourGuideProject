@@ -14,7 +14,7 @@ import Kingfisher
 class FestivalDetailViewController: UIViewController {
     
     // 상세화면 view
-    var vDetail = FestivalDetailView()
+    var vDetail = GeneralDetailView()
     
     // 상세화면에 나타낼 데이터
     var festivalInfo = FestivalInfo()
@@ -30,8 +30,9 @@ class FestivalDetailViewController: UIViewController {
         self.view.addSubview(vDetail)
         vDetail.then { [unowned self] in
             $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            $0.festivalInfo = self.festivalInfo
-        }.setViews()
+            $0.setViews()
+            $0.setTypeOfData(self.festivalInfo)
+        }
         
         setNavItem()
     }

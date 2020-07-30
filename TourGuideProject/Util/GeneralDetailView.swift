@@ -1,34 +1,25 @@
 //
-//  TourSpotDetailView.swift
+//  GeneralDetailView.swift
 //  TourGuideProject
 //
-//  Created by hyunndy on 2020/07/24.
+//  Created by hyunndy on 2020/07/30.
 //  Copyright © 2020 hyunndy. All rights reserved.
 //
 
 import UIKit
 
-class TourSpotDetailView: UIView {
-
-    // 데이터
-    var tourSpotInfo = TourSpotInfo()
+class GeneralDetailView: UIView {
     
-    // 스크롤뷰
-    let scvDetailTourSpot = UIScrollView()
+    var scvDetail = UIScrollView()
     
-    // 스택뷰
-    let stvDetailTourSpot = UIStackView()
-
-    // 이미지뷰
-    var ivTourSpot = UIImageView()
+    var stvDetail = UIStackView()
     
-    // 제목
+    var ivDetail = UIImageView()
+    
     var lbTitle = UILabel()
     
-    // 주소(addr1 + addr2)
     var lbAddr = UILabel()
     
-    // 전화번호
     var lbTel = UILabel()
     
     override init(frame: CGRect) {
@@ -40,46 +31,92 @@ class TourSpotDetailView: UIView {
     }
     
     func setViews() {
-        self.setFrameViews()
-        self.setContentViews()
+        setFrameView()
+        setContentView()
     }
     
-    func setFrameViews() {
+    func setTypeOfData(_ deliveredInfo: Any?) {
         
-        self.addSubview(scvDetailTourSpot)
-        scvDetailTourSpot.then {
+        switch deliveredInfo {
+        case is FestivalInfo:
+            if let detailInfo = deliveredInfo as? FestivalInfo {
+                 // set 행사 상세 뷰
+                self.setContents(image: detailInfo.image, title: detailInfo.title, addr1: detailInfo.addr1, addr2: detailInfo.addr2, tel: detailInfo.tel)
+            }
+        case is TourSpotInfo:
+            if let detailInfo = deliveredInfo as? TourSpotInfo {
+                // set 관광지 상세 뷰
+                self.setContents(image: detailInfo.image, title: detailInfo.title, addr1: detailInfo.addr1, addr2: detailInfo.addr2, tel: detailInfo.tel)
+            }
+        default:
+            tgLog("상세 페이지 데이터 로드 실패")
+        }
+    }
+    
+    func setContents(image: String?, title: String?, addr1: String?, addr2: String?, tel: String?) {
+    
+        // 이미지
+        if let image = image {
+            ivDetail.kf.setImage(with: URL(string: image), options: nil)
+        }
+        
+        // 제목
+        if let title = title {
+            lbTitle.text = title
+        }
+        
+        // 주소
+        if let addr1 = addr1 {
+            lbAddr.text = addr1
+            if let addr2 = addr2 {
+                lbAddr.text = addr1 + addr2
+            }
+        }
+        
+        // 전화번호
+        if let tel = tel {
+            lbTel.text = tel
+        } else {
+            lbTel.text = "전화번호가 제공되지 않습니다."
+            lbTel.textColor = .systemGray4
+        }
+    }
+    
+    func setFrameView() {
+        
+        // 스크롤뷰
+        self.addSubview(scvDetail)
+        scvDetail.then {
             $0.isScrollEnabled = true
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] in
             $0.left.right.equalToSuperview()
-            $0.top.bottom.equalTo(self.safeAreaLayoutGuide)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
-
-        // ** 스택뷰 설정은 가급적 모든곳에서.
-        self.scvDetailTourSpot.addSubview(stvDetailTourSpot)
-        stvDetailTourSpot.then {
+        
+        // 스택뷰
+        self.scvDetail.addSubview(stvDetail)
+        stvDetail.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.axis = .horizontal
             $0.distribution = .fillEqually
             $0.alignment = .fill
         }.snp.makeConstraints {
-            $0.centerX.width.equalToSuperview()
-            $0.top.bottom.equalToSuperview()
+            $0.width.equalToSuperview()
+            $0.centerX.top.bottom.equalToSuperview()
             $0.left.right.equalToSuperview()
         }
     }
-
-    func setContentViews() {
+    
+    func setContentView() {
         
-        // 이미지
-        self.stvDetailTourSpot.addSubview(ivTourSpot)
-        ivTourSpot.then {
+        // 상세 이미지
+        self.stvDetail.addSubview(ivDetail)
+        ivDetail.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
-            if let image = tourSpotInfo.image {
-                $0.kf.setImage(with: URL(string: image), options: nil)
-            }
         }.snp.makeConstraints {
             $0.top.equalToSuperview().offset(15)
             $0.left.equalToSuperview().offset(15)
@@ -87,12 +124,9 @@ class TourSpotDetailView: UIView {
             $0.height.equalTo(300)
         }
         
-        // 제목
-        self.stvDetailTourSpot.addSubview(lbTitle)
+        // 상세 제목
+        self.scvDetail.addSubview(lbTitle)
         lbTitle.then {
-            if let title = tourSpotInfo.title {
-                $0.text = title
-            }
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -100,21 +134,15 @@ class TourSpotDetailView: UIView {
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] in
-            $0.top.equalTo(self.ivTourSpot.snp.bottom).offset(25)
+            $0.top.equalTo(self.ivDetail.snp.bottom).offset(25)
             $0.height.equalTo(25)
             $0.left.equalToSuperview().offset(25)
             $0.right.equalToSuperview().offset(-25)
         }
         
-        // 주소
-        self.stvDetailTourSpot.addSubview(lbAddr)
-        lbAddr.then {
-            if let addr1 = tourSpotInfo.addr1 {
-                $0.text = addr1
-                if let addr2 = tourSpotInfo.addr2 {
-                    $0.text = addr1+addr2
-                }
-            }
+        // 상세 주소
+        self.scvDetail.addSubview(lbAddr)
+         lbAddr.then {
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -127,14 +155,8 @@ class TourSpotDetailView: UIView {
         }
         
         // 전화번호
-        self.stvDetailTourSpot.addSubview(lbTel)
+        self.scvDetail.addSubview(lbTel)
         lbTel.then {
-            if let tel = tourSpotInfo.tel {
-                $0.text = tel
-            } else {
-                $0.text = "전화번호가 제공되지 않습니다."
-                $0.textColor = .systemGray4
-            }
             $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
@@ -146,6 +168,4 @@ class TourSpotDetailView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
-    
-    
 }

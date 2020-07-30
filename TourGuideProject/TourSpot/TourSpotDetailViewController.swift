@@ -17,7 +17,7 @@ class TourSpotDetailViewController: UIViewController {
     var tourSpotInfo = TourSpotInfo()
     
     // 상세화면 뷰
-    var vDetail = TourSpotDetailView()
+    var vDetail = GeneralDetailView()
     
     // 찜 아이콘
     var imgFullHeart = UIImage(named: "heart_full")
@@ -29,10 +29,11 @@ class TourSpotDetailViewController: UIViewController {
         self.view.backgroundColor = .white
         
          self.view.addSubview(vDetail)
-        vDetail.then { [unowned self] in
-            $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            $0.tourSpotInfo = self.tourSpotInfo
-        }.setViews()
+         vDetail.then { [unowned self] in
+             $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+             $0.setViews()
+             $0.setTypeOfData(self.tourSpotInfo)
+         }
         
         setNavItems()
     }
@@ -48,6 +49,7 @@ class TourSpotDetailViewController: UIViewController {
     }
     
     func setNavItems(){
+        
         // 배경
         self.navigationController?.navigationBar.barTintColor = .orange
         
