@@ -350,6 +350,7 @@ PODS:
   - SnapKit (4.0.1)
   - SpringIndicator (5.0.0)
   - Then (2.7.0)
+  - YYBottomSheet (1.4.0)
 
 DEPENDENCIES:
   - AlamofireObjectMapper (~> 5.2)
@@ -368,6 +369,7 @@ DEPENDENCIES:
   - SnapKit (~> 4.0.0)
   - SpringIndicator
   - Then
+  - YYBottomSheet
 
 SPEC REPOS:
   trunk:
@@ -403,6 +405,7 @@ SPEC REPOS:
     - SnapKit
     - SpringIndicator
     - Then
+    - YYBottomSheet
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -437,7 +440,8 @@ SPEC CHECKSUMS:
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SpringIndicator: 111bf862e1415e5ac7b3a43c0cd09633d5715fd6
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
+  YYBottomSheet: 5ff139feb58a34c27289b201de2c1d765e1fa90e
 
-PODFILE CHECKSUM: 88f9aa9d1b37a68afc9f4b93910b7bccb98344bc
+PODFILE CHECKSUM: 4cc59846665dd1acba8f8bfd529a8ea65b60de25
 
 COCOAPODS: 1.9.3

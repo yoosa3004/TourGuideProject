@@ -10,8 +10,15 @@ import UIKit
 import Then
 import SnapKit
 import Kingfisher
+import FirebaseAuth
+import FirebaseCore
+import Firebase
 
 class TourSpotDetailViewController: UIViewController {
+    
+    // Firebase
+    //@test
+    var ref: DocumentReference? = nil
     
     // 데이터
     var tourSpotInfo = TourSpotInfo()
@@ -38,13 +45,15 @@ class TourSpotDetailViewController: UIViewController {
         setNavItems()
     }
     
-
     @objc func selectHeart(_ sender: UIBarButtonItem) {
 
         if(sender.image == imgFullHeart) {
             sender.image = imgEmptyHeart
+            self.delete()
+            
         } else {
             sender.image = imgFullHeart
+            self.insert()
         }
     }
     
@@ -71,4 +80,45 @@ class TourSpotDetailViewController: UIViewController {
         
         self.navigationController?.navigationBar.barTintColor = .white
     }
+    
+    func insert() {
+
+        // 유저 검사
+        if let user = Auth.auth().currentUser {
+            
+            // DTO로 만들기
+            let likedTourSpot = TourSpotInfo(title: vDetail.lbTitle.text)
+            
+            self.ref?.collection("TourSpot").document(user.uid).setData(["Title": likedTourSpot.title ?? "관광지"])
+            
+    
+        } else {
+            return
+        }
+    }
+    
+    func delete() {
+        
+    }
+    
+    /*
+    //{{ @HYEONJIY 선택된 사진을 store 버킷에 넣고, 성공한다면 contentDTO에 넣어서 Firebase DB에 넣어주는 함수. 제일 중요함
+    private fun contentUpload(){
+
+            val newNote = Note(
+                note_title.text.toString(),
+                posterUrl?.toString(),
+                note_contents.text.toString(),
+                note_ratingBar.rating,
+                System.currentTimeMillis(),
+                FirebaseAuth.getInstance().currentUser?.uid!!
+            )
+
+     
+         //        Auth.auth().currentUser?.uid
+     
+            firestore?.collection("MovieNote")?.document(newNote.uid)?.collection("reviews")?.document(newNote.timestamp.toString())?.set(newNote)
+            finish()
+    }
+    */
 }

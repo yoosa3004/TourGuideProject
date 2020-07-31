@@ -1,19 +1,20 @@
 //
-//  TGMyAccountViewController.swift
+//  SignUpViewController.swift
 //  TourGuideProject
 //
-//  Created by hyunndy on 2020/07/09.
+//  Created by hyunndy on 2020/07/31.
 //  Copyright © 2020 hyunndy. All rights reserved.
 //
 
 import UIKit
-import SnapKit
-import Then
-import FirebaseAuth
-import Firebase
 import YYBottomSheet
+import FirebaseAuth
+import FirebaseFirestore
 
-class AccountViewController: UIViewController {
+
+class SignUpViewController: UIViewController {
+    
+    let db = Firestore.firestore()
     
     var scvAccount = UIScrollView()
     
@@ -26,13 +27,15 @@ class AccountViewController: UIViewController {
     var btnLogin = UIButton()
     
     var btnSignin = UIButton()
-    
+
     override func loadView() {
         super.loadView()
         
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = .systemGray6
+        
         setFrameView()
-        setUpView()
+        setContentView()
+        setNavItem()
     }
     
     override func viewDidLoad() {
@@ -48,11 +51,10 @@ class AccountViewController: UIViewController {
         scvAccount.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tabBarController?.title = "계정정보"
+        self.navigationItem.title = "회원가입"
     }
     
     func setFrameView() {
@@ -67,18 +69,19 @@ class AccountViewController: UIViewController {
         }
     }
     
-    func setUpView(){
+    func setContentView(){
         
         // 이미지
         self.scvAccount.addSubview(ivAccount)
         ivAccount.then {
-            $0.image = UIImage(named: "heart_full")
+            $0.image = UIImage(named: "sign_up.png")
             $0.contentMode = .scaleAspectFit
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] in
-            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(50)
+            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(100)
             $0.left.right.equalToSuperview()
             $0.centerX.equalToSuperview()
+            
         }
         
         // 아이디
@@ -120,17 +123,6 @@ class AccountViewController: UIViewController {
             $0.left.right.equalTo(self.tfID)
         }
         
-        // 로그인 버튼
-        self.scvAccount.addSubview(btnLogin)
-        btnLogin.then { [unowned self] in
-            $0.backgroundColor = .lightGray
-            $0.setTitle("로그인", for: .normal)
-            $0.addTarget(self, action: #selector(onLoginBtnClicked(_:)), for: UIControl.Event.touchUpInside)
-        }.snp.makeConstraints { [unowned self] in
-            $0.top.equalTo(self.tfPassword.snp.bottom).offset(25)
-            $0.left.right.equalTo(self.tfID)
-        }
-        
         // 회원가입 버튼
         self.scvAccount.addSubview(btnSignin)
         btnSignin.then { [unowned self] in
@@ -138,55 +130,51 @@ class AccountViewController: UIViewController {
             $0.setTitle("회원가입", for: .normal)
             $0.addTarget(self, action: #selector(onSigninBtnClicked(_:)), for: UIControl.Event.touchUpInside)
         }.snp.makeConstraints { [unowned self] in
-            $0.top.equalTo(self.btnLogin.snp.bottom).offset(15)
+            $0.top.equalTo(self.tfPassword.snp.bottom).offset(15)
             $0.left.right.equalTo(self.tfID)
             $0.bottom.equalToSuperview()
         }
     }
     
-    @objc func onLoginBtnClicked(_ sender: UIButton) {
+    @objc func onCloseBtnClicked(_ sender: Any) {
+        presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    func setNavItem() {
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
+        self.view.addSubview(navBar)
+
+        let navItem = UINavigationItem(title: "회원가입")
+        navBar.setItems([navItem], animated: false)
+        navItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(onCloseBtnClicked(_:)))
+    }
+    
+    @objc func onSigninBtnClicked(_ sender: Any) {
         
-        // 로그인
-        if sender.title(for: .normal) == "로그인" {
-            
-            guard let email = tfID.text, let password = tfPassword.text else { return }
-            
-            Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
-                if user != nil {
-                    self.showToast(message: "로그인 성공!")
-                    sender.setTitle("로그아웃", for: .normal)
+        if let email = tfID.text, let password = tfPassword.text {
+            Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+                guard let user = authResult?.user else {
+                    self.showToast(message: "잘못된 이메일 형식이거나 이미 존재하는 계정입니다.")
+                    return
+                }
+                
+                if error == nil {
+                    self.completeSignUp()
                 } else {
-                    self.presentUserAlert(message: "로그인 실패!")
+                    self.showToast(message: "회원가입 실패!")
+                    return
                 }
             }
-        }
-        // 로그아웃
-        else {
-            do {
-                try Auth.auth().signOut()
-                self.showToast(message: "로그아웃 성공!")
-                sender.setTitle("로그인", for: .normal)
-            } catch _ as NSError {
-                self.presentUserAlert(message: "로그아웃 실패!")
-            }
+        } else {
+            self.showToast(message: "잘못된 이메일 형식이거나 이미 존재하는 계정입니다.")
+            return
         }
     }
     
-    // 회원가입 버튼 이벤트
-    @objc func onSigninBtnClicked(_ sender: UIButton) {
-        
-        self.navigationController?.present(SignUpViewController(), animated: true, completion: nil)
-    }
-    
-    func presentUserAlert(message: String?) {
-        // alert
-        let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        self.present(alert, animated: false, completion: nil)
-    }
-    
-    @objc func tapScreenForHidingKeyboard(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
+    func completeSignUp() {
+        presentingViewController?.dismiss(animated: true) {
+            self.showToast(message: "회원가입 완료!")
+        }
     }
     
     func showToast(message: String) {
@@ -203,9 +191,13 @@ class AccountViewController: UIViewController {
         
         simpleToast.show()
     }
+    
+    @objc func tapScreenForHidingKeyboard(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
 }
 
-extension AccountViewController: UITextFieldDelegate {
+extension SignUpViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if textField == tfID {

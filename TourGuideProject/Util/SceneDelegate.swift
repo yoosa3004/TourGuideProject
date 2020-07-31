@@ -11,7 +11,7 @@
 import UIKit
 import ESTabBarController_swift
 import KYDrawerController
-import FirebaseCore
+import Firebase
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

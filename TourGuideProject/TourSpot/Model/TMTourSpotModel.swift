@@ -104,6 +104,10 @@ class TourSpotInfo: Mappable {
     
     init() {}
     
+    init(title: String?) {
+        self.title = title
+    }
+    
     required init?(map: Map) {
     }
     

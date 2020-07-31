@@ -9,7 +9,7 @@
 import UIKit
 import ESTabBarController_swift
 import KYDrawerController
-import FirebaseCore
+import Firebase
 import Then
 
 @UIApplicationMain
@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+    
         // iOS 버전 13 이상은 SceneDelegate에서
         if #available(iOS 13, *){ return true }
         
