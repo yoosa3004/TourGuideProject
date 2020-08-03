@@ -104,8 +104,18 @@ class TourSpotInfo: Mappable {
     
     init() {}
     
-    init(title: String?) {
+    init(title: String?, addr1: String?, addr2: String?, image: String?, thumbnail: String?, tel: String?) {
         self.title = title
+        
+        if let addr1 = addr1 {
+            self.addr1 = addr1
+            if let addr2 = addr2 {
+                self.addr1 = addr1 + addr2
+            }
+        }
+        self.image = image
+        self.thumbnail = thumbnail
+        self.tel = tel
     }
     
     required init?(map: Map) {

@@ -35,7 +35,7 @@ class GeneralDetailView: UIView {
         setContentView()
     }
     
-    func setTypeOfData(_ deliveredInfo: Any?) {
+    func checkContentDataType(_ deliveredInfo: Any?) {
         
         switch deliveredInfo {
         case is FestivalInfo:

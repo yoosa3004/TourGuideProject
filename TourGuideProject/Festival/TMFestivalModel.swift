@@ -79,9 +79,6 @@ class FestivalResponse: Mappable {
 // 최종적으로 사용할 행사 정보 클래스
 class FestivalInfo: Mappable {
     
-    init() {}
-    required init?(map: Map) {}
-    
     // 필수 요청 변수
     var contentid: Int?
     var contenttypeid: Int?
@@ -103,6 +100,29 @@ class FestivalInfo: Mappable {
     var thumbnail: String?
     // 전화번호
     var tel: String?
+    
+    // DB 저장용 ( YYYY.MM.DD ~ YYYY.MM.DD )
+    var convertedEventDate: String?
+    
+    init() {}
+    
+    init(title: String?, addr1: String?, addr2: String?, image: String?, thumbnail: String?, tel: String?, eventDate: String?) {
+        self.title = title
+        
+        if let addr1 = addr1 {
+            self.addr1 = addr1
+            if let addr2 = addr2 {
+                self.addr1 = addr1 + addr2
+            }
+        }
+        self.image = image
+        self.thumbnail = thumbnail
+        self.tel = tel
+        
+        self.convertedEventDate = eventDate
+    }
+    
+    required init?(map: Map) {}
     
     func mapping(map: Map) {
         contentid <- map["contentid"]

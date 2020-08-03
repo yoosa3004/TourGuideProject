@@ -143,7 +143,9 @@ class FestivaListTableViewController: UITableViewController {
                 // 행사 날짜
                 if let startDate = data.eventstartdate {
                     if let endDate = data.eventenddate {
-                        $0.lbDate.text = String(startDate.changeDateFormat()) + " ~ " + String(endDate.changeDateFormat())
+                        let convertedEventDate = String(startDate.changeDateFormat()) + " ~ " + String(endDate.changeDateFormat())
+                        $0.lbDate.text = convertedEventDate
+                        data.convertedEventDate = convertedEventDate
                     }
                 }
                 

@@ -46,8 +46,24 @@ class AccountViewController: UIViewController {
         }
         
         scvAccount.addGestureRecognizer(singleTapGestureRecognizer)
+        
+        setTextFieledPerAuthState()
     }
     
+    func setTextFieledPerAuthState() {
+        // 로그인 체크
+        if Auth.auth().currentUser != nil {
+            tfID.placeholder = "이미 로그인 된 상태입니다."
+            tfPassword.placeholder = "이미 로그인 된 상태입니다."
+            btnLogin.setTitle("로그아웃", for: .normal)
+            btnSignin.isHidden = true
+        } else {
+            tfID.placeholder = "이메일"
+            tfPassword.placeholder = "비밀번호"
+            btnLogin.setTitle("로그인", for: .normal)
+            btnSignin.isHidden = false
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -148,13 +164,12 @@ class AccountViewController: UIViewController {
         
         // 로그인
         if sender.title(for: .normal) == "로그인" {
-            
             guard let email = tfID.text, let password = tfPassword.text else { return }
             
             Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
                 if user != nil {
                     self.showToast(message: "로그인 성공!")
-                    sender.setTitle("로그아웃", for: .normal)
+                    self.setTextFieledPerAuthState()
                 } else {
                     self.presentUserAlert(message: "로그인 실패!")
                 }
@@ -165,7 +180,7 @@ class AccountViewController: UIViewController {
             do {
                 try Auth.auth().signOut()
                 self.showToast(message: "로그아웃 성공!")
-                sender.setTitle("로그인", for: .normal)
+                self.setTextFieledPerAuthState()
             } catch _ as NSError {
                 self.presentUserAlert(message: "로그아웃 실패!")
             }

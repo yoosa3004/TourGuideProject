@@ -48,12 +48,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
         let navigationVC = UINavigationController(rootViewController: tabBarVC)
         
+        // 드로어 컨트롤러를 세팅한다.
         let drawerViewController = DrawerViewController()
         let drawerController = KYDrawerController(drawerDirection: .left, drawerWidth: window?.frame.width ?? 0)
         drawerController.mainViewController = navigationVC
         drawerController.drawerViewController = drawerViewController
         
-        // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
+        // 윈도우의 루트 뷰 컨트롤러로 드로어 컨트롤러를 세팅한다.
         window?.rootViewController = drawerController
         window?.makeKeyAndVisible()
         
