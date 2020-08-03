@@ -31,7 +31,7 @@ class FestivalDetailViewController: UIViewController {
         vDetail.then { [unowned self] in
             $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
             $0.setViews()
-            $0.setTypeOfData(self.festivalInfo)
+            $0.checkContentDataType(self.festivalInfo)
         }
         
         setNavItem()
