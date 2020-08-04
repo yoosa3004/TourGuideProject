@@ -12,7 +12,7 @@ import SnapKit
 import Firebase
 import YYBottomSheet
 
-class GeneralDetailViewController: UIViewController {
+class CMDetailViewController: UIViewController {
     
     enum DetailDataType {
         case TourSpot
@@ -73,22 +73,31 @@ class GeneralDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let festivalInfo = self.festivalInfo {
-            self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel)
-            self.checkIsHeartSelected(String(festivalInfo.contentid ?? 0))
-            
-        } else {
-            if let tourSpotInfo = self.tourSpotInfo {
-                self.setContents(image: tourSpotInfo.image, title: tourSpotInfo.title, addr1: tourSpotInfo.addr1, addr2: tourSpotInfo.addr2, tel: tourSpotInfo.tel)
-                self.checkIsHeartSelected(String(tourSpotInfo.contentid ?? 0))
-            }
-        }
+        self.setViewContents()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         self.navigationController?.navigationBar.barTintColor = .white
+    }
+    
+    func setViewContents() {
+        
+        switch self.dataType {
+        case .TourSpot:
+            if let tourSpotInfo = self.tourSpotInfo {
+                self.setContents(image: tourSpotInfo.image, title: tourSpotInfo.title, addr1: tourSpotInfo.addr1, addr2: tourSpotInfo.addr2, tel: tourSpotInfo.tel)
+                self.checkIsHeartSelected(String(tourSpotInfo.contentid ?? 0))
+            }
+        case .Festival:
+            if let festivalInfo = self.festivalInfo {
+                self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel)
+                self.checkIsHeartSelected(String(festivalInfo.contentid ?? 0))
+            }
+        default:
+            return
+        }
     }
     
     func checkIsHeartSelected(_ contentId: String) {
@@ -111,7 +120,6 @@ class GeneralDetailViewController: UIViewController {
             }
             
             let docRef = db.collection("zzimList").document(user.uid).collection(dataType.getString()).document(validContentId)
-            // 유저가 있을 땐 찜리스트에 있던애인가 검사
             
             docRef.getDocument { (document, err) in
                 if let document = document, document.exists {
@@ -120,7 +128,6 @@ class GeneralDetailViewController: UIViewController {
             }
         }
     }
-    
     
     func setContents(image: String?, title: String?, addr1: String?, addr2: String?, tel: String?) {
         
@@ -175,7 +182,6 @@ class GeneralDetailViewController: UIViewController {
             $0.left.right.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
-    
     
     func setContentView() {
         
@@ -276,25 +282,12 @@ class GeneralDetailViewController: UIViewController {
         // 유저 검사
         if let user = Auth.auth().currentUser {
             
-            // DTO로 만들기
-            if let tourSpotInfo = self.tourSpotInfo, let contentId = tourSpotInfo.contentid {
-                let likedTourSpot = TourSpotInfo(title: tourSpotInfo.title, addr1: tourSpotInfo.addr1, addr2: tourSpotInfo.addr2, image: tourSpotInfo.image, thumbnail: tourSpotInfo.thumbnail, tel: tourSpotInfo.tel)
-                
-                db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["Title": likedTourSpot.title ?? "제목이 제공되지 않습니다.", "Addr": likedTourSpot.addr1 ?? "주소가 제공되지 않습니다.", "Image": likedTourSpot.image ?? "No Image", "Thumbnail": likedTourSpot.thumbnail ?? "No Image", "Tel": likedTourSpot.tel ?? "전화번호가 제공되지 않습니다."]) { err in
+            switch self.dataType {
+            case .TourSpot:
+                if let tourSpotInfo = self.tourSpotInfo, let contentId = tourSpotInfo.contentid {
+                    let likedTourSpot = TourSpotInfo(title: tourSpotInfo.title, addr1: tourSpotInfo.addr1, addr2: tourSpotInfo.addr2, image: tourSpotInfo.image, thumbnail: tourSpotInfo.thumbnail, tel: tourSpotInfo.tel)
                     
-                    if err == nil {
-                        self.showToast(message: "찜리스트에 담았습니다.")
-                        updateIcon()
-                    }
-                }
-                
-            }
-            else {
-                if let festivalInfo = self.festivalInfo, let contentId = festivalInfo.contentid {
-                    
-                    let likedFestivalInfo = FestivalInfo(title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, image: festivalInfo.image, thumbnail: festivalInfo.thumbnail, tel: festivalInfo.tel, eventDate: festivalInfo.convertedEventDate)
-                
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["Title": likedFestivalInfo.title ?? "제목이 제공되지 않습니다.", "Addr": likedFestivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "Image": likedFestivalInfo.image ?? "No Image", "Thumbnail": likedFestivalInfo.thumbnail ?? "No Image", "Tel": likedFestivalInfo.tel ?? "전화번호가 제공되지 않습니다."]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["Title": likedTourSpot.title ?? "제목이 제공되지 않습니다.", "Addr": likedTourSpot.addr1 ?? "주소가 제공되지 않습니다.", "Image": likedTourSpot.image ?? "No Image", "Thumbnail": likedTourSpot.thumbnail ?? "No Image", "Tel": likedTourSpot.tel ?? "전화번호가 제공되지 않습니다."]) { err in
                         
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")
@@ -302,6 +295,21 @@ class GeneralDetailViewController: UIViewController {
                         }
                     }
                 }
+            case .Festival:
+                if let festivalInfo = self.festivalInfo, let contentId = festivalInfo.contentid {
+                    
+                    let likedFestivalInfo = FestivalInfo(title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, image: festivalInfo.image, thumbnail: festivalInfo.thumbnail, tel: festivalInfo.tel, eventDate: festivalInfo.convertedEventDate)
+                
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["Title": likedFestivalInfo.title ?? "제목이 제공되지 않습니다.", "Addr": likedFestivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "Image": likedFestivalInfo.image ?? "No Image", "Thumbnail": likedFestivalInfo.thumbnail ?? "No Image", "Tel": likedFestivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "EventDate": likedFestivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
+                        
+                        if err == nil {
+                            self.showToast(message: "찜리스트에 담았습니다.")
+                            updateIcon()
+                        }
+                    }
+                }
+            default:
+                return
             }
         } else {
             showToast(message: "찜 기능은 로그인 후 사용할 수 있습니다.")
@@ -315,12 +323,17 @@ class GeneralDetailViewController: UIViewController {
             
             var validContentId: String = ""
             
-            if let contentId = tourSpotInfo?.contentid {
-                validContentId = String(contentId)
-            } else {
+            switch self.dataType {
+            case .TourSpot:
+                if let contentId = tourSpotInfo?.contentid {
+                    validContentId = String(contentId)
+                }
+            case .Festival:
                 if let contentId = festivalInfo?.contentid {
                     validContentId = String(contentId)
                 }
+            default:
+                return
             }
             
             if validContentId != "" {

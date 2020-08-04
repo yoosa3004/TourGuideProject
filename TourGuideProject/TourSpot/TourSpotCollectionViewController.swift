@@ -118,7 +118,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let parent = self.parent as? TourSpotListViewController {
             
-            let vcTourSpotDetail = GeneralDetailViewController().then{
+            let vcTourSpotDetail = CMDetailViewController().then{
                 $0.tourSpotInfo = listTourSpot[indexPath.row]
                 $0.dataType = .TourSpot
             }

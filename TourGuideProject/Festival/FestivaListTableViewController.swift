@@ -169,7 +169,7 @@ class FestivaListTableViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let vDetail = GeneralDetailViewController().then {
+        let vDetail = CMDetailViewController().then {
             $0.festivalInfo = listFestivalInfo[indexPath.section][indexPath.row]
             $0.dataType = .Festival
         }
