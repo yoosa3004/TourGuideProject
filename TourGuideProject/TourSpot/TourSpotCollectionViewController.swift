@@ -120,6 +120,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             
             let vcTourSpotDetail = GeneralDetailViewController().then{
                 $0.tourSpotInfo = listTourSpot[indexPath.row]
+                $0.dataType = .TourSpot
             }
             
             parent.navigationController?.pushViewController(vcTourSpotDetail, animated: true)

@@ -171,6 +171,7 @@ class FestivaListTableViewController: UITableViewController {
         
         let vDetail = GeneralDetailViewController().then {
             $0.festivalInfo = listFestivalInfo[indexPath.section][indexPath.row]
+            $0.dataType = .Festival
         }
         
         self.navigationController?.pushViewController(vDetail, animated: true)
