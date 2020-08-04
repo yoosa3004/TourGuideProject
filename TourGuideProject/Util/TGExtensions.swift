@@ -24,9 +24,9 @@ extension Int {
         
         dateFormatter.dateFormat = "yyyy.MM.dd"
 
-        if tempDate != nil {
-            return dateFormatter.string(from: tempDate!)
-        }else {
+        if let Date = tempDate {
+            return dateFormatter.string(from: Date)
+        } else {
             return ""
         }
     }

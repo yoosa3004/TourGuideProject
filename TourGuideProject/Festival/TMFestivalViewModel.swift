@@ -63,17 +63,22 @@ class TMFestivals: TMNetworking {
         
         // 날짜순 정렬
         tempArr.sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
-            
-            return left.eventstartdate! < right.eventstartdate!
+
+            return left.eventstartdate ?? 0 < right.eventstartdate ?? 0
         }
-        
+
         // 월 단위로 쪼개어 적재
         for idx in sortedArr.indices {
             
             let month = String.init(format: "%02d", idx+1)
             
             let filteredByMonth = tempArr.filter {
-                $0.eventstartdate! >= Int("2020" + month + "01")! && $0.eventstartdate! <= Int("2020" + month + "31")!
+                
+                if let start = $0.eventstartdate {
+                    return start >= Int("2020" + month + "01") ?? Int.max && start <= Int("2020" + month + "31") ?? Int.min
+                }
+                
+                return false
             }
             
             sortedArr[idx].append(contentsOf: filteredByMonth)
