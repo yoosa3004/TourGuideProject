@@ -28,7 +28,7 @@ class TourSpotListViewController: UIViewController {
         
         setFrameViews()
         setCollectionViewControllerList()
-        setDrawerView()
+        self.setDrawer()
         
         self.scAreaCategory.selectedSegmentIndex = 0
         initDataOnSelectedCollectionView(0)
@@ -120,17 +120,6 @@ class TourSpotListViewController: UIViewController {
             if selectedVC.listTourSpot.isEmpty {
                 selectedVC.loadData()
             }
-        }
-    }
-    
-    // 드로어 메뉴
-    func setDrawerView()  {
-        self.tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "drawer.png")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(tabDrawerIcon(_:)) )
-    }
-    
-    @objc func tabDrawerIcon(_ sender: UIBarButtonItem) {
-        if let drawerController = self.navigationController?.parent as? KYDrawerController {
-            drawerController.setDrawerState(.opened, animated: true)
         }
     }
 }

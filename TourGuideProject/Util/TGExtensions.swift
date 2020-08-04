@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import KYDrawerController
 
 extension NSObject {
     static var reusableIdentifier: String {
@@ -69,6 +70,18 @@ extension NSMutableAttributedString {
         let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize)]
         self.append(NSMutableAttributedString(string: text, attributes: attrs))
         return self
+    }
+}
+
+extension UIViewController {
+    func setDrawer() {
+        self.tabBarController?.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "drawer.png")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(tabDrawerIcon(_:)) )
+    }
+    
+    @objc func tabDrawerIcon(_ sender: UIBarButtonItem) {
+        if let drawerController = self.navigationController?.parent as? KYDrawerController {
+            drawerController.setDrawerState(.opened, animated: true)
+        }
     }
 }
 

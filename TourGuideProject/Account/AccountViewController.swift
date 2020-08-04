@@ -35,12 +35,6 @@ class AccountViewController: UIViewController {
         setUpView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.tabBarController?.title = "계정정보"
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,6 +50,12 @@ class AccountViewController: UIViewController {
         // 텍스트 필드 UI 상태에 맞춰서 업데이트
         let isLoggedIn = Auth.auth().currentUser != nil
         setTextFieledPerAuthState(isLoggedIn)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.title = "계정정보"
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
