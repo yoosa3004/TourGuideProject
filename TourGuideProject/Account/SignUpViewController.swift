@@ -14,8 +14,6 @@ import FirebaseFirestore
 
 class SignUpViewController: UIViewController {
     
-    let db = Firestore.firestore()
-    
     var scvAccount = UIScrollView()
     
     var tfID = UITextField()
@@ -49,12 +47,22 @@ class SignUpViewController: UIViewController {
         }
         
         scvAccount.addGestureRecognizer(singleTapGestureRecognizer)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationItem.title = "회원가입"
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func setFrameView() {
@@ -81,7 +89,6 @@ class SignUpViewController: UIViewController {
             $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(100)
             $0.left.right.equalToSuperview()
             $0.centerX.equalToSuperview()
-            
         }
         
         // 아이디
@@ -191,10 +198,6 @@ class SignUpViewController: UIViewController {
         
         simpleToast.show()
     }
-    
-    @objc func tapScreenForHidingKeyboard(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
-    }
 }
 
 extension SignUpViewController: UITextFieldDelegate {
@@ -207,5 +210,21 @@ extension SignUpViewController: UITextFieldDelegate {
         }
         
         return true
+    }
+    
+    @objc func tapScreenForHidingKeyboard(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(_ sender: Notification) {
+        if self.view.frame.origin.y == 0.0 {
+            self.view.frame.origin.y -= 50
+        }
+    }
+    
+    @objc func keyboardWillHide(_ sender: Notification) {
+        if self.view.frame.origin.y < 0.0 {
+            self.view.frame.origin.y += 50
+        }
     }
 }

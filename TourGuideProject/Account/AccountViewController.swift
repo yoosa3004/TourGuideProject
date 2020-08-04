@@ -35,6 +35,12 @@ class AccountViewController: UIViewController {
         setUpView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.title = "계정정보"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,31 +53,23 @@ class AccountViewController: UIViewController {
         
         scvAccount.addGestureRecognizer(singleTapGestureRecognizer)
         
-        setTextFieledPerAuthState()
-    }
-    
-    func setTextFieledPerAuthState() {
-        // 로그인 체크
-        if Auth.auth().currentUser != nil {
-            tfID.placeholder = "이미 로그인 된 상태입니다."
-            tfPassword.placeholder = "이미 로그인 된 상태입니다."
-            btnLogin.setTitle("로그아웃", for: .normal)
-            btnSignin.isHidden = true
-        } else {
-            tfID.placeholder = "이메일"
-            tfPassword.placeholder = "비밀번호"
-            btnLogin.setTitle("로그인", for: .normal)
-            btnSignin.isHidden = false
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        // 텍스트 필드 UI 상태에 맞춰서 업데이트
+        let isLoggedIn = Auth.auth().currentUser != nil
+        setTextFieledPerAuthState(isLoggedIn)
         
-        self.tabBarController?.title = "계정정보"
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func setFrameView() {
+        
         // 스크롤뷰
         self.view.addSubview(scvAccount)
         scvAccount.then {
@@ -83,8 +81,7 @@ class AccountViewController: UIViewController {
         }
     }
     
-    func setUpView(){
-        
+    func setUpView() {
         // 이미지
         self.scvAccount.addSubview(ivAccount)
         ivAccount.then {
@@ -169,9 +166,9 @@ class AccountViewController: UIViewController {
             Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
                 if user != nil {
                     self.showToast(message: "로그인 성공!")
-                    self.setTextFieledPerAuthState()
+                    self.setTextFieledPerAuthState(true)
                 } else {
-                    self.presentUserAlert(message: "로그인 실패!")
+                    self.showToast(message: "로그인 실패!")
                 }
             }
         }
@@ -180,9 +177,9 @@ class AccountViewController: UIViewController {
             do {
                 try Auth.auth().signOut()
                 self.showToast(message: "로그아웃 성공!")
-                self.setTextFieledPerAuthState()
+                self.setTextFieledPerAuthState(false)
             } catch _ as NSError {
-                self.presentUserAlert(message: "로그아웃 실패!")
+                self.showToast(message: "로그아웃 실패!")
             }
         }
     }
@@ -193,19 +190,14 @@ class AccountViewController: UIViewController {
         self.navigationController?.present(SignUpViewController(), animated: true, completion: nil)
     }
     
-    func presentUserAlert(message: String?) {
-        // alert
+    func showAlert(message: String?) {
         let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alert, animated: false, completion: nil)
     }
     
-    @objc func tapScreenForHidingKeyboard(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
-    }
     
     func showToast(message: String) {
-        
         let option: [YYBottomSheet.SimpleToastOptions:Any] = [
             .showDuration: 2.0,
             .backgroundColor: UIColor.black,
@@ -230,5 +222,37 @@ extension AccountViewController: UITextFieldDelegate {
         }
         
         return true
+    }
+    
+    @objc func keyboardWillShow(_ sender: Notification) {
+        if self.view.frame.origin.y == 0.0 {
+            self.view.frame.origin.y -= 50
+        }
+    }
+    
+    @objc func keyboardWillHide(_ sender: Notification) {
+        if self.view.frame.origin.y < 0.0 {
+            self.view.frame.origin.y += 50
+        }
+    }
+    
+    func setTextFieledPerAuthState(_ isLoggedIn : Bool) {
+        
+        // 로그인 체크
+        if isLoggedIn {
+            tfID.placeholder = "이미 로그인 된 상태입니다."
+            tfPassword.placeholder = "이미 로그인 된 상태입니다."
+            btnLogin.setTitle("로그아웃", for: .normal)
+            btnSignin.isHidden = true
+        } else {
+            tfID.placeholder = "이메일"
+            tfPassword.placeholder = "비밀번호"
+            btnLogin.setTitle("로그인", for: .normal)
+            btnSignin.isHidden = false
+        }
+    }
+    
+    @objc func tapScreenForHidingKeyboard(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
     }
 }
