@@ -31,6 +31,19 @@ class TourSpotCell: UICollectionViewCell {
     
     func setView(){
         
+        self.addSubview(ivThumbnail)
+        ivThumbnail.then{
+            $0.frame = .zero
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
+        }.snp.makeConstraints {
+            $0.width.equalToSuperview().multipliedBy(0.8)
+            $0.height.equalTo(ivThumbnail.snp.width).multipliedBy(0.6)
+            $0.top.equalToSuperview().offset(25)
+            $0.centerX.equalToSuperview()
+        }
+        
         self.addSubview(lbTitle)
         lbTitle.then {
             $0.textAlignment = .center
@@ -42,20 +55,8 @@ class TourSpotCell: UICollectionViewCell {
         }.snp.makeConstraints { (make) -> Void in
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
-            make.bottom.equalTo(-40)
-        }
-        
-        self.addSubview(ivThumbnail)
-        ivThumbnail.then{
-            $0.frame = .zero
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.contentMode = .scaleAspectFill
-            $0.clipsToBounds = true
-        }.snp.makeConstraints {
-            $0.width.equalTo(200)
-            $0.top.equalToSuperview().offset(25)
-            $0.height.equalTo(125)
-            $0.centerX.equalToSuperview()
+            make.top.equalTo(ivThumbnail.snp.bottom)
+            make.bottom.equalToSuperview()
         }
     }
 }

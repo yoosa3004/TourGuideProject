@@ -80,7 +80,6 @@ class FestivalResponse: Mappable {
 class FestivalInfo: Mappable {
     
     // 필수 요청 변수
-    var contentid: Int?
     var contenttypeid: Int?
     var createdtime: Int?
     var modifiedtime: Int?
@@ -88,6 +87,9 @@ class FestivalInfo: Mappable {
     var eventstartdate: Int?
     var eventenddate: Int?
     
+    
+    // 고유 식별자
+    var contentid: Int?
     // 지역 코드
     var areaCode: Int?
     // 전체 주소

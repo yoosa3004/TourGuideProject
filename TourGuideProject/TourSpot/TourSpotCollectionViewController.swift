@@ -37,6 +37,11 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
         }
     }
     
+    // 셀 갯수
+    var cellsPerRow: CGFloat = 2
+    let cellPadding: CGFloat = 10
+    let cellHeightRatio: CGFloat = 1.25
+    
     override func loadView() {
         super.loadView()
         
@@ -66,6 +71,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             // 레이아웃
             $0.collectionViewLayout = UICollectionViewFlowLayout().then {
                 $0.scrollDirection = .vertical
+                $0.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
             }
             
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -112,7 +118,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let parent = self.parent as? TourSpotListViewController {
             
-            let vcTourSpotDetail = TourSpotDetailViewController().then{
+            let vcTourSpotDetail = GeneralDetailViewController().then{
                 $0.tourSpotInfo = listTourSpot[indexPath.row]
             }
             
@@ -154,10 +160,19 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     // 셀 사이즈
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        //셀 즉 TGAreaTourSpotView의 사이즈
-        return CGSize(width: self.view.frame.width/1.5, height: self.view.frame.height/2)
+        let widthMinusPadding = self.view.frame.width - (cellPadding + cellPadding * cellsPerRow)
+        let eachSide = widthMinusPadding / cellsPerRow
+        return CGSize(width: eachSide, height: eachSide * cellHeightRatio)
+    
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10.0
+    
+    /*
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        cellsPerRow = (traitCollection.verticalSizeClass == .compact) ? 5 : 2
+        
+        self.collectionView.reloadData()
     }
+     */
 }
