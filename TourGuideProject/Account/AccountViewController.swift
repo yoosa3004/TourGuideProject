@@ -61,8 +61,8 @@ class AccountViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -186,7 +186,6 @@ class AccountViewController: UIViewController {
     
     // 회원가입 버튼 이벤트
     @objc func onSigninBtnClicked(_ sender: UIButton) {
-        
         self.navigationController?.present(SignUpViewController(), animated: true, completion: nil)
     }
     

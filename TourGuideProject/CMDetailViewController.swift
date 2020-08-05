@@ -14,7 +14,7 @@ import YYBottomSheet
 
 class CMDetailViewController: UIViewController {
     
-    enum DetailDataType {
+    enum DataType {
         case TourSpot
         case Festival
         case None
@@ -31,6 +31,13 @@ class CMDetailViewController: UIViewController {
             }
         }
     }
+    
+    // 데이터
+    var tourSpotInfo: TourSpotInfo?
+    var festivalInfo: FestivalInfo?
+    
+    // 데이터 타입
+    var dataType: DataType = .None
     
     // 상세화면 뷰
     var scvDetail = UIScrollView()
@@ -49,31 +56,22 @@ class CMDetailViewController: UIViewController {
     var imgFullHeart = UIImage(named: "heart_full")?.withRenderingMode(.alwaysOriginal)
     var imgEmptyHeart = UIImage(named: "heart_empty.png")?.withRenderingMode(.alwaysOriginal)
     
-    // 데이터
-    var tourSpotInfo: TourSpotInfo?
-    var festivalInfo: FestivalInfo?
-    
-    // 데이터 타입
-    var dataType: DetailDataType = .None
-    
     // Firebase
     let db = Firestore.firestore()
-    var ref: DocumentReference? = nil
     
     override func loadView() {
         super.loadView()
         
         self.view.backgroundColor = .white
         
-        setFrameView()
-        setContentView()
+        setViews()
         setNavItems()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.setViewContents()
+        setViewContents()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -88,42 +86,28 @@ class CMDetailViewController: UIViewController {
         case .TourSpot:
             if let tourSpotInfo = self.tourSpotInfo {
                 self.setContents(image: tourSpotInfo.image, title: tourSpotInfo.title, addr1: tourSpotInfo.addr1, addr2: tourSpotInfo.addr2, tel: tourSpotInfo.tel)
-                self.checkIsHeartSelected(String(tourSpotInfo.contentid ?? 0))
+                self.checkIsHeartSelected(tourSpotInfo.contentid)
             }
         case .Festival:
             if let festivalInfo = self.festivalInfo {
                 self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel)
-                self.checkIsHeartSelected(String(festivalInfo.contentid ?? 0))
+                self.checkIsHeartSelected(festivalInfo.contentid)
             }
         default:
             return
         }
     }
     
-    func checkIsHeartSelected(_ contentId: String) {
+    func checkIsHeartSelected(_ contentId : Int?) {
         
         if let user = Auth.auth().currentUser {
-            
-            var validContentId: String = ""
-            
-            switch self.dataType {
-            case .TourSpot:
-                if let contentId = tourSpotInfo?.contentid {
-                    validContentId = String(contentId)
-                }
-            case .Festival:
-                if let contentId = festivalInfo?.contentid {
-                    validContentId = String(contentId)
-                }
-            default:
-                return
-            }
-            
-            let docRef = db.collection("zzimList").document(user.uid).collection(dataType.getString()).document(validContentId)
-            
-            docRef.getDocument { (document, err) in
-                if let document = document, document.exists {
-                    self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
+            if let contentId = contentId {
+                let docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
+
+                docRef.getDocument { (document, err) in
+                    if let document = document, document.exists {
+                        self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
+                    }
                 }
             }
         }
@@ -158,15 +142,14 @@ class CMDetailViewController: UIViewController {
         }
     }
     
-    
-    func setFrameView() {
+    func setViews() {
         
         // 스크롤뷰
         self.view.addSubview(scvDetail)
         scvDetail.then {
             $0.isScrollEnabled = true
             $0.translatesAutoresizingMaskIntoConstraints = false
-        }.snp.makeConstraints { [unowned self] in
+        }.snp.makeConstraints {
             $0.left.right.top.bottom.equalToSuperview()
         }
         
@@ -181,9 +164,6 @@ class CMDetailViewController: UIViewController {
             $0.top.bottom.equalToSuperview()
             $0.left.right.equalTo(self.view.safeAreaLayoutGuide)
         }
-    }
-    
-    func setContentView() {
         
         // 상세 이미지
         self.stvDetail.addSubview(ivDetail)
@@ -257,7 +237,6 @@ class CMDetailViewController: UIViewController {
         default:
             self.title = "상세화면"
         }
-
         
         // 오른쪽 - 찜 아이콘
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: self.imgEmptyHeart, style: .plain, target: self, action: #selector(self.selectHeart(_:)))
@@ -270,14 +249,14 @@ class CMDetailViewController: UIViewController {
                 sender.image = self.imgEmptyHeart
             }
         } else {
-            self.insertDataTozzimList() {
+            self.insertTozzimList() {
                 sender.image = self.imgFullHeart
             }
         }
     }
     
     
-    func insertDataTozzimList(updateIcon: @escaping () -> Void) {
+    func insertTozzimList(updateIcon: @escaping () -> Void) {
         
         // 유저 검사
         if let user = Auth.auth().currentUser {
@@ -292,6 +271,9 @@ class CMDetailViewController: UIViewController {
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")
                             updateIcon()
+                        } else {
+                            self.showToast(message: "찜리스트에 담기를 실패했습니다.")
+                            tgLog(err)
                         }
                     }
                 }
@@ -299,12 +281,15 @@ class CMDetailViewController: UIViewController {
                 if let festivalInfo = self.festivalInfo, let contentId = festivalInfo.contentid {
                     
                     let likedFestivalInfo = FestivalInfo(title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, image: festivalInfo.image, thumbnail: festivalInfo.thumbnail, tel: festivalInfo.tel, eventDate: festivalInfo.convertedEventDate)
-                
+                    
                     db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["Title": likedFestivalInfo.title ?? "제목이 제공되지 않습니다.", "Addr": likedFestivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "Image": likedFestivalInfo.image ?? "No Image", "Thumbnail": likedFestivalInfo.thumbnail ?? "No Image", "Tel": likedFestivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "EventDate": likedFestivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
                         
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")
                             updateIcon()
+                        } else {
+                            self.showToast(message: "찜리스트에 담기를 실패했습니다.")
+                            tgLog(err)
                         }
                     }
                 }
@@ -321,31 +306,28 @@ class CMDetailViewController: UIViewController {
         // 유저 검사
         if let user = Auth.auth().currentUser {
             
-            var validContentId: String = ""
+            var docRef: DocumentReference? = nil
             
             switch self.dataType {
             case .TourSpot:
                 if let contentId = tourSpotInfo?.contentid {
-                    validContentId = String(contentId)
+                    docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
                 }
             case .Festival:
                 if let contentId = festivalInfo?.contentid {
-                    validContentId = String(contentId)
+                    docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
                 }
             default:
                 return
             }
             
-            if validContentId != "" {
-                
-                let docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(validContentId)
-                 
-                 docRef.getDocument { (doc, err) in
-                     if let doc = doc, doc.exists {
-                         docRef.delete()
-                         self.showToast(message: "찜리스트에서 제거됐습니다.")
-                         updateIcon()
-                     }
+            if let docRef = docRef {
+                docRef.getDocument { (doc, err) in
+                    if let doc = doc, doc.exists {
+                        docRef.delete()
+                        self.showToast(message: "찜리스트에서 제거됐습니다.")
+                        updateIcon()
+                    }
                 }
             }
         }

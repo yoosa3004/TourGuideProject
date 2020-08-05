@@ -85,7 +85,7 @@ extension UIViewController {
     }
 }
 
-public func tgLog(_ str: String) {
+public func tgLog(_ str: Any) {
     #if DEBUG
     print(str)
     #else
