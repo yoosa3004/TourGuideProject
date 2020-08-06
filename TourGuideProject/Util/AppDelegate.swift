@@ -19,9 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        // iOS 버전 13 이상은 SceneDelegate에서
-        if #available(iOS 13, *){ return true }
-        
         // 파이어베이스
         FirebaseApp.configure()
         
@@ -67,26 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         return true
     }
-    
-    // MARK: UISceneSession Lifecycle
-    // MARK: sceneSessions는 앱에서 생성한 모든 scene의 정보를 관리한다.
-    
-    // scene을 만들 때 구성 객체를 반환해야 한다.
-    @available(iOS 13.0, *)
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
-    
-    // 사용자가 app switcher를 통해 scene을 닫을 때 호출된다.
-    @available(iOS 13.0, *)
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
-    
     
     
 }

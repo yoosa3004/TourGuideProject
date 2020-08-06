@@ -11,7 +11,6 @@
 		024DD93124D16A5D000FCEF1 /* FestivaListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024DD93024D16A5D000FCEF1 /* FestivaListTableViewController.swift */; };
 		02528F3E24C5327900DD1EF3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */; };
 		0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AB24B4155100945CEA /* AppDelegate.swift */; };
-		0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AD24B4155100945CEA /* SceneDelegate.swift */; };
 		0254A2B524B4155300945CEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2B424B4155300945CEA /* Assets.xcassets */; };
 		0254A2B824B4155300945CEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0254A2B624B4155300945CEA /* LaunchScreen.storyboard */; };
 		0254A2C324B4155300945CEA /* TourGuideProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2C224B4155300945CEA /* TourGuideProjectTests.swift */; };
@@ -59,7 +58,6 @@
 		02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0254A2A824B4155100945CEA /* TourGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TourGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0254A2AB24B4155100945CEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0254A2AD24B4155100945CEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0254A2B424B4155300945CEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0254A2B724B4155300945CEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0254A2B924B4155300945CEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -225,7 +223,6 @@
 			children = (
 				0254A2B624B4155300945CEA /* LaunchScreen.storyboard */,
 				0254A2AB24B4155100945CEA /* AppDelegate.swift */,
-				0254A2AD24B4155100945CEA /* SceneDelegate.swift */,
 				02315B0624B5995C00166294 /* CMNetworkingViewModel.swift */,
 				027F90D624C98119009899A3 /* CMExtensions.swift */,
 			);
@@ -548,7 +545,6 @@
 				027F08FD24D8FA7A00AF275B /* CMDetailViewController.swift in Sources */,
 				0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */,
 				02D3EC3D24B7134F00446F7C /* TourSpotListViewController.swift in Sources */,
-				0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */,
 				02D3EC4124B7138E00446F7C /* AccountViewController.swift in Sources */,
 				027F090224DA897B00AF275B /* DrawerTableViewCell.swift in Sources */,
 				025A7E3C24D00FCF003E8426 /* DrawerViewController.swift in Sources */,
