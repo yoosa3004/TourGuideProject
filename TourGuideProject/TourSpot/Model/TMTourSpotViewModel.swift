@@ -11,7 +11,7 @@ import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
 
-class TMTourSpot: TMNetworking {
+class TMTourSpot: CMNetworking {
     
     var areaCode: Int? = 0
     

@@ -12,7 +12,7 @@ import AlamofireObjectMapper
 import ObjectMapper
 
 
-class TMFestivals: TMNetworking {
+class TMFestivals: CMNetworking {
     
     var eventStartDate: Int? = 202001010
     

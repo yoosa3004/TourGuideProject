@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02315B0724B5995C00166294 /* TMNetworkingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* TMNetworkingViewModel.swift */; };
+		02315B0724B5995C00166294 /* CMNetworkingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* CMNetworkingViewModel.swift */; };
 		024DD93124D16A5D000FCEF1 /* FestivaListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024DD93024D16A5D000FCEF1 /* FestivaListTableViewController.swift */; };
 		02528F3E24C5327900DD1EF3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */; };
 		0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AB24B4155100945CEA /* AppDelegate.swift */; };
@@ -22,10 +22,11 @@
 		026E603B24BD5D45001CB5D4 /* TourSpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026E603924BD5D45001CB5D4 /* TourSpotCell.swift */; };
 		026F6A6324D3AE750084F756 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026F6A6224D3AE750084F756 /* SignUpViewController.swift */; };
 		027F08FD24D8FA7A00AF275B /* CMDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F08FC24D8FA7A00AF275B /* CMDetailViewController.swift */; };
+		027F090224DA897B00AF275B /* DrawerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F090124DA897B00AF275B /* DrawerTableViewCell.swift */; };
 		027F90CF24C91A11009899A3 /* TMTourSpotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90CE24C91A11009899A3 /* TMTourSpotViewModel.swift */; };
 		027F90D124C95A01009899A3 /* TMTourSpotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D024C95A01009899A3 /* TMTourSpotModel.swift */; };
 		027F90D324C95A17009899A3 /* TMFestivalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D224C95A17009899A3 /* TMFestivalModel.swift */; };
-		027F90D724C98119009899A3 /* TGExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D624C98119009899A3 /* TGExtensions.swift */; };
+		027F90D724C98119009899A3 /* CMExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F90D624C98119009899A3 /* CMExtensions.swift */; };
 		02C221F124D1144D004CC173 /* TourSpotCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C221F024D1144D004CC173 /* TourSpotCollectionViewController.swift */; };
 		02D3EC3D24B7134F00446F7C /* TourSpotListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */; };
 		02D3EC4124B7138E00446F7C /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC4024B7138E00446F7C /* AccountViewController.swift */; };
@@ -53,7 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		02315B0624B5995C00166294 /* TMNetworkingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMNetworkingViewModel.swift; sourceTree = "<group>"; };
+		02315B0624B5995C00166294 /* CMNetworkingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMNetworkingViewModel.swift; sourceTree = "<group>"; };
 		024DD93024D16A5D000FCEF1 /* FestivaListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivaListTableViewController.swift; sourceTree = "<group>"; };
 		02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0254A2A824B4155100945CEA /* TourGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TourGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,10 +75,11 @@
 		026E603924BD5D45001CB5D4 /* TourSpotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotCell.swift; sourceTree = "<group>"; };
 		026F6A6224D3AE750084F756 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		027F08FC24D8FA7A00AF275B /* CMDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMDetailViewController.swift; sourceTree = "<group>"; };
+		027F090124DA897B00AF275B /* DrawerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerTableViewCell.swift; sourceTree = "<group>"; };
 		027F90CE24C91A11009899A3 /* TMTourSpotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMTourSpotViewModel.swift; sourceTree = "<group>"; };
 		027F90D024C95A01009899A3 /* TMTourSpotModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMTourSpotModel.swift; sourceTree = "<group>"; };
 		027F90D224C95A17009899A3 /* TMFestivalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMFestivalModel.swift; sourceTree = "<group>"; };
-		027F90D624C98119009899A3 /* TGExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TGExtensions.swift; sourceTree = "<group>"; };
+		027F90D624C98119009899A3 /* CMExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMExtensions.swift; sourceTree = "<group>"; };
 		02C221F024D1144D004CC173 /* TourSpotCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotCollectionViewController.swift; sourceTree = "<group>"; };
 		02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotListViewController.swift; sourceTree = "<group>"; };
 		02D3EC4024B7138E00446F7C /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				025A7E3B24D00FCF003E8426 /* DrawerViewController.swift */,
+				027F090124DA897B00AF275B /* DrawerTableViewCell.swift */,
 			);
 			name = Drawer;
 			sourceTree = "<group>";
@@ -203,7 +206,6 @@
 			isa = PBXGroup;
 			children = (
 				027F90E224CAB318009899A3 /* Model */,
-				027F90DD24CA7031009899A3 /* Detail */,
 				027F90DC24CA7016009899A3 /* Main */,
 			);
 			path = TourSpot;
@@ -214,7 +216,6 @@
 			children = (
 				027F90F024CAD058009899A3 /* Model */,
 				027F90ED24CACF08009899A3 /* Main */,
-				027F90EC24CACC4A009899A3 /* Detail */,
 			);
 			path = Festival;
 			sourceTree = "<group>";
@@ -225,8 +226,8 @@
 				0254A2B624B4155300945CEA /* LaunchScreen.storyboard */,
 				0254A2AB24B4155100945CEA /* AppDelegate.swift */,
 				0254A2AD24B4155100945CEA /* SceneDelegate.swift */,
-				02315B0624B5995C00166294 /* TMNetworkingViewModel.swift */,
-				027F90D624C98119009899A3 /* TGExtensions.swift */,
+				02315B0624B5995C00166294 /* CMNetworkingViewModel.swift */,
+				027F90D624C98119009899A3 /* CMExtensions.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -258,13 +259,6 @@
 			name = Main;
 			sourceTree = "<group>";
 		};
-		027F90DD24CA7031009899A3 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Detail;
-			sourceTree = "<group>";
-		};
 		027F90E224CAB318009899A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,13 +266,6 @@
 				027F90D024C95A01009899A3 /* TMTourSpotModel.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		027F90EC24CACC4A009899A3 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Detail;
 			sourceTree = "<group>";
 		};
 		027F90ED24CACF08009899A3 /* Main */ = {
@@ -550,8 +537,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				027F90CF24C91A11009899A3 /* TMTourSpotViewModel.swift in Sources */,
-				027F90D724C98119009899A3 /* TGExtensions.swift in Sources */,
-				02315B0724B5995C00166294 /* TMNetworkingViewModel.swift in Sources */,
+				027F90D724C98119009899A3 /* CMExtensions.swift in Sources */,
+				02315B0724B5995C00166294 /* CMNetworkingViewModel.swift in Sources */,
 				02F4412C24C7D48600BB6A98 /* TMFestivalViewModel.swift in Sources */,
 				024DD93124D16A5D000FCEF1 /* FestivaListTableViewController.swift in Sources */,
 				026F6A6324D3AE750084F756 /* SignUpViewController.swift in Sources */,
@@ -563,6 +550,7 @@
 				02D3EC3D24B7134F00446F7C /* TourSpotListViewController.swift in Sources */,
 				0254A2AE24B4155100945CEA /* SceneDelegate.swift in Sources */,
 				02D3EC4124B7138E00446F7C /* AccountViewController.swift in Sources */,
+				027F090224DA897B00AF275B /* DrawerTableViewCell.swift in Sources */,
 				025A7E3C24D00FCF003E8426 /* DrawerViewController.swift in Sources */,
 				026E603B24BD5D45001CB5D4 /* TourSpotCell.swift in Sources */,
 				02C221F124D1144D004CC173 /* TourSpotCollectionViewController.swift in Sources */,

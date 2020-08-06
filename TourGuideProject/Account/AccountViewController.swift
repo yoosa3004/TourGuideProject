@@ -76,8 +76,7 @@ class AccountViewController: UIViewController {
             $0.isScrollEnabled = true
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] in
-            $0.left.right.equalToSuperview()
-            $0.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            $0.left.right.top.bottom.equalToSuperview()
         }
     }
     

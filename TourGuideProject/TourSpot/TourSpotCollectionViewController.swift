@@ -166,14 +166,4 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
         return CGSize(width: eachSide, height: eachSide * cellHeightRatio)
     
     }
-    
-    /*
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        cellsPerRow = (traitCollection.verticalSizeClass == .compact) ? 5 : 2
-        
-        self.collectionView.reloadData()
-    }
-     */
 }

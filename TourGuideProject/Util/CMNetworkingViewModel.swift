@@ -3,7 +3,7 @@ import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
 
-class TMNetworking {
+class CMNetworking {
 
     let serviceKey = "tLN%2Bjilj3ZFHA2%2FpssG4J4hN82oI6Q2b0rF3pB5hrv3LVOccCkbBP2YcHlMqd7%2FqHejXWPsU0abYZ2y%2FnivcZQ%3D%3D"
     

@@ -61,7 +61,7 @@ class CMDetailViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        
+    
         self.view.backgroundColor = .white
         
         setViews()
@@ -94,12 +94,11 @@ class CMDetailViewController: UIViewController {
                 self.checkIsHeartSelected(festivalInfo.contentid)
             }
         default:
-            return
+            showToast(message: "데이터가 로드되지 않았습니다.")
         }
     }
     
     func checkIsHeartSelected(_ contentId : Int?) {
-        
         if let user = Auth.auth().currentUser {
             if let contentId = contentId {
                 let docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
@@ -255,7 +254,6 @@ class CMDetailViewController: UIViewController {
         }
     }
     
-    
     func insertTozzimList(updateIcon: @escaping () -> Void) {
         
         // 유저 검사
@@ -266,7 +264,7 @@ class CMDetailViewController: UIViewController {
                 if let tourSpotInfo = self.tourSpotInfo, let contentId = tourSpotInfo.contentid {
                     let likedTourSpot = TourSpotInfo(title: tourSpotInfo.title, addr1: tourSpotInfo.addr1, addr2: tourSpotInfo.addr2, image: tourSpotInfo.image, thumbnail: tourSpotInfo.thumbnail, tel: tourSpotInfo.tel)
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["Title": likedTourSpot.title ?? "제목이 제공되지 않습니다.", "Addr": likedTourSpot.addr1 ?? "주소가 제공되지 않습니다.", "Image": likedTourSpot.image ?? "No Image", "Thumbnail": likedTourSpot.thumbnail ?? "No Image", "Tel": likedTourSpot.tel ?? "전화번호가 제공되지 않습니다."]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["title": likedTourSpot.title ?? "제목이 제공되지 않습니다.", "addr": likedTourSpot.addr1 ?? "주소가 제공되지 않습니다.", "image": likedTourSpot.image ?? "No Image", "thumbnail": likedTourSpot.thumbnail ?? "No Image", "tel": likedTourSpot.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
                         
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")
@@ -282,7 +280,7 @@ class CMDetailViewController: UIViewController {
                     
                     let likedFestivalInfo = FestivalInfo(title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, image: festivalInfo.image, thumbnail: festivalInfo.thumbnail, tel: festivalInfo.tel, eventDate: festivalInfo.convertedEventDate)
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["Title": likedFestivalInfo.title ?? "제목이 제공되지 않습니다.", "Addr": likedFestivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "Image": likedFestivalInfo.image ?? "No Image", "Thumbnail": likedFestivalInfo.thumbnail ?? "No Image", "Tel": likedFestivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "EventDate": likedFestivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["title": likedFestivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": likedFestivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": likedFestivalInfo.image ?? "No Image", "thumbnail": likedFestivalInfo.thumbnail ?? "No Image", "tel": likedFestivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": likedFestivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
                         
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")
@@ -294,7 +292,7 @@ class CMDetailViewController: UIViewController {
                     }
                 }
             default:
-                return
+                showToast(message: "데이터가 로드되지 않았습니다.")
             }
         } else {
             showToast(message: "찜 기능은 로그인 후 사용할 수 있습니다.")
@@ -318,7 +316,7 @@ class CMDetailViewController: UIViewController {
                     docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
                 }
             default:
-                return
+                showToast(message: "데이터가 로드되지 않았습니다.")
             }
             
             if let docRef = docRef {

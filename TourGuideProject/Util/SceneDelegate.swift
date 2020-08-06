@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarVC = ESTabBarController()
         
         let vcTourSpot = TourSpotListViewController()
-        let vcFestival = FestivaListTableViewController()//FestivalListViewController()
+        let vcFestival = FestivaListTableViewController()
         let vcAccount = AccountViewController()
         
         vcTourSpot.tabBarItem.title = "관광지"
@@ -46,16 +46,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         vcAccount.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
         
         // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
-        let navigationVC = UINavigationController(rootViewController: tabBarVC)
+        let vcMainNavigation = UINavigationController(rootViewController: tabBarVC)
         
-        let drawerViewController = DrawerViewController()
-        let drawerController = KYDrawerController(drawerDirection: .left, drawerWidth: window?.frame.width ?? 0)
-        drawerController.mainViewController = navigationVC
-        drawerController.drawerViewController = drawerViewController
+        // 드로어 컨트롤러를 넣을 네비게이션 컨트롤러
+        let vcDrawerNavigation = UINavigationController(rootViewController: DrawerViewController())
+        
+        let vcDrawer = KYDrawerController(drawerDirection: .left, drawerWidth: window?.frame.width ?? 0)
+        vcDrawer.mainViewController = vcMainNavigation
+        
+        // 에러발생!!
+        vcDrawer.drawerViewController = vcDrawerNavigation
         
         // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
-        window?.rootViewController = drawerController
+        window?.rootViewController = vcDrawer
         window?.makeKeyAndVisible()
+        
+        // 에러해결!!
+//        vcDrawer.drawerViewController = vcDrawerNavigation
     }
     
     // scene의 연결이 해제될 때 호출된다. 연결은 다시 연결될수도 있음

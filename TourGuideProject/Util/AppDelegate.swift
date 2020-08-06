@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    
+        
         // iOS 버전 13 이상은 SceneDelegate에서
         if #available(iOS 13, *){ return true }
         
@@ -46,17 +46,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         vcAccount.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
         
         // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
-        let navigationVC = UINavigationController(rootViewController: tabBarVC)
+        let vcMainNavigation = UINavigationController(rootViewController: tabBarVC)
         
-        // 드로어 컨트롤러를 세팅한다.
-        let drawerViewController = DrawerViewController()
-        let drawerController = KYDrawerController(drawerDirection: .left, drawerWidth: window?.frame.width ?? 0)
-        drawerController.mainViewController = navigationVC
-        drawerController.drawerViewController = drawerViewController
+        // 드로어 컨트롤러를 넣을 네비게이션 컨트롤러
+        let vcDrawerNavigation = UINavigationController(rootViewController: DrawerViewController())
         
-        // 윈도우의 루트 뷰 컨트롤러로 드로어 컨트롤러를 세팅한다.
-        window?.rootViewController = drawerController
+        let vcDrawer = KYDrawerController(drawerDirection: .left, drawerWidth: window?.frame.width ?? 0)
+        vcDrawer.mainViewController = vcMainNavigation
+        
+        // 에러발생!!
+        vcDrawer.drawerViewController = vcDrawerNavigation
+        
+        // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
+        window?.rootViewController = vcDrawer
         window?.makeKeyAndVisible()
+        
+        // 에러해결!!
+        //vcDrawer.drawerViewController = vcDrawerNavigation
         
         // Override point for customization after application launch.
         return true
@@ -80,4 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+    
+    
+    
 }
