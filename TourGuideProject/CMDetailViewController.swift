@@ -264,7 +264,7 @@ class CMDetailViewController: UIViewController {
                 if let tourSpotInfo = self.tourSpotInfo, let contentId = tourSpotInfo.contentid {
                     let likedTourSpot = TourSpotInfo(title: tourSpotInfo.title, addr1: tourSpotInfo.addr1, addr2: tourSpotInfo.addr2, image: tourSpotInfo.image, thumbnail: tourSpotInfo.thumbnail, tel: tourSpotInfo.tel)
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["title": likedTourSpot.title ?? "제목이 제공되지 않습니다.", "addr": likedTourSpot.addr1 ?? "주소가 제공되지 않습니다.", "image": likedTourSpot.image ?? "No Image", "thumbnail": likedTourSpot.thumbnail ?? "No Image", "tel": likedTourSpot.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId), "title": likedTourSpot.title ?? "제목이 제공되지 않습니다.", "addr": likedTourSpot.addr1 ?? "주소가 제공되지 않습니다.", "image": likedTourSpot.image ?? "No Image", "thumbnail": likedTourSpot.thumbnail ?? "No Image", "tel": likedTourSpot.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
                         
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")
@@ -280,7 +280,7 @@ class CMDetailViewController: UIViewController {
                     
                     let likedFestivalInfo = FestivalInfo(title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, image: festivalInfo.image, thumbnail: festivalInfo.thumbnail, tel: festivalInfo.tel, eventDate: festivalInfo.convertedEventDate)
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["title": likedFestivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": likedFestivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": likedFestivalInfo.image ?? "No Image", "thumbnail": likedFestivalInfo.thumbnail ?? "No Image", "tel": likedFestivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": likedFestivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId),"title": likedFestivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": likedFestivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": likedFestivalInfo.image ?? "No Image", "thumbnail": likedFestivalInfo.thumbnail ?? "No Image", "tel": likedFestivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": likedFestivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
                         
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")

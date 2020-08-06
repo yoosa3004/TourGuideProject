@@ -51,19 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let vcDrawer = KYDrawerController(drawerDirection: .left, drawerWidth: window?.frame.width ?? 0)
         vcDrawer.mainViewController = vcMainNavigation
         
-        // 에러발생!!
-        vcDrawer.drawerViewController = vcDrawerNavigation
-        
         // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
         window?.rootViewController = vcDrawer
         window?.makeKeyAndVisible()
         
-        // 에러해결!!
-        //vcDrawer.drawerViewController = vcDrawerNavigation
+        vcDrawer.drawerViewController = vcDrawerNavigation
         
         // Override point for customization after application launch.
         return true
     }
-    
-    
 }

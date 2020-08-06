@@ -11,10 +11,12 @@ import Then
 import SnapKit
 import KYDrawerController
 import Firebase
+import SpringIndicator
 
 class zzimDataInfo {
     
     init(dictionary: [String: Any]) {
+        self.contentId = dictionary["contentid"] as? String
         self.addr = dictionary["addr"] as? String
         self.eventDate = dictionary["eventdate"] as? String
         self.image = dictionary["image"] as? String
@@ -23,7 +25,8 @@ class zzimDataInfo {
         self.title = dictionary["title"] as? String
     }
     
-    init(image: String?, thumbNail: String?, title: String?, addr: String?, tel: String?, eventDate: String?) {
+    init(contentId: String?, image: String?, thumbNail: String?, title: String?, addr: String?, tel: String?, eventDate: String?) {
+        self.contentId = contentId
         self.image = image
         self.thumbNail = thumbNail
         self.title = title
@@ -32,12 +35,14 @@ class zzimDataInfo {
         self.eventDate = eventDate
     }
     
+    let contentId: String?
     let image: String?
     let thumbNail: String?
     let title: String?
     let addr: String?
     let tel: String?
     let eventDate: String?
+    
 }
 
 class DrawerViewController: UIViewController {
@@ -49,6 +54,9 @@ class DrawerViewController: UIViewController {
     
     // 찜리스트에 들어갈 데이터
     var zzimListDataInfo = Array(repeating: [zzimDataInfo](), count: 2)
+    
+    // 인디케이터
+    let avZZimListLoading = SpringIndicator(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     
     override func loadView() {
         super.loadView()
@@ -75,12 +83,18 @@ class DrawerViewController: UIViewController {
         }.snp.makeConstraints {
             $0.top.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
         }
+        
+        // 인디케이터
+        self.view.addSubview(avZZimListLoading)
+        avZZimListLoading.then {
+                let validCenter = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
+                $0.center = validCenter
+                $0.lineColor = .red
+         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        getDataFromDB()
     }
 
     @objc func onTapCloseBtn(_ sender: UIButton) {
@@ -92,7 +106,8 @@ class DrawerViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tbvZZimList.reloadData()
+
+        getDataFromDB()
     }
     
     
@@ -101,18 +116,28 @@ class DrawerViewController: UIViewController {
         // 로그인 상태에서만
         if let user = Auth.auth().currentUser {
             
-            self.zzimListDataInfo[0].removeAll()
-            self.zzimListDataInfo[1].removeAll()
+            //인디케이터
+            self.avZZimListLoading.start()
             
             // 관광지
             var docRef = db.collection("zzimList").document(user.uid).collection("TourSpot")
             docRef.getDocuments { (querySnapshot, err) in
                 if let query = querySnapshot {
+                    
+                    // 1. 기존 데이터 날린다.
+                    self.zzimListDataInfo[0].removeAll()
+                    
+                    // 2. DB에서 읽어온다.
                     for document in query.documents {
                         print(document.data())
                         let tourSpotInfo = zzimDataInfo(dictionary: document.data())
                         self.zzimListDataInfo[0].append(tourSpotInfo)
                     }
+                    
+                    self.tbvZZimList.reloadData()
+                    tgLog("관광지 데이터 로드 완료")
+                } else {
+                    tgLog("관광지 데이터 없음")
                 }
             }
             
@@ -120,11 +145,22 @@ class DrawerViewController: UIViewController {
             docRef = db.collection("zzimList").document(user.uid).collection("Festival")
             docRef.getDocuments { (querySnapshot, err) in
                 if let query = querySnapshot {
+                    
+                    // 1. 기존 데이터 날린다.
+                    self.zzimListDataInfo[1].removeAll()
+                    
                     for document in query.documents {
                         print(document.data())
                         let festivalInfo = zzimDataInfo(dictionary: document.data())
                         self.zzimListDataInfo[1].append(festivalInfo)
                     }
+                    
+                    self.tbvZZimList.reloadData()
+                    tgLog("행사 데이터 로드 완료")
+                    self.avZZimListLoading.stop()
+                } else {
+                    tgLog("행사 데이터 없음")
+                    self.avZZimListLoading.stop()
                 }
             }
         }
