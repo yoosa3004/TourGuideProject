@@ -10,10 +10,12 @@ import UIKit
 import Then
 import SnapKit
 import KYDrawerController
-import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 import SpringIndicator
+import YYBottomSheet
 
-class zzimDataInfo {
+class ZZimDataInfo {
     
     init(dictionary: [String: Any]) {
         self.contentId = dictionary["contentid"] as? String
@@ -43,23 +45,39 @@ class zzimDataInfo {
     let tel: String?
     let eventDate: String?
     
+    // 관광지/행사 데이터타입
+    var dataType: String = ""
+}
+
+struct Section {
+    var name: String
+    var items: [ZZimDataInfo]
+    var collapsed: Bool
+    
+    init(name: String, items: [ZZimDataInfo], collapsed: Bool = false) {
+        self.name = name
+        self.items = items
+        self.collapsed = collapsed
+    }
 }
 
 class DrawerViewController: UIViewController {
+    
+    var sections = [Section]()
     
     // Firebase
     let db = Firestore.firestore()
     
     var tbvZZimList = UITableView()
     
-    // 찜리스트에 들어갈 데이터
-    var zzimListDataInfo = Array(repeating: [zzimDataInfo](), count: 2)
-    
     // 인디케이터
     let avZZimListLoading = SpringIndicator(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     
     override func loadView() {
         super.loadView()
+        
+        sections.append(Section(name: "관광지", items: [ZZimDataInfo]()))
+        sections.append(Section(name: "행사", items: [ZZimDataInfo]()))
         
         setViews()
     }
@@ -70,8 +88,7 @@ class DrawerViewController: UIViewController {
         
         // 네비
         self.title = "찜리스트"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "happiness.png")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onTapCloseBtn(_:)))
-        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "close.png")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(onTapCloseBtn(_:)))
         
         // 테이블 뷰
         self.view.addSubview(tbvZZimList)
@@ -87,16 +104,16 @@ class DrawerViewController: UIViewController {
         // 인디케이터
         self.view.addSubview(avZZimListLoading)
         avZZimListLoading.then {
-                let validCenter = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
-                $0.center = validCenter
-                $0.lineColor = .red
-         }
+            let validCenter = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
+            $0.center = validCenter
+            $0.lineColor = .red
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+    
     @objc func onTapCloseBtn(_ sender: UIButton) {
         if let drawerController = parent?.parent as? KYDrawerController {
             drawerController.setDrawerState(.closed, animated: true)
@@ -106,7 +123,6 @@ class DrawerViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-
         getDataFromDB()
     }
     
@@ -125,13 +141,14 @@ class DrawerViewController: UIViewController {
                 if let query = querySnapshot {
                     
                     // 1. 기존 데이터 날린다.
-                    self.zzimListDataInfo[0].removeAll()
+                    self.sections[0].items.removeAll()
                     
                     // 2. DB에서 읽어온다.
                     for document in query.documents {
                         print(document.data())
-                        let tourSpotInfo = zzimDataInfo(dictionary: document.data())
-                        self.zzimListDataInfo[0].append(tourSpotInfo)
+                        let tourSpotInfo = ZZimDataInfo(dictionary: document.data())
+                        tourSpotInfo.dataType = "TourSpot"
+                        self.sections[0].items.append(tourSpotInfo)
                     }
                     
                     self.tbvZZimList.reloadData()
@@ -147,12 +164,13 @@ class DrawerViewController: UIViewController {
                 if let query = querySnapshot {
                     
                     // 1. 기존 데이터 날린다.
-                    self.zzimListDataInfo[1].removeAll()
+                    self.sections[1].items.removeAll()
                     
                     for document in query.documents {
                         print(document.data())
-                        let festivalInfo = zzimDataInfo(dictionary: document.data())
-                        self.zzimListDataInfo[1].append(festivalInfo)
+                        let festivalInfo = ZZimDataInfo(dictionary: document.data())
+                        festivalInfo.dataType = "Festival"
+                        self.sections[1].items.append(festivalInfo)
                     }
                     
                     self.tbvZZimList.reloadData()
@@ -163,6 +181,11 @@ class DrawerViewController: UIViewController {
                     self.avZZimListLoading.stop()
                 }
             }
+        } else {
+            showToast(message: "찜리스트는 로그인 상태일 때 이용할 수 있습니다.")
+            self.sections[0].items.removeAll()
+            self.sections[1].items.removeAll()
+            self.tbvZZimList.reloadData()
         }
     }
 }
@@ -171,12 +194,12 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
     
     // 섹션 2개
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return sections.count
     }
     
     // 갯수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return zzimListDataInfo[section].count
+        return sections[section].collapsed ? 0 : sections[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -186,16 +209,14 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
         
         
         // 데이터 존재한다면?
-        if zzimListDataInfo[indexPath.section].count > 0 {
+        if sections[indexPath.section].items.count > 0 {
             
             cclZZim.then {
-                let data = zzimListDataInfo[indexPath.section][indexPath.row]
+                let data = self.sections[indexPath.section].items[indexPath.row]
                 
                 // 제목
                 if let title = data.title {
                     $0.lbTitle.text = title
-                } else {
-                    $0.lbTitle.text = "테스트"
                 }
                 
                 // 주소
@@ -218,51 +239,103 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
         return cclZZim
     }
     
-    // 행사가 없는 달의 섹션은 보이지 않게함
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 44
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1.0
     }
     
     // 헤더 뷰
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
-        view.backgroundColor = .systemGray5
-    
         
-        let ivHeader = UIImageView()
-        view.addSubview(ivHeader)
-        ivHeader.then {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? DrawerTableViewHeader ?? DrawerTableViewHeader(reuseIdentifier: "header")
+        
+        header.ivHeader.then {
             if section == 0 {
                 $0.image = UIImage(named: "tour_guide.png")
             } else {
                 $0.image = UIImage(named: "festival.png")
             }
-
-        }.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(10)
-            $0.centerY.equalToSuperview()
         }
+        header.lbTitle.text = sections[section].name
         
-        let lbHeader = UILabel()
-        view.addSubview(lbHeader)
-        lbHeader.then {
-            if section == 0 {
-                $0.text = "관광지"
-            } else {
-                $0.text = "행사"
-            }
-            
-            $0.textAlignment = .center
-            $0.textColor = .black
-        }.snp.makeConstraints {
-            $0.left.equalTo(ivHeader.snp.right).offset(10)
-            $0.top.bottom.equalToSuperview()
-        }
+        header.section = section
+        header.delegate = self
         
-        return view
+        return header
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.height/5
+        return self.view.frame.height/6
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vcDetail = CMDetailViewController().then {
+            $0.zzimListInfo = self.sections[indexPath.section].items[indexPath.row]
+            $0.dataType = .ZZimList
+        }
+        
+        self.navigationController?.pushViewController(vcDetail, animated: true)
+    }
+    
+    func showToast(message: String) {
+        
+        let option: [YYBottomSheet.SimpleToastOptions:Any] = [
+            .showDuration: 2.0,
+            .backgroundColor: UIColor.black,
+            .beginningAlpha: 0.8,
+            .messageFont: UIFont.italicSystemFont(ofSize: 15),
+            .messageColor: UIColor.white
+        ]
+        
+        let simpleToast = YYBottomSheet.init(simpleToastMessage: message, options: option)
+        
+        simpleToast.show()
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let delete = UIContextualAction(style: .normal, title: "삭제") { [unowned self] _, _, completionHandler in
+            
+            if let user = Auth.auth().currentUser {
+                if let contentId = self.sections[indexPath.section].items[indexPath.row].contentId {
+                    let docRef = self.db.collection("zzimList").document(user.uid).collection(self.sections[indexPath.section].items[indexPath.row].dataType).document(contentId)
+                    
+                    docRef.getDocument { (doc, err) in
+                        if let doc = doc, doc.exists {
+                            docRef.delete()
+                            self.showToast(message: "찜리스트에서 제거됐습니다.")
+                            self.sections[indexPath.section].items.remove(at: indexPath.row) // 섹션 리무브
+                            self.tbvZZimList.deleteRows(at: [indexPath], with: .automatic)
+                        }
+                        
+                        if err != nil {
+                            self.showToast(message: "찜리스트 제거에 실패했습니다.")
+                        }
+                    }
+                }
+            }
+            
+            completionHandler(true)
+        }
+        
+        delete.image = UIImage(named: "close.png")
+        delete.backgroundColor = .systemRed
+        let configuration = UISwipeActionsConfiguration(actions: [delete])
+        return configuration
+    }
+}
+
+extension DrawerViewController: DrawerTableViewHeaderDelegate {
+    
+    func toggleSelection(_ header: DrawerTableViewHeader, section: Int) {
+        let collapsed = !sections[section].collapsed
+        
+        sections[section].collapsed = collapsed
+        
+        self.tbvZZimList.reloadSections(IndexSet.init(integer: section), with: .automatic)
     }
 }

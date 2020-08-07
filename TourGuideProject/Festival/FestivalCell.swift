@@ -40,10 +40,10 @@ class FestivalCell: UITableViewCell {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(25)
+            $0.left.equalToSuperview().offset(10)
             $0.centerY.equalToSuperview()
-            $0.width.equalTo(150)
-            $0.height.equalTo(100)
+            $0.width.equalTo(ivFestival.snp.height).multipliedBy(1.5)
+            $0.height.equalToSuperview().multipliedBy(0.8)
         }
         
         // 행사 이름

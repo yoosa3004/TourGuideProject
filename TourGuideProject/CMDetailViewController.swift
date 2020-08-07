@@ -9,7 +9,8 @@
 import UIKit
 import Then
 import SnapKit
-import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 import YYBottomSheet
 
 class CMDetailViewController: UIViewController {
@@ -17,6 +18,7 @@ class CMDetailViewController: UIViewController {
     enum DataType {
         case TourSpot
         case Festival
+        case ZZimList
         case None
         
         func getString() -> String {
@@ -26,6 +28,8 @@ class CMDetailViewController: UIViewController {
                 return "TourSpot"
             case .Festival:
                 return "Festival"
+            case .ZZimList:
+                return "ZZimList"
             default:
                 return "None"
             }
@@ -35,6 +39,8 @@ class CMDetailViewController: UIViewController {
     // 데이터
     var tourSpotInfo: TourSpotInfo?
     var festivalInfo: FestivalInfo?
+    var zzimListInfo: ZZimDataInfo?
+    
     
     // 데이터 타입
     var dataType: DataType = .None
@@ -61,7 +67,7 @@ class CMDetailViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-    
+        
         self.view.backgroundColor = .white
         
         setViews()
@@ -93,6 +99,11 @@ class CMDetailViewController: UIViewController {
                 self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel)
                 self.checkIsHeartSelected(festivalInfo.contentid)
             }
+        case.ZZimList:
+            if let zzimListInfo = self.zzimListInfo {
+                self.setContents(image: zzimListInfo.image, title: zzimListInfo.title, addr1: zzimListInfo.addr, addr2: nil, tel: zzimListInfo.tel)
+                self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
+            }
         default:
             showToast(message: "데이터가 로드되지 않았습니다.")
         }
@@ -102,7 +113,7 @@ class CMDetailViewController: UIViewController {
         if let user = Auth.auth().currentUser {
             if let contentId = contentId {
                 let docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
-
+                
                 docRef.getDocument { (document, err) in
                     if let document = document, document.exists {
                         self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
@@ -233,6 +244,8 @@ class CMDetailViewController: UIViewController {
             self.title = tourSpotInfo?.title ?? "관광지"
         case .Festival:
             self.title = festivalInfo?.title ?? "행사"
+        case .ZZimList:
+            self.title = zzimListInfo?.title ?? "상세화면"
         default:
             self.title = "상세화면"
         }
@@ -291,6 +304,24 @@ class CMDetailViewController: UIViewController {
                         }
                     }
                 }
+            case .ZZimList:
+                if self.navigationItem.rightBarButtonItem?.image == imgFullHeart {
+                    showToast(message: "이미 찜리스트에 담겨있습니다.")
+                } else {
+                    if let data = self.zzimListInfo, let contentId = data.contentId {
+                        db.collection("zzimList").document(user.uid).collection(data.dataType).document(contentId).setData(["contentid": contentId, "title": data.title ?? "제목이 제공되지 않습니다.", "addr": data.addr ?? "주소가 제공되지 않습니다.", "image": data.image ?? "No Image", "thumbnail": data.thumbNail ?? "No Image", "tel": data.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": data.eventDate ?? ""]) { err in
+                            
+                            if err == nil {
+                                self.showToast(message: "찜리스트에 담았습니다.")
+                                updateIcon()
+                            } else {
+                                self.showToast(message: "찜리스트에 담기를 실패했습니다.")
+                                tgLog(err)
+                            }
+                        }
+                        
+                    }
+                }
             default:
                 showToast(message: "데이터가 로드되지 않았습니다.")
             }
@@ -314,6 +345,12 @@ class CMDetailViewController: UIViewController {
             case .Festival:
                 if let contentId = festivalInfo?.contentid {
                     docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
+                }
+            case .ZZimList:
+                if let contentId = zzimListInfo?.contentId {
+                    if let dataType = zzimListInfo?.dataType {
+                        docRef = db.collection("zzimList").document(user.uid).collection(dataType).document(contentId)
+                    }
                 }
             default:
                 showToast(message: "데이터가 로드되지 않았습니다.")

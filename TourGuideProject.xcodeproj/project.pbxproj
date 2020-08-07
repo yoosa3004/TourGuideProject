@@ -29,6 +29,7 @@
 		02C221F124D1144D004CC173 /* TourSpotCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C221F024D1144D004CC173 /* TourSpotCollectionViewController.swift */; };
 		02D3EC3D24B7134F00446F7C /* TourSpotListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */; };
 		02D3EC4124B7138E00446F7C /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D3EC4024B7138E00446F7C /* AccountViewController.swift */; };
+		02E51BEF24DBD4DC002564B1 /* DrawerTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E51BEE24DBD4DC002564B1 /* DrawerTableViewHeader.swift */; };
 		02F4412C24C7D48600BB6A98 /* TMFestivalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F4412B24C7D48600BB6A98 /* TMFestivalViewModel.swift */; };
 		1B2DAAE203B3C55F7DB08810 /* Pods_TourGuideProject_TourGuideProjectUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */; };
 		8CB24100C60F92A299031221 /* Pods_TourGuideProjectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5078FB52E117B4CFC33DE7D4 /* Pods_TourGuideProjectTests.framework */; };
@@ -81,6 +82,7 @@
 		02C221F024D1144D004CC173 /* TourSpotCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotCollectionViewController.swift; sourceTree = "<group>"; };
 		02D3EC3C24B7134F00446F7C /* TourSpotListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSpotListViewController.swift; sourceTree = "<group>"; };
 		02D3EC4024B7138E00446F7C /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		02E51BEE24DBD4DC002564B1 /* DrawerTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerTableViewHeader.swift; sourceTree = "<group>"; };
 		02F4412B24C7D48600BB6A98 /* TMFestivalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMFestivalViewModel.swift; sourceTree = "<group>"; };
 		4AD49760D0171AE8282A7613 /* Pods-TourGuideProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TourGuideProject.release.xcconfig"; path = "Target Support Files/Pods-TourGuideProject/Pods-TourGuideProject.release.xcconfig"; sourceTree = "<group>"; };
 		4F2EC76F3455E83306B709D6 /* Pods_TourGuideProject_TourGuideProjectUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TourGuideProject_TourGuideProjectUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,6 +198,7 @@
 			children = (
 				025A7E3B24D00FCF003E8426 /* DrawerViewController.swift */,
 				027F090124DA897B00AF275B /* DrawerTableViewCell.swift */,
+				02E51BEE24DBD4DC002564B1 /* DrawerTableViewHeader.swift */,
 			);
 			name = Drawer;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */,
 				02D3EC3D24B7134F00446F7C /* TourSpotListViewController.swift in Sources */,
 				02D3EC4124B7138E00446F7C /* AccountViewController.swift in Sources */,
+				02E51BEF24DBD4DC002564B1 /* DrawerTableViewHeader.swift in Sources */,
 				027F090224DA897B00AF275B /* DrawerTableViewCell.swift in Sources */,
 				025A7E3C24D00FCF003E8426 /* DrawerViewController.swift in Sources */,
 				026E603B24BD5D45001CB5D4 /* TourSpotCell.swift in Sources */,

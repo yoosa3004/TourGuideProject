@@ -9,7 +9,7 @@
 import UIKit
 import ESTabBarController_swift
 import KYDrawerController
-import Firebase
+import FirebaseCore
 import Then
 
 @UIApplicationMain

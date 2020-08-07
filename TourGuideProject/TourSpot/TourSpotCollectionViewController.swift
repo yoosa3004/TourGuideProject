@@ -21,6 +21,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     var mTourSpot = TMTourSpot()
     var areaCode: Int?
     var arrange: String?
+    var loadedPageNo: Int = 1 // for API LoadMore.
     
     // 데이터
     var listTourSpot = Array<TourSpotInfo>()
@@ -85,18 +86,41 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
                 self?.refreshTourSpotData()
             }
             
-            $0.cr.addFootRefresh(animator: NormalFooterAnimator()) { [weak self] in
-                self?.loadMoreTourSpotData()
+            $0.cr.addFootRefresh(animator: NormalFooterAnimator()) { [unowned self] in
+                guard let self = self else {return}
+                
+                if self.loadedPageNo < 10 {
+                    self.avTourSpotLoading.start()
+                    self.loadMoreTourSpotData()
+                }
             }
         }
     }
     
     func refreshTourSpotData() {
+        self.collectionView.reloadData()
         self.collectionView.cr.endHeaderRefresh()
     }
     
     func loadMoreTourSpotData() {
-        self.collectionView.cr.endLoadingMore()
+        
+        mTourSpot.pageNo = loadedPageNo + 1
+        mTourSpot.requestAPI { (apiResult) -> Void in
+            if let result = apiResult as? [TourSpotInfo] {
+                self.listTourSpot.append(contentsOf: result)
+                self.lbFailed.removeFromSuperview()
+                self.collectionView.reloadData()
+                self.loadedPageNo += 1
+            }
+            
+            self.avTourSpotLoading.stop()
+            
+            if self.loadedPageNo == 10 {
+                self.collectionView.cr.noticeNoMoreData()
+            } else {
+                self.collectionView.cr.endLoadingMore()
+            }
+        }
     }
     
     func loadData() {
@@ -157,7 +181,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             }
         }
     }
-    
+
     // 셀 사이즈
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {
         
