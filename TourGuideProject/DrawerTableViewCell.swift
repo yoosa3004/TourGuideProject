@@ -40,9 +40,9 @@ class DrawerTableViewCell: UITableViewCell {
             $0.clipsToBounds = true
         }.snp.makeConstraints {
             $0.width.equalTo(ivDrawer.snp.height).multipliedBy(1.5)
-            $0.height.equalToSuperview().multipliedBy(0.8)
-            $0.top.equalToSuperview().offset(10)
-            $0.left.equalToSuperview().offset(30)
+            $0.height.equalToSuperview().multipliedBy(0.7)
+            $0.centerY.equalToSuperview()
+            $0.left.equalToSuperview().offset(10)
         }
         
         // 행사 이름
@@ -53,8 +53,7 @@ class DrawerTableViewCell: UITableViewCell {
         }.snp.makeConstraints { [unowned self] in
             $0.right.equalToSuperview().offset(-20)
             $0.left.equalTo(self.ivDrawer.snp.right).offset(15)
-            $0.top.equalToSuperview().offset(15)
-            $0.height.equalToSuperview().dividedBy(3)
+            $0.top.equalTo(self.ivDrawer.snp.top).offset(5)
         }
         
         // 행사 주소
@@ -76,7 +75,6 @@ class DrawerTableViewCell: UITableViewCell {
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.lbAddr.snp.bottom)
             $0.left.right.equalTo(self.lbTitle)
-            $0.bottom.equalToSuperview().offset(-15)
         }
     }
     
