@@ -160,15 +160,12 @@ class SignUpViewController: UIViewController {
         
         if let email = tfID.text, let password = tfPassword.text {
             Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
-                guard let user = authResult?.user else {
-                    self.showToast(message: "잘못된 이메일 형식이거나 이미 존재하는 계정입니다.")
-                    return
-                }
                 
+                // 회원가입 성공!
                 if error == nil {
                     self.completeSignUp()
                 } else {
-                    self.showToast(message: "회원가입 실패!")
+                    self.showToast(message: "잘못된 이메일 형식이거나 이미 존재하는 계정입니다.")
                     return
                 }
             }

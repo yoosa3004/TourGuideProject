@@ -32,7 +32,7 @@ class AccountViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.white
         setFrameView()
-        setUpView()
+        setViews()
     }
     
     override func viewDidLoad() {
@@ -41,15 +41,13 @@ class AccountViewController: UIViewController {
         // 제스처 등록
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapScreenForHidingKeyboard)).then {
             $0.numberOfTouchesRequired = 1
-            $0.isEnabled = true
-            $0.cancelsTouchesInView = false
         }
         
         scvAccount.addGestureRecognizer(singleTapGestureRecognizer)
         
-        // 텍스트 필드 UI 상태에 맞춰서 업데이트
+        // 로그인/로그아웃 상태에 따라 뷰 업데이트
         let isLoggedIn = Auth.auth().currentUser != nil
-        setTextFieledPerAuthState(isLoggedIn)
+        updateViewsPerAuthState(isLoggedIn)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +78,7 @@ class AccountViewController: UIViewController {
         }
     }
     
-    func setUpView() {
+    func setViews() {
         // 이미지
         self.scvAccount.addSubview(ivAccount)
         ivAccount.then {
@@ -165,7 +163,8 @@ class AccountViewController: UIViewController {
             Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
                 if user != nil {
                     self.showToast(message: "로그인 성공!")
-                    self.setTextFieledPerAuthState(true)
+                    self.updateViewsPerAuthState(true)
+                    self.view.endEditing(true)
                 } else {
                     self.showToast(message: "로그인 실패!")
                 }
@@ -176,14 +175,13 @@ class AccountViewController: UIViewController {
             do {
                 try Auth.auth().signOut()
                 self.showToast(message: "로그아웃 성공!")
-                self.setTextFieledPerAuthState(false)
+                self.updateViewsPerAuthState(false)
             } catch _ as NSError {
                 self.showToast(message: "로그아웃 실패!")
             }
         }
     }
     
-    // 회원가입 버튼 이벤트
     @objc func onSigninBtnClicked(_ sender: UIButton) {
         self.navigationController?.present(SignUpViewController(), animated: true, completion: nil)
     }
@@ -234,7 +232,8 @@ extension AccountViewController: UITextFieldDelegate {
         }
     }
     
-    func setTextFieledPerAuthState(_ isLoggedIn : Bool) {
+    // MARK: 로그인/로그아웃에 따라 textField, button 상태를 변경
+    func updateViewsPerAuthState(_ isLoggedIn : Bool) {
         
         // 로그인 체크
         if isLoggedIn {
