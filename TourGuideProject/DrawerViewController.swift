@@ -15,48 +15,14 @@ import FirebaseAuth
 import SpringIndicator
 import YYBottomSheet
 
-class ZZimDataInfo {
-    
-    init(dictionary: [String: Any]) {
-        self.contentId = dictionary["contentid"] as? String
-        self.addr = dictionary["addr"] as? String
-        self.eventDate = dictionary["eventdate"] as? String
-        self.image = dictionary["image"] as? String
-        self.tel = dictionary["tel"] as? String
-        self.thumbNail = dictionary["thumbnail"] as? String
-        self.title = dictionary["title"] as? String
-    }
-    
-    init(contentId: String?, image: String?, thumbNail: String?, title: String?, addr: String?, tel: String?, eventDate: String?) {
-        self.contentId = contentId
-        self.image = image
-        self.thumbNail = thumbNail
-        self.title = title
-        self.addr = addr
-        self.tel = tel
-        self.eventDate = eventDate
-    }
-    
-    let contentId: String?
-    let image: String?
-    let thumbNail: String?
-    let title: String?
-    let addr: String?
-    let tel: String?
-    let eventDate: String?
-    
-    // 관광지/행사 데이터타입
-    var dataType: String = ""
-}
-
 class DrawerViewController: UIViewController {
  
     struct Section {
         var name: String
-        var items: [ZZimDataInfo]
+        var items: [ZZimListInfo]
         var collapsed: Bool
         
-        init(name: String, items: [ZZimDataInfo], collapsed: Bool = false) {
+        init(name: String, items: [ZZimListInfo], collapsed: Bool = false) {
             self.name = name
             self.items = items
             self.collapsed = collapsed
@@ -68,18 +34,24 @@ class DrawerViewController: UIViewController {
     // Firebase
     let db = Firestore.firestore()
     
-    var tbvZZimList = UITableView()
-    
     // 인디케이터
     let avZZimListLoading = SpringIndicator(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+    
+    var tbvZZimList = UITableView()
     
     override func loadView() {
         super.loadView()
         
-        sections.append(Section(name: "관광지", items: [ZZimDataInfo]()))
-        sections.append(Section(name: "행사", items: [ZZimDataInfo]()))
+        sections.append(Section(name: "관광지", items: [ZZimListInfo]()))
+        sections.append(Section(name: "행사", items: [ZZimListInfo]()))
         
         setViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        getDataFromDB()
     }
     
     func setViews() {
@@ -109,23 +81,13 @@ class DrawerViewController: UIViewController {
             $0.lineColor = .red
         }
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+
     
     @objc func onTapCloseBtn(_ sender: UIButton) {
         if let drawerController = parent?.parent as? KYDrawerController {
             drawerController.setDrawerState(.closed, animated: true)
         }
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        getDataFromDB()
-    }
-    
     
     func getDataFromDB() {
         
@@ -145,8 +107,8 @@ class DrawerViewController: UIViewController {
                     
                     // 2. DB에서 읽어온다.
                     for document in query.documents {
-                        print(document.data())
-                        let tourSpotInfo = ZZimDataInfo(dictionary: document.data())
+//                        print(document.data())
+                        let tourSpotInfo = ZZimListInfo(dictionary: document.data())
                         tourSpotInfo.dataType = "TourSpot"
                         self.sections[0].items.append(tourSpotInfo)
                     }
@@ -166,9 +128,10 @@ class DrawerViewController: UIViewController {
                     // 1. 기존 데이터 날린다.
                     self.sections[1].items.removeAll()
                     
+                    // 2. DB에서 읽어온다.
                     for document in query.documents {
-                        print(document.data())
-                        let festivalInfo = ZZimDataInfo(dictionary: document.data())
+//                        print(document.data())
+                        let festivalInfo = ZZimListInfo(dictionary: document.data())
                         festivalInfo.dataType = "Festival"
                         self.sections[1].items.append(festivalInfo)
                     }
@@ -218,7 +181,11 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 // 제목
                 if let title = data.title {
-                    $0.lbTitle.text = title
+                    if title.contains("[") {
+                        $0.lbTitle.attributedText = NSAttributedString().splitByBracket(title)
+                    } else {
+                        $0.lbTitle.text = title
+                    }
                 }
                 
                 // 주소
@@ -281,8 +248,23 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let vcDetail = CMDetailViewController().then {
-            $0.zzimListInfo = self.sections[indexPath.section].items[indexPath.row]
-            $0.dataType = .ZZimList
+            
+            let data = self.sections[indexPath.section].items[indexPath.row]
+            
+            switch data.dataType {
+            case "TourSpot":
+                $0.tourSpotInfo = TourSpotInfo(title: data.title, addr1: data.addr, addr2: "", image: data.image, thumbnail: data.thumbNail, tel: data.tel)
+                $0.tourSpotInfo?.contentid = Int(data.contentId ?? "")
+                $0.dataType = .TourSpot
+            case "Festival":
+                $0.festivalInfo = FestivalInfo(title: data.title, addr1: data.addr, addr2: "", image: data.image, thumbnail: data.thumbNail, tel: data.tel, eventDate: data.eventDate)
+                $0.festivalInfo?.contentid = Int(data.contentId ?? "")
+                $0.dataType = .Festival
+            default:
+                return
+            }
+            
+            $0.isInZZimList = true
         }
         
         self.navigationController?.pushViewController(vcDetail, animated: true)
@@ -315,7 +297,7 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
                         if let doc = doc, doc.exists {
                             docRef.delete()
                             self.showToast(message: "찜리스트에서 제거됐습니다.")
-                            self.sections[indexPath.section].items.remove(at: indexPath.row) // 섹션 리무브
+                            self.sections[indexPath.section].items.remove(at: indexPath.row)
                             self.tbvZZimList.deleteRows(at: [indexPath], with: .automatic)
                         }
                         

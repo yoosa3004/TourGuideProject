@@ -28,21 +28,21 @@ class CMDetailViewController: UIViewController {
                 return "TourSpot"
             case .Festival:
                 return "Festival"
-            case .ZZimList:
-                return "ZZimList"
             default:
                 return "None"
             }
         }
     }
     
-    // 데이터
+    // 각 컨트롤러로부터 전달받는 데이터
     var tourSpotInfo: TourSpotInfo?
     var festivalInfo: FestivalInfo?
-    var zzimListInfo: ZZimDataInfo?
     
     // 데이터 타입
     var dataType: DataType = .None
+    
+    // 찜리스트에서 들어왔을 경우를 구분하기 위한 플래그.
+    var isInZZimList: Bool = false
     
     // 상세화면 뷰
     var scvDetail = UIScrollView()
@@ -68,8 +68,6 @@ class CMDetailViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        
-        self.view.backgroundColor = .white
         
         setViews()
         setNavItems()
@@ -100,24 +98,24 @@ class CMDetailViewController: UIViewController {
                 self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel, festivalInfo.convertedEventDate ?? "")
                 self.checkIsHeartSelected(festivalInfo.contentid)
             }
-        case.ZZimList:
-            if let zzimListInfo = self.zzimListInfo {
-                self.setContents(image: zzimListInfo.image, title: zzimListInfo.title, addr1: zzimListInfo.addr, addr2: nil, tel: zzimListInfo.tel, zzimListInfo.eventDate ?? "")
-                self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
-            }
         default:
             showToast(message: "데이터가 로드되지 않았습니다.")
         }
     }
     
     func checkIsHeartSelected(_ contentId : Int?) {
-        if let user = Auth.auth().currentUser {
-            if let contentId = contentId {
-                let docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
-                
-                docRef.getDocument { (document, err) in
-                    if let document = document, document.exists {
-                        self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
+        
+        if isInZZimList {
+            self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
+        } else {
+            if let user = Auth.auth().currentUser {
+                if let contentId = contentId {
+                    let docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
+                    
+                    docRef.getDocument { (document, err) in
+                        if let document = document, document.exists {
+                            self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
+                        }
                     }
                 }
             }
@@ -154,10 +152,11 @@ class CMDetailViewController: UIViewController {
         
         // 일정
         lbEventDate.text = eventDate
-        
     }
     
     func setViews() {
+        
+        self.view.backgroundColor = .white
         
         // 스크롤뷰
         self.view.addSubview(scvDetail)
@@ -196,8 +195,7 @@ class CMDetailViewController: UIViewController {
         self.stvDetail.addSubview(lbTitle)
         lbTitle.then {
             $0.textAlignment = .center
-            $0.numberOfLines = 0
-            $0.lineBreakMode = .byWordWrapping
+            $0.numberOfLines = 3
             $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -212,8 +210,7 @@ class CMDetailViewController: UIViewController {
         self.stvDetail.addSubview(lbAddr)
         lbAddr.then {
             $0.textAlignment = .center
-            $0.numberOfLines = 0
-            $0.lineBreakMode = .byWordWrapping
+            $0.numberOfLines = 3
             $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -262,8 +259,6 @@ class CMDetailViewController: UIViewController {
             self.title = tourSpotInfo?.title ?? "관광지"
         case .Festival:
             self.title = festivalInfo?.title ?? "행사"
-        case .ZZimList:
-            self.title = zzimListInfo?.title ?? "상세화면"
         default:
             self.title = "상세화면"
         }
@@ -293,9 +288,8 @@ class CMDetailViewController: UIViewController {
             switch self.dataType {
             case .TourSpot:
                 if let tourSpotInfo = self.tourSpotInfo, let contentId = tourSpotInfo.contentid {
-                    let likedTourSpot = TourSpotInfo(title: tourSpotInfo.title, addr1: tourSpotInfo.addr1, addr2: tourSpotInfo.addr2, image: tourSpotInfo.image, thumbnail: tourSpotInfo.thumbnail, tel: tourSpotInfo.tel)
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId), "title": likedTourSpot.title ?? "제목이 제공되지 않습니다.", "addr": likedTourSpot.addr1 ?? "주소가 제공되지 않습니다.", "image": likedTourSpot.image ?? "No Image", "thumbnail": likedTourSpot.thumbnail ?? "No Image", "tel": likedTourSpot.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId), "title": tourSpotInfo.title ?? "제목이 제공되지 않습니다.", "addr": tourSpotInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": tourSpotInfo.image ?? "No Image", "thumbnail": tourSpotInfo.thumbnail ?? "No Image", "tel": tourSpotInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
                         
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")
@@ -309,9 +303,7 @@ class CMDetailViewController: UIViewController {
             case .Festival:
                 if let festivalInfo = self.festivalInfo, let contentId = festivalInfo.contentid {
                     
-                    let likedFestivalInfo = FestivalInfo(title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, image: festivalInfo.image, thumbnail: festivalInfo.thumbnail, tel: festivalInfo.tel, eventDate: festivalInfo.convertedEventDate)
-                    
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId),"title": likedFestivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": likedFestivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": likedFestivalInfo.image ?? "No Image", "thumbnail": likedFestivalInfo.thumbnail ?? "No Image", "tel": likedFestivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": likedFestivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId),"title": festivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": festivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": festivalInfo.image ?? "No Image", "thumbnail": festivalInfo.thumbnail ?? "No Image", "tel": festivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": festivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
                         
                         if err == nil {
                             self.showToast(message: "찜리스트에 담았습니다.")
@@ -320,24 +312,6 @@ class CMDetailViewController: UIViewController {
                             self.showToast(message: "찜리스트에 담기를 실패했습니다.")
                             tgLog(err)
                         }
-                    }
-                }
-            case .ZZimList:
-                if self.navigationItem.rightBarButtonItem?.image == imgFullHeart {
-                    showToast(message: "이미 찜리스트에 담겨있습니다.")
-                } else {
-                    if let data = self.zzimListInfo, let contentId = data.contentId {
-                        db.collection("zzimList").document(user.uid).collection(data.dataType).document(contentId).setData(["contentid": contentId, "title": data.title ?? "제목이 제공되지 않습니다.", "addr": data.addr ?? "주소가 제공되지 않습니다.", "image": data.image ?? "No Image", "thumbnail": data.thumbNail ?? "No Image", "tel": data.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": data.eventDate ?? ""]) { err in
-                            
-                            if err == nil {
-                                self.showToast(message: "찜리스트에 담았습니다.")
-                                updateIcon()
-                            } else {
-                                self.showToast(message: "찜리스트에 담기를 실패했습니다.")
-                                tgLog(err)
-                            }
-                        }
-                        
                     }
                 }
             default:
@@ -363,12 +337,6 @@ class CMDetailViewController: UIViewController {
             case .Festival:
                 if let contentId = festivalInfo?.contentid {
                     docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
-                }
-            case .ZZimList:
-                if let contentId = zzimListInfo?.contentId {
-                    if let dataType = zzimListInfo?.dataType {
-                        docRef = db.collection("zzimList").document(user.uid).collection(dataType).document(contentId)
-                    }
                 }
             default:
                 showToast(message: "데이터가 로드되지 않았습니다.")

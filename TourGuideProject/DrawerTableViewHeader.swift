@@ -24,11 +24,8 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
+        contentView.backgroundColor = .systemGray5
         
-        // Content View
-        contentView.backgroundColor = .systemGray5//UIColor(hex: 0x2E3944)
-        
-        // Image View
         contentView.addSubview(ivHeader)
         ivHeader.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +34,6 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
             $0.centerY.equalTo(contentView.layoutMarginsGuide)
         }
         
-        // Title Label
         contentView.addSubview(lbTitle)
         lbTitle.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +42,6 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
             $0.left.equalTo(ivHeader.snp.right).offset(15)
         }
         
-        // Arrow Label
         contentView.addSubview(ivArrow)
         ivArrow.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +51,6 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
             $0.right.equalTo(contentView.layoutMarginsGuide).offset(-15)
         }
         
-        // call tapHeader when tappinh on this header
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHeader(_:))))
     }
     

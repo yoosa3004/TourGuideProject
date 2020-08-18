@@ -18,21 +18,18 @@ class DrawerTableViewCell: UITableViewCell {
     
     let lbDate = UILabel()
     
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-        setUpViews()
+        setViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-
-    func setUpViews() {
+    func setViews() {
         
-        // 행사 이미지
         self.addSubview(self.ivDrawer)
         ivDrawer.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +42,6 @@ class DrawerTableViewCell: UITableViewCell {
             $0.left.equalToSuperview().offset(10)
         }
         
-        // 행사 이름
         self.addSubview(self.lbTitle)
         self.lbTitle.then {
             $0.textColor = .black
@@ -56,7 +52,6 @@ class DrawerTableViewCell: UITableViewCell {
             $0.top.equalToSuperview().offset(15)
         }
         
-        // 행사 주소
         self.addSubview(self.lbAddr)
         self.lbAddr.then {
             $0.textColor = .black
@@ -67,7 +62,6 @@ class DrawerTableViewCell: UITableViewCell {
             $0.height.equalToSuperview().dividedBy(3)
         }
         
-        // 행사 일정란
         self.addSubview(self.lbDate)
         self.lbDate.then {
             $0.textColor = .black
