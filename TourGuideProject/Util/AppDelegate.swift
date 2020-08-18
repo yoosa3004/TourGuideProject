@@ -22,42 +22,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 파이어베이스
         FirebaseApp.configure()
         
-        window = UIWindow(frame: UIScreen.main.bounds)
+        // 탭바 VC 세팅
+        let vcTourSpot = TourSpotListViewController().then {
+            $0.tabBarItem.title = "관광지"
+            $0.tabBarItem.image = UIImage(named: "tour_guide.png")?.withRenderingMode(.alwaysOriginal)
+        }
         
-        // 루트 뷰 컨트롤러가 될 뷰 컨트롤러를 생성한다.
-        let tabBarVC = ESTabBarController()
+        let vcFestival = FestivaListTableViewController().then {
+            $0.tabBarItem.title = "행사"
+            $0.tabBarItem.image = UIImage(named: "festival.png")?.withRenderingMode(.alwaysOriginal)
+        }
         
-        let vcTourSpot = TourSpotListViewController()
-        let vcFestival = FestivaListTableViewController()
-        let vcAccount = AccountViewController()
+        let vcAccount = AccountViewController().then {
+            $0.tabBarItem.title = "나의 계정"
+            $0.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
+        }
+
+        let vcTabBar = ESTabBarController().then {
+            $0.viewControllers = [vcTourSpot, vcFestival, vcAccount]
+            $0.tabBar.tintColor = UIColor.red
+        }
         
-        vcTourSpot.tabBarItem.title = "관광지"
-        vcFestival.tabBarItem.title = "행사"
-        vcAccount.tabBarItem.title = "나의 계정"
+        // 메인으로 쓰일 네비게이션 컨트롤러
+        let vcMainNavigation = UINavigationController(rootViewController: vcTabBar)
         
-        tabBarVC.viewControllers = [vcTourSpot,vcFestival,vcAccount]
-        tabBarVC.tabBar.tintColor = UIColor.red
-        
-        vcTourSpot.tabBarItem.image = UIImage(named: "tour_guide.png")?.withRenderingMode(.alwaysOriginal)
-        vcFestival.tabBarItem.image = UIImage(named: "festival.png")?.withRenderingMode(.alwaysOriginal)
-        vcAccount.tabBarItem.image = UIImage(named: "user.png")?.withRenderingMode(.alwaysOriginal)
-        
-        // 위에서 생성한 뷰 컨트롤러로 내비게이션 컨트롤러를 생성한다.
-        let vcMainNavigation = UINavigationController(rootViewController: tabBarVC)
-        
-        // 드로어 컨트롤러를 넣을 네비게이션 컨트롤러
+        // 드로어메뉴에 쓰일 네비게이션 컨트롤러
         let vcDrawerNavigation = UINavigationController(rootViewController: DrawerViewController())
         
-        let vcDrawer = KYDrawerController(drawerDirection: .left, drawerWidth: window?.frame.width ?? 0)
+        // KYDrawerController 라이브러리 사용 -> 메인/드로어 컨트롤러 세팅
+        let vcDrawer = KYDrawerController(drawerDirection: .left, drawerWidth: UIScreen.main.bounds.width)
         vcDrawer.mainViewController = vcMainNavigation
         
-        // 윈도우의 루트 뷰 컨트롤러로 내비게이션 컨트롤러를 설정한다.
-        window?.rootViewController = vcDrawer
-        window?.makeKeyAndVisible()
-        
+        // 윈도우 세팅
+        window = UIWindow().then {
+            $0.frame = UIScreen.main.bounds
+            $0.rootViewController = vcDrawer
+            $0.makeKeyAndVisible()
+        }
+
         vcDrawer.drawerViewController = vcDrawerNavigation
         
-        // Override point for customization after application launch.
         return true
     }
 }
