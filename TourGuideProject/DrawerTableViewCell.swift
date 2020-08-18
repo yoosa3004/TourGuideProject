@@ -53,7 +53,7 @@ class DrawerTableViewCell: UITableViewCell {
         }.snp.makeConstraints { [unowned self] in
             $0.right.equalToSuperview().offset(-20)
             $0.left.equalTo(self.ivDrawer.snp.right).offset(15)
-            $0.top.equalTo(self.ivDrawer.snp.top).offset(5)
+            $0.top.equalToSuperview().offset(15)
         }
         
         // 행사 주소
@@ -77,5 +77,4 @@ class DrawerTableViewCell: UITableViewCell {
             $0.left.right.equalTo(self.lbTitle)
         }
     }
-    
 }

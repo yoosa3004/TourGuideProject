@@ -49,19 +49,19 @@ class ZZimDataInfo {
     var dataType: String = ""
 }
 
-struct Section {
-    var name: String
-    var items: [ZZimDataInfo]
-    var collapsed: Bool
-    
-    init(name: String, items: [ZZimDataInfo], collapsed: Bool = false) {
-        self.name = name
-        self.items = items
-        self.collapsed = collapsed
-    }
-}
-
 class DrawerViewController: UIViewController {
+ 
+    struct Section {
+        var name: String
+        var items: [ZZimDataInfo]
+        var collapsed: Bool
+        
+        init(name: String, items: [ZZimDataInfo], collapsed: Bool = false) {
+            self.name = name
+            self.items = items
+            self.collapsed = collapsed
+        }
+    }
     
     var sections = [Section]()
     

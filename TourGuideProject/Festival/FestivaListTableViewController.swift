@@ -15,12 +15,12 @@ import SpringIndicator
 class FestivaListTableViewController: UIViewController {
     
     // 데이터
-    struct monthSection {
+    struct Section {
         var items = [FestivalInfo]()
         var collapsed: Bool = false
     }
     
-    var sections = Array(repeating: monthSection(), count: 12)
+    var sections = Array(repeating: Section(), count: 12)
     
     // 모델
     let mFestivals = TMFestivals()
@@ -28,9 +28,6 @@ class FestivaListTableViewController: UIViewController {
     
     // 리프레쉬 컨트롤
     let rcrFestical = UIRefreshControl()
-    
-    // 데이터
-    //var listFestivalInfo = Array(repeating: [FestivalInfo](), count: 12)
     
     // 인디케이터
     let avFestivalLoading = SpringIndicator(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
