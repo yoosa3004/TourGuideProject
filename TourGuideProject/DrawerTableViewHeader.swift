@@ -44,8 +44,6 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
         }.snp.makeConstraints {
             $0.top.equalTo(contentView.layoutMarginsGuide)
             $0.left.equalTo(ivHeader.snp.right).offset(15)
-
-
         }
         
         // Arrow Label

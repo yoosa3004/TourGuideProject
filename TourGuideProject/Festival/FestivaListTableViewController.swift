@@ -14,6 +14,14 @@ import SpringIndicator
 
 class FestivaListTableViewController: UIViewController {
     
+    // 데이터
+    struct monthSection {
+        var items = [FestivalInfo]()
+        var collapsed: Bool = false
+    }
+    
+    var sections = Array(repeating: monthSection(), count: 12)
+    
     // 모델
     let mFestivals = TMFestivals()
     var loadedPageNo: Int = 1
@@ -22,7 +30,7 @@ class FestivaListTableViewController: UIViewController {
     let rcrFestical = UIRefreshControl()
     
     // 데이터
-    var listFestivalInfo = Array(repeating: [FestivalInfo](), count: 12)
+    //var listFestivalInfo = Array(repeating: [FestivalInfo](), count: 12)
     
     // 인디케이터
     let avFestivalLoading = SpringIndicator(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
@@ -66,7 +74,6 @@ class FestivaListTableViewController: UIViewController {
             // 리프레시 컨트롤
             $0.refreshControl  = rcrFestical
             $0.refreshControl?.addTarget(self, action: #selector(refreshFestivalData(_:)), for: .valueChanged)
-            
         }.snp.makeConstraints {
             $0.top.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
         }
@@ -87,43 +94,44 @@ class FestivaListTableViewController: UIViewController {
         self.tbvFestivalInfo.refreshControl?.endRefreshing()
     }
     
-        func loadData() {
+    func loadData() {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        let currentDate = formatter.string(from: Date())
+        
+        mFestivals.eventStartDate = Int(currentDate)
+        mFestivals.arrange = "P"
+        
+        for pageNo in 1...10 {
+            mFestivals.pageNo = pageNo
             
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyyMMdd"
-            let currentDate = formatter.string(from: Date())
-            
-            mFestivals.eventStartDate = Int(currentDate)
-            mFestivals.arrange = "P"
-    
-            for pageNo in 1...10 {
-                mFestivals.pageNo = pageNo
-    
-                mFestivals.requestAPI { [unowned self] in
-                    if let sortedInfo = $0 as? [[FestivalInfo]] {
-                        for idx in sortedInfo.indices {
-                            self.listFestivalInfo[idx].append(contentsOf: sortedInfo[idx])
-                        }
-                    } else {
-                        self.loadDataFailed()
-                        self.avFestivalLoading.stop()
-                        return
-                    }
-                    if pageNo == 10 {
-                        
-                        // 날짜순 정렬
-                        for idx in self.listFestivalInfo.indices {
-                            self.listFestivalInfo[idx].sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
-                                 return left.eventstartdate ?? 0 < right.eventstartdate ?? 0
-                             }
-                        }
-
+            mFestivals.requestAPI { [unowned self] in
+                if let sortedInfo = $0 as? [[FestivalInfo]] {
+                    for idx in sortedInfo.indices {
+                        self.sections[idx].items.append(contentsOf: sortedInfo[idx])
                         self.tbvFestivalInfo.reloadData()
-                        self.avFestivalLoading.stop()
                     }
+                } else {
+                    self.loadDataFailed()
+                    self.avFestivalLoading.stop()
+                    return
+                }
+                
+                if pageNo == 10 {
+                    
+                    for idx in self.sections.indices {
+                        self.sections[idx].items.sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
+                            return left.eventstartdate ?? 0 < right.eventstartdate ?? 0
+                        }
+                    }
+                    
+                    self.tbvFestivalInfo.reloadData()
+                    self.avFestivalLoading.stop()
                 }
             }
         }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,24 +140,24 @@ class FestivaListTableViewController: UIViewController {
     }
 }
 
-extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSource {
+extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSource, FestivalTableViewHeaderDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if listFestivalInfo.count > 0 {
-            return listFestivalInfo[section].count
-        }else {
-            return 0
-        }
+        return sections[section].collapsed ? 1 : sections[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cclFestivalInfo = tableView.dequeueReusableCell(withIdentifier: FestivalCell.reusableIdentifier, for: indexPath) as? FestivalCell else {return FestivalCell()}
+        if sections[indexPath.section].collapsed {
+            return UITableViewCell()
+        }
+        
+        let cclFestivalInfo = tableView.dequeueReusableCell(withIdentifier: FestivalCell.reusableIdentifier, for: indexPath) as? FestivalCell ?? FestivalCell(style: .default, reuseIdentifier: FestivalCell.reusableIdentifier)
+        
         // 셀 세팅
-        if listFestivalInfo[indexPath.section].count > 0 {
+        if sections[indexPath.section].items.count > 0 && !sections[indexPath.section].collapsed {
             return cclFestivalInfo.then {
-                let data = listFestivalInfo[indexPath.section][indexPath.row]
+                let data = sections[indexPath.section].items[indexPath.row]
                 
                 // 행사 제목
                 if let title = data.title {
@@ -183,13 +191,17 @@ extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSo
                 }
             }
         } else {
-            return cclFestivalInfo
+            return UITableViewCell()
         }
     }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.height/5
+        if sections[indexPath.section].collapsed {
+            return 0
+        } else {
+            return self.view.frame.height/5
+        }
     }
     
     // 셀 클릭시 델리게이트 호출
@@ -198,7 +210,7 @@ extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSo
         tableView.deselectRow(at: indexPath, animated: true)
         
         let vDetail = CMDetailViewController().then {
-            $0.festivalInfo = listFestivalInfo[indexPath.section][indexPath.row]
+            $0.festivalInfo = sections[indexPath.section].items[indexPath.row]
             $0.dataType = .Festival
         }
         
@@ -210,12 +222,14 @@ extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSo
         return 12
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1.0
+    }
     
     // 행사가 없는 달의 섹션은 보이지 않게함
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if listFestivalInfo.count == 0 { return 0 }
         
-        if listFestivalInfo[section].count == 0 {
+        if sections[section].items.count == 0 {
             return CGFloat.leastNormalMagnitude
         } else {
             return 40
@@ -224,29 +238,25 @@ extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSo
     
     // 헤더 뷰
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
-        view.backgroundColor = .systemGray5
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? FestivalTableViewHeader ?? FestivalTableViewHeader(reuseIdentifier: "header")
+    
+        header.ivHeader.image = UIImage(named: "happiness.png")
+        header.lbTitle.text = "\(section+1)월"
+        header.section = section
+        header.delegate = self
         
-        let ivHeader = UIImageView()
-        view.addSubview(ivHeader)
-        ivHeader.then {
-            $0.image = UIImage(named: "happiness.png")
-        }.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(10)
-            $0.centerY.equalToSuperview()
+        return header
+    }
+    
+    func toggleSection(_ header: FestivalTableViewHeader, section: Int) {
+        let collapsed = !sections[section].collapsed
+        
+        sections[section].collapsed = collapsed
+
+        UIView.performWithoutAnimation {
+            self.tbvFestivalInfo.reloadSections(IndexSet.init(integer: section), with: .none)
         }
         
-        let lbHeader = UILabel()
-        view.addSubview(lbHeader)
-        lbHeader.then {
-            $0.text = "\(section+1)월"
-            $0.textAlignment = .center
-            $0.textColor = .black
-        }.snp.makeConstraints {
-            $0.left.equalTo(ivHeader.snp.right).offset(10)
-            $0.top.bottom.equalToSuperview()
-        }
-        
-        return view
+//        self.tbvFestivalInfo.reloadSections(IndexSet.init(integer: section), with: .automatic)
     }
 }

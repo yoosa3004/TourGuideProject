@@ -199,10 +199,12 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
     
     // 갯수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].collapsed ? 0 : sections[section].items.count
+        return sections[section].collapsed ? 1 : sections[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if sections[indexPath.section].collapsed { return UITableViewCell() }
         
         // 공통 셀
         guard let cclZZim = tableView.dequeueReusableCell(withIdentifier: DrawerTableViewCell.reusableIdentifier, for: indexPath) as? DrawerTableViewCell else {return DrawerTableViewCell()}
@@ -268,7 +270,12 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.height/6
+        if sections[indexPath.section].collapsed {
+            return 0
+        } else {
+            return self.view.frame.height/6
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -336,6 +343,8 @@ extension DrawerViewController: DrawerTableViewHeaderDelegate {
         
         sections[section].collapsed = collapsed
         
+        self.tbvZZimList.beginUpdates()
         self.tbvZZimList.reloadSections(IndexSet.init(integer: section), with: .automatic)
+        self.tbvZZimList.endUpdates()
     }
 }
