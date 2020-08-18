@@ -24,13 +24,20 @@ class TourSpotListViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.view.backgroundColor = .white
-        
+        // 뷰 세팅
         setFrameViews()
         setCollectionViewControllerList()
+        
+        // 드로어 세팅
         self.setDrawer()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         self.scAreaCategory.selectedSegmentIndex = 0
+        
+        // 첫번째 CollectionView 데이터 로딩 -> 다른 CollectionView는 지역 카테고리에서 선택된 시점에 데이터 로딩
         initDataOnSelectedCollectionView(0)
     }
     
@@ -40,13 +47,14 @@ class TourSpotListViewController: UIViewController {
         self.tabBarController?.title = "관광지"
     }
     
-    // MARK: 실제 데이터가 보여질 CollectionView를 제외한 나머지 Frame이 되는 View 세팅
     func setFrameViews() {
+        
+        // 배경
+        self.view.backgroundColor = .white
         
         // 세그먼트 컨트롤
         self.view.addSubview(scAreaCategory)
-        scAreaCategory.then{
-            $0.selectedSegmentIndex = 0
+        scAreaCategory.then{ [unowned self] in
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.addTarget(self, action: #selector(changeAreaCategory(_:)), for: .valueChanged)
         }.snp.makeConstraints { [unowned self] in
@@ -57,7 +65,7 @@ class TourSpotListViewController: UIViewController {
         
         // 스크롤 뷰
         self.view.addSubview(scvTourSpotList)
-        scvTourSpotList.then {
+        scvTourSpotList.then { [unowned self] in
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.delegate = self
             $0.isPagingEnabled = true
@@ -79,13 +87,14 @@ class TourSpotListViewController: UIViewController {
         }
     }
     
+    // MARK: 각 지역 별 CollectionViewController를 child로 추가 -> 기존 delegate로 상세화면으로 이동하는것 개선
     func setCollectionViewControllerList() {
         var idx = 0
+        
         for (key, value) in areaCategory {
+            scAreaCategory.insertSegment(withTitle: key, at: idx, animated: false)
             
-            scAreaCategory.insertSegment(withTitle: key, at: idx, animated: true)
-            
-            let vcTourSpot = TourSpotCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout().then {
+            let vcAreaTourSpot = TourSpotCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout().then {
                 $0.scrollDirection = .vertical
             }).then {
                 $0.mTourSpot.areaCode = value
@@ -93,12 +102,15 @@ class TourSpotListViewController: UIViewController {
                 $0.view.translatesAutoresizingMaskIntoConstraints = false
             }
             
-            self.addChild(vcTourSpot)
-            self.stvTourSpotList.addArrangedSubview(vcTourSpot.view)
-            vcTourSpot.view.snp.makeConstraints {
+            // ChildController로 추가
+            self.addChild(vcAreaTourSpot)
+            // 스택뷰에 ChildController의 view를 추가
+            self.stvTourSpotList.addArrangedSubview(vcAreaTourSpot.view)
+            vcAreaTourSpot.view.snp.makeConstraints { [unowned self] in
                 $0.height.width.equalTo(self.scvTourSpotList)
             }
-            vcTourSpot.didMove(toParent: self)
+            // 이동 완료
+            vcAreaTourSpot.didMove(toParent: self)
             
             idx += 1
         }

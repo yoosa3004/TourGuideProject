@@ -22,7 +22,6 @@ class TMTourSpot: CMNetworking {
         return key
     }
     
-    // ** print 로그를 debug와 release 에 따라 출력 다르게 되게.
     override func requestAPI(update: @escaping(_ update: [Any]?) -> Void){
         
         super.request(requestParam: getParam()) { (response:Any?) in
@@ -30,11 +29,11 @@ class TMTourSpot: CMNetworking {
                 if result.response?.head?.resultMsg == "OK" {
                     update(result.response?.body?.items?.item)
                 } else {
-                    tgLog("Tour Data load Failed")
+                    tgLog("Tour Data Load Failed")
                     update(nil)
                 }
             } else {
-                tgLog("Tour Data load Failed")
+                tgLog("Tour Data Mapping Failed")
                 update(nil)
             }
         }

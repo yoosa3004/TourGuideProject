@@ -17,19 +17,19 @@ class TourSpotCell: UICollectionViewCell {
 
     let lbTitle = UILabel()
     
-
     override init(frame: CGRect) {
         super.init(frame: frame)
     
         self.backgroundColor = .systemGray5
-        setView()
+        
+        setViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setView(){
+    func setViews(){
         
         self.addSubview(ivThumbnail)
         ivThumbnail.then{
@@ -52,11 +52,11 @@ class TourSpotCell: UICollectionViewCell {
             $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
-        }.snp.makeConstraints { (make) -> Void in
-            make.left.equalToSuperview().offset(15)
-            make.right.equalToSuperview().offset(-15)
-            make.top.equalTo(ivThumbnail.snp.bottom)
-            make.bottom.equalToSuperview()
+        }.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(15)
+            $0.right.equalToSuperview().offset(-15)
+            $0.top.equalTo(ivThumbnail.snp.bottom)
+            $0.bottom.equalToSuperview()
         }
     }
 }

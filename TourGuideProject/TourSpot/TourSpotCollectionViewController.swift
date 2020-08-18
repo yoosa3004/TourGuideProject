@@ -17,11 +17,12 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     // 인디케이터
     let avTourSpotLoading = SpringIndicator(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     
-    // API 로드 모델
+    // API 로드용 변수
     var mTourSpot = TMTourSpot()
     var areaCode: Int?
     var arrange: String?
-    var loadedPageNo: Int = 1 // for API LoadMore.
+    var loadedPageNo: Int = 1
+    let maxPageNo: Int = 10
     
     // 데이터
     var listTourSpot = Array<TourSpotInfo>()
@@ -29,16 +30,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     // 데이터 로드 실패 시 띄울 라벨
     let lbFailed = UILabel()
     
-    func dataLoadFailed() {
-        self.view.addSubview(self.lbFailed)
-        self.lbFailed.then {
-            $0.text = "데이터 로드 실패"
-        }.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-    }
-    
-    // 셀 갯수
+    // 셀 배치 변수
     var cellsPerRow: CGFloat = 2
     let cellPadding: CGFloat = 10
     let cellHeightRatio: CGFloat = 1.25
@@ -48,10 +40,8 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
         
         // 인디케이터
         self.view.addSubview(avTourSpotLoading)
-        avTourSpotLoading.then {
-            // MARK: center가 왜 내가 생각하는 center와 다른지 확인 요망....
-            let validCenter = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
-            $0.center = validCenter
+        avTourSpotLoading.then { [unowned self] in
+            $0.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             $0.lineColor = .red
         }.start()
         
@@ -61,7 +51,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     
     func setCollectionView() {
         
-        self.collectionView.then { [weak self] in
+        self.collectionView.then { [unowned self] in
             
             $0.backgroundColor = .white
             
@@ -78,20 +68,19 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.showsHorizontalScrollIndicator = false
             
-            // 셀
+            // 셀 등록
             $0.register(TourSpotCell.self, forCellWithReuseIdentifier: TourSpotCell.reusableIdentifier)
             
             // 리프레쉬 컨트롤
-            $0.cr.addHeadRefresh(animator: NormalHeaderAnimator()) { [weak self] in
-                self?.refreshTourSpotData()
+            $0.cr.addHeadRefresh(animator: NormalHeaderAnimator()) { [unowned self] in
+                self.refreshTourSpotData()
             }
             
+            // 푸터
             $0.cr.addFootRefresh(animator: NormalFooterAnimator()) { [unowned self] in
-                guard let self = self else {return}
-                
-                if self.loadedPageNo < 10 {
+                if self.loadedPageNo < self.maxPageNo {
                     self.avTourSpotLoading.start()
-                    self.loadMoreTourSpotData()
+                    self.loadMoreData()
                 }
             }
         }
@@ -102,20 +91,19 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
         self.collectionView.cr.endHeaderRefresh()
     }
     
-    func loadMoreTourSpotData() {
-        
+    func loadMoreData() {
         mTourSpot.pageNo = loadedPageNo + 1
         mTourSpot.requestAPI { (apiResult) -> Void in
             if let result = apiResult as? [TourSpotInfo] {
-                self.listTourSpot.append(contentsOf: result)
                 self.lbFailed.removeFromSuperview()
+                self.listTourSpot.append(contentsOf: result)
                 self.collectionView.reloadData()
                 self.loadedPageNo += 1
             }
             
             self.avTourSpotLoading.stop()
             
-            if self.loadedPageNo == 10 {
+            if self.loadedPageNo == self.maxPageNo {
                 self.collectionView.cr.noticeNoMoreData()
             } else {
                 self.collectionView.cr.endLoadingMore()
@@ -124,11 +112,9 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     }
     
     func loadData() {
-        
         mTourSpot.requestAPI { (apiResult) -> Void in
             if let result = apiResult as? [TourSpotInfo] {
                 self.listTourSpot = result
-                self.lbFailed.removeFromSuperview()
                 self.collectionView.reloadData()
             } else {
                 self.dataLoadFailed()
@@ -138,11 +124,22 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
         }
     }
     
+    func dataLoadFailed() {
+        self.view.addSubview(self.lbFailed)
+        self.lbFailed.then {
+            $0.text = "데이터 로드 실패"
+        }.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+    }
+    
     // 셀 눌린 경우
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         if let parent = self.parent as? TourSpotListViewController {
             
-            let vcTourSpotDetail = CMDetailViewController().then{
+            // 상세화면 세팅
+            let vcTourSpotDetail = CMDetailViewController().then {
                 $0.tourSpotInfo = listTourSpot[indexPath.row]
                 $0.dataType = .TourSpot
             }
@@ -186,8 +183,8 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout , sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let widthMinusPadding = self.view.frame.width - (cellPadding + cellPadding * cellsPerRow)
-        let eachSide = widthMinusPadding / cellsPerRow
-        return CGSize(width: eachSide, height: eachSide * cellHeightRatio)
+        let eachWidth = widthMinusPadding / cellsPerRow
+        return CGSize(width: eachWidth, height: eachWidth * cellHeightRatio)
     
     }
 }
