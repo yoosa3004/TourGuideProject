@@ -67,15 +67,6 @@ class FestivaListTableViewController: UIViewController {
             $0.refreshControl  = rcrFestical
             $0.refreshControl?.addTarget(self, action: #selector(refreshFestivalData(_:)), for: .valueChanged)
             
-            /*
-             $0.cr.addFootRefresh(animator: NormalFooterAnimator()) { [weak self] in
-             guard let self = self else {return}
-             
-             if self.loadedPageNo < 10 {
-             self.avFestivalLoading.start()
-             self.loadMoreFestivalData()
-             }
-             }*/
         }.snp.makeConstraints {
             $0.top.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
         }
@@ -96,78 +87,43 @@ class FestivaListTableViewController: UIViewController {
         self.tbvFestivalInfo.refreshControl?.endRefreshing()
     }
     
-    func loadMoreFestivalData() {
-        mFestivals.eventStartDate = 20200101
-        mFestivals.arrange = "P"
-        mFestivals.pageNo = self.loadedPageNo + 1
-        
-        mFestivals.requestAPI { [unowned self] in
-            if let sortedInfo = $0 as? [[FestivalInfo]] {
-                for idx in sortedInfo.indices {
-                    self.listFestivalInfo[idx].append(contentsOf: sortedInfo[idx])
-                }
-                self.tbvFestivalInfo.reloadData()
-                self.loadedPageNo = self.mFestivals.pageNo
-            }
-
-            self.avFestivalLoading.stop()
+        func loadData() {
             
-            if self.loadedPageNo == 10 {
-                self.tbvFestivalInfo.cr.noticeNoMoreData()
-            } else {
-                self.tbvFestivalInfo.cr.endLoadingMore()
-                let indexPath = NSIndexPath(row: NSNotFound, section: 0)
-                self.tbvFestivalInfo.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
-                
-            }
-        }
-    }
-    
-    /*
-     func loadData() {
-     mFestivals.eventStartDate = 20200101
-     mFestivals.arrange = "P"
-     
-     mFestivals.requestAPI { [unowned self] in
-     if let sortedInfo = $0 as? [[FestivalInfo]] {
-     for idx in sortedInfo.indices {
-     self.listFestivalInfo[idx] = sortedInfo[idx]
-     }
-     self.tbvFestivalInfo.reloadData()
-     } else {
-     self.loadDataFailed()
-     }
-     
-     self.avFestivalLoading.stop()
-     }
-     }s
-     */
-    
-    func loadData() {
-        mFestivals.eventStartDate = 20200101
-        mFestivals.arrange = "P"
-        
-        for pageNo in 1...10 {
-            mFestivals.pageNo = pageNo
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyyMMdd"
+            let currentDate = formatter.string(from: Date())
             
-            mFestivals.requestAPI { [unowned self] in
-                if let sortedInfo = $0 as? [[FestivalInfo]] {
-                    for idx in sortedInfo.indices {
-                        self.listFestivalInfo[idx].append(contentsOf: sortedInfo[idx])
+            mFestivals.eventStartDate = Int(currentDate)
+            mFestivals.arrange = "P"
+    
+            for pageNo in 1...10 {
+                mFestivals.pageNo = pageNo
+    
+                mFestivals.requestAPI { [unowned self] in
+                    if let sortedInfo = $0 as? [[FestivalInfo]] {
+                        for idx in sortedInfo.indices {
+                            self.listFestivalInfo[idx].append(contentsOf: sortedInfo[idx])
+                        }
+                    } else {
+                        self.loadDataFailed()
+                        self.avFestivalLoading.stop()
+                        return
                     }
-                } else {
-                    self.loadDataFailed()
-                    self.avFestivalLoading.stop()
-                    return
+                    if pageNo == 10 {
+                        
+                        // 날짜순 정렬
+                        for idx in self.listFestivalInfo.indices {
+                            self.listFestivalInfo[idx].sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
+                                 return left.eventstartdate ?? 0 < right.eventstartdate ?? 0
+                             }
+                        }
+
+                        self.tbvFestivalInfo.reloadData()
+                        self.avFestivalLoading.stop()
+                    }
                 }
-            if pageNo == 10 {
-                self.tbvFestivalInfo.reloadData()
-                self.avFestivalLoading.stop()
-            }
-            
             }
         }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

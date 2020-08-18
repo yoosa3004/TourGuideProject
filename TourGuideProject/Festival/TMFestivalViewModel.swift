@@ -14,7 +14,7 @@ import ObjectMapper
 
 class TMFestivals: CMNetworking {
     
-    var eventStartDate: Int? = 202001010
+    var eventStartDate: Int?
     
     override var APIKey: String {
         let key = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey="
@@ -59,20 +59,13 @@ class TMFestivals: CMNetworking {
     func sortByStartDate(_ targetArr: Array<FestivalInfo>) -> [[FestivalInfo]] {
         
         var sortedArr = Array(repeating: [FestivalInfo](), count: 12)
-        var tempArr = targetArr
-        
-        // 날짜순 정렬
-        tempArr.sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
-
-            return left.eventstartdate ?? 0 < right.eventstartdate ?? 0
-        }
 
         // 월 단위로 쪼개어 적재
         for idx in sortedArr.indices {
             
             let month = String.init(format: "%02d", idx+1)
             
-            let filteredByMonth = tempArr.filter {
+            let filteredByMonth = targetArr.filter {
                 
                 if let start = $0.eventstartdate {
                     return start >= Int("2020" + month + "01") ?? Int.max && start <= Int("2020" + month + "31") ?? Int.min

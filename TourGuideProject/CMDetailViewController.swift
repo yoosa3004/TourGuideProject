@@ -41,7 +41,6 @@ class CMDetailViewController: UIViewController {
     var festivalInfo: FestivalInfo?
     var zzimListInfo: ZZimDataInfo?
     
-    
     // 데이터 타입
     var dataType: DataType = .None
     
@@ -57,6 +56,8 @@ class CMDetailViewController: UIViewController {
     var lbAddr = UILabel()
     
     var lbTel = UILabel()
+    
+    var lbEventDate = UILabel()
     
     // 찜 아이콘
     var imgFullHeart = UIImage(named: "heart_full")?.withRenderingMode(.alwaysOriginal)
@@ -96,12 +97,12 @@ class CMDetailViewController: UIViewController {
             }
         case .Festival:
             if let festivalInfo = self.festivalInfo {
-                self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel)
+                self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel, festivalInfo.convertedEventDate ?? "")
                 self.checkIsHeartSelected(festivalInfo.contentid)
             }
         case.ZZimList:
             if let zzimListInfo = self.zzimListInfo {
-                self.setContents(image: zzimListInfo.image, title: zzimListInfo.title, addr1: zzimListInfo.addr, addr2: nil, tel: zzimListInfo.tel)
+                self.setContents(image: zzimListInfo.image, title: zzimListInfo.title, addr1: zzimListInfo.addr, addr2: nil, tel: zzimListInfo.tel, zzimListInfo.eventDate ?? "")
                 self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
             }
         default:
@@ -123,7 +124,7 @@ class CMDetailViewController: UIViewController {
         }
     }
     
-    func setContents(image: String?, title: String?, addr1: String?, addr2: String?, tel: String?) {
+    func setContents(image: String?, title: String?, addr1: String?, addr2: String?, tel: String?, _ eventDate: String = "") {
         
         // 이미지
         if let image = image {
@@ -150,6 +151,10 @@ class CMDetailViewController: UIViewController {
             lbTel.text = "전화번호가 제공되지 않습니다."
             lbTel.textColor = .systemGray4
         }
+        
+        // 일정
+        lbEventDate.text = eventDate
+        
     }
     
     func setViews() {
@@ -229,6 +234,19 @@ class CMDetailViewController: UIViewController {
         }.snp.makeConstraints { [unowned self] in
             $0.left.right.equalTo(self.lbAddr)
             $0.top.equalTo(self.lbAddr.snp.bottom).offset(25)
+        }
+        
+        // 일정
+        self.stvDetail.addSubview(lbEventDate)
+        lbEventDate.then {
+            $0.textAlignment = .center
+            $0.numberOfLines = 0
+            $0.lineBreakMode = .byWordWrapping
+            $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }.snp.makeConstraints { [unowned self] in
+            $0.left.right.equalTo(self.lbTel)
+            $0.top.equalTo(self.lbTel.snp.bottom).offset(25)
             $0.bottom.equalToSuperview()
         }
     }
