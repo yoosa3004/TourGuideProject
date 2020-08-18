@@ -24,10 +24,8 @@ class FestivalTableViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
          super.init(reuseIdentifier: reuseIdentifier)
          
-         // Content View
-         contentView.backgroundColor = .systemGray5//UIColor(hex: 0x2E3944)
+         contentView.backgroundColor = .systemGray5
          
-         // Image View
          contentView.addSubview(ivHeader)
          ivHeader.then {
              $0.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +34,6 @@ class FestivalTableViewHeader: UITableViewHeaderFooterView {
              $0.centerY.equalTo(contentView.layoutMarginsGuide)
          }
          
-         // Title Label
          contentView.addSubview(lbTitle)
          lbTitle.then {
              $0.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +42,6 @@ class FestivalTableViewHeader: UITableViewHeaderFooterView {
              $0.left.equalTo(ivHeader.snp.right).offset(15)
          }
          
-         // Arrow Label
          contentView.addSubview(ivArrow)
          ivArrow.then {
              $0.translatesAutoresizingMaskIntoConstraints = false
@@ -55,14 +51,14 @@ class FestivalTableViewHeader: UITableViewHeaderFooterView {
              $0.right.equalTo(contentView.layoutMarginsGuide).offset(-15)
          }
          
-         // call tapHeader when tappinh on this header
+         // 헤더 클릭 시 섹션 접었다 폈다하는 함수 호출
          addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHeader(_:))))
      }
 
     @objc func tapHeader(_ gestureRecognizer: UITapGestureRecognizer) {
-        guard let cell = gestureRecognizer.view as? FestivalTableViewHeader else { return }
+        guard let header = gestureRecognizer.view as? FestivalTableViewHeader else { return }
         
-        delegate?.toggleSection(self, section: cell.section)
+        delegate?.toggleSection(self, section: header.section)
     }
     
     required init?(coder: NSCoder) {

@@ -27,9 +27,14 @@ class TMTourSpot: CMNetworking {
         super.request(requestParam: getParam()) { (response:Any?) in
             if let result = Mapper<TourSpotResponse>().map(JSONObject: response) {
                 if result.response?.head?.resultMsg == "OK" {
-                    update(result.response?.body?.items?.item)
+                    if let apiResult = result.response?.body?.items?.item {
+                        update(apiResult)
+                    } else {
+                        tgLog("Tour Data load Failed")
+                        update(nil)
+                    }
                 } else {
-                    tgLog("Tour Data Load Failed")
+                    tgLog("Tour Data LoadingMessage is not OK")
                     update(nil)
                 }
             } else {

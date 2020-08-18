@@ -103,7 +103,7 @@ class FestivalInfo: Mappable {
     // 전화번호
     var tel: String?
     
-    // DB 저장용 ( YYYY.MM.DD ~ YYYY.MM.DD )
+    // DB 저장용 ( YYYY.MM.DD ~ YYYY.MM.DD ) 형태
     var convertedEventDate: String?
     
     init() {}

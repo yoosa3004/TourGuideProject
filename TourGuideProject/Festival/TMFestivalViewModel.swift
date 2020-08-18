@@ -31,15 +31,15 @@ class TMFestivals: CMNetworking {
                     if let apiResult = result.response?.body?.items?.item {
                         update(self.sortByStartDate(apiResult))
                     } else {
-                        tgLog("Festival Data Mapping Failed")
+                        tgLog("Festival Data load Failed")
                         update(nil)
                     }
                 } else {
-                    tgLog("Festival Data load Failed")
+                    tgLog("Festival Data loading Message is not OK")
                     update(nil)
                 }
             } else {
-                tgLog("Festival Data load Failed")
+                tgLog("Festival Data Mapping Failed")
             }
         }
     }
@@ -67,8 +67,8 @@ class TMFestivals: CMNetworking {
             
             let filteredByMonth = targetArr.filter {
                 
-                if let start = $0.eventstartdate {
-                    return start >= Int("2020" + month + "01") ?? Int.max && start <= Int("2020" + month + "31") ?? Int.min
+                if let startDate = $0.eventstartdate {
+                    return startDate >= Int("2020" + month + "01") ?? Int.max && startDate <= Int("2020" + month + "31") ?? Int.min
                 }
                 
                 return false
