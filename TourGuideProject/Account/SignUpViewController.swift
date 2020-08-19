@@ -165,35 +165,20 @@ class SignUpViewController: UIViewController {
                 if error == nil {
                     self.completeSignUp()
                 } else {
-                    self.showToast(message: "잘못된 이메일 형식이거나 이미 존재하는 계정입니다.")
+                    String("잘못된 이메일 형식이거나 이미 존재하는 계정입니다.").showToast()
                     return
                 }
             }
         } else {
-            self.showToast(message: "잘못된 이메일 형식이거나 이미 존재하는 계정입니다.")
+            String("잘못된 이메일 형식이거나 이미 존재하는 계정입니다.").showToast()
             return
         }
     }
     
     func completeSignUp() {
         presentingViewController?.dismiss(animated: true) {
-            self.showToast(message: "회원가입 완료!")
+            String("회원가입 완료!").showToast()
         }
-    }
-    
-    func showToast(message: String) {
-        
-        let option: [YYBottomSheet.SimpleToastOptions:Any] = [
-            .showDuration: 2.0,
-            .backgroundColor: UIColor.black,
-            .beginningAlpha: 0.8,
-            .messageFont: UIFont.italicSystemFont(ofSize: 15),
-            .messageColor: UIColor.white
-        ]
-        
-        let simpleToast = YYBottomSheet.init(simpleToastMessage: message, options: option)
-        
-        simpleToast.show()
     }
 }
 

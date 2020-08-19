@@ -162,11 +162,11 @@ class AccountViewController: UIViewController {
             
             Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
                 if user != nil {
-                    self.showToast(message: "로그인 성공!")
+                    String("로그인 성공!").showToast()
                     self.updateViewsPerAuthState(true)
                     self.view.endEditing(true)
                 } else {
-                    self.showToast(message: "로그인 실패!")
+                    String("로그인 실패!").showToast()
                 }
             }
         }
@@ -174,37 +174,16 @@ class AccountViewController: UIViewController {
         else {
             do {
                 try Auth.auth().signOut()
-                self.showToast(message: "로그아웃 성공!")
+                String("로그인 성공!").showToast()
                 self.updateViewsPerAuthState(false)
             } catch _ as NSError {
-                self.showToast(message: "로그아웃 실패!")
+                String("로그인 실패!").showToast()
             }
         }
     }
     
     @objc func onSigninBtnClicked(_ sender: UIButton) {
         self.navigationController?.present(SignUpViewController(), animated: true, completion: nil)
-    }
-    
-    func showAlert(message: String?) {
-        let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        self.present(alert, animated: false, completion: nil)
-    }
-    
-    
-    func showToast(message: String) {
-        let option: [YYBottomSheet.SimpleToastOptions:Any] = [
-            .showDuration: 2.0,
-            .backgroundColor: UIColor.black,
-            .beginningAlpha: 0.8,
-            .messageFont: UIFont.italicSystemFont(ofSize: 15),
-            .messageColor: UIColor.white
-        ]
-        
-        let simpleToast = YYBottomSheet.init(simpleToastMessage: message, options: option)
-        
-        simpleToast.show()
     }
 }
 

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import KYDrawerController
+import YYBottomSheet
 
 extension NSObject {
     static var reusableIdentifier: String {
@@ -80,4 +81,20 @@ public func tgLog(_ str: Any) {
     print(str)
     #else
     #endif
+}
+
+extension String {
+    func showToast() {
+        let option: [YYBottomSheet.SimpleToastOptions:Any] = [
+            .showDuration: 2.0,
+            .backgroundColor: UIColor.black,
+            .beginningAlpha: 0.8,
+            .messageFont: UIFont.italicSystemFont(ofSize: 15),
+            .messageColor: UIColor.white
+        ]
+        
+        let simpleToast = YYBottomSheet.init(simpleToastMessage: self, options: option)
+        
+        simpleToast.show()
+    }
 }

@@ -27,7 +27,7 @@ class FestivaListTableViewController: UIViewController {
     
     // API 로드 용 변수
     let mFestivals = TMFestivals()
-    let maxPageNo: Int = 10
+    let maxPageNo: Int = 15
     
     // 리프레쉬 컨트롤
     let rcrFestical = UIRefreshControl()

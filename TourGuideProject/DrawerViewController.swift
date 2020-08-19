@@ -171,7 +171,7 @@ class DrawerViewController: UIViewController {
                 }
             }
         } else {
-            showToast(message: "찜리스트는 로그인 상태일 때 이용할 수 있습니다.")
+            String("찜리스트는 로그인 상태일 때 이용할 수 있습니다.").showToast()
             self.sections[0].items.removeAll()
             self.sections[1].items.removeAll()
             self.tbvZZimList.reloadData()
@@ -295,22 +295,7 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
         
         self.navigationController?.pushViewController(vcDetail, animated: true)
     }
-    
-    func showToast(message: String) {
-        
-        let option: [YYBottomSheet.SimpleToastOptions:Any] = [
-            .showDuration: 2.0,
-            .backgroundColor: UIColor.black,
-            .beginningAlpha: 0.8,
-            .messageFont: UIFont.italicSystemFont(ofSize: 15),
-            .messageColor: UIColor.white
-        ]
-        
-        let simpleToast = YYBottomSheet.init(simpleToastMessage: message, options: option)
-        
-        simpleToast.show()
-    }
-    
+
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let delete = UIContextualAction(style: .normal, title: "삭제") { [unowned self] _, _, completionHandler in
@@ -322,13 +307,13 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
                     docRef.getDocument { (doc, err) in
                         if let doc = doc, doc.exists {
                             docRef.delete()
-                            self.showToast(message: "찜리스트에서 제거됐습니다.")
+                            String("찜리스트에서 제거됐습니다.").showToast()
                             self.sections[indexPath.section].items.remove(at: indexPath.row)
                             self.tbvZZimList.deleteRows(at: [indexPath], with: .automatic)
                         }
                         
                         if err != nil {
-                            self.showToast(message: "찜리스트 제거에 실패했습니다.")
+                            String("찜리스트 제거에 실패했습니다.").showToast()
                         }
                     }
                 }

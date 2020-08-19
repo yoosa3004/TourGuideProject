@@ -98,7 +98,7 @@ class CMDetailViewController: UIViewController {
                 self.checkIsHeartSelected(festivalInfo.contentid)
             }
         default:
-            showToast(message: "데이터가 로드되지 않았습니다.")
+            String("데이터가 로드되지 않았습니다.").showToast()
         }
     }
     
@@ -291,10 +291,10 @@ class CMDetailViewController: UIViewController {
                     db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId), "title": tourSpotInfo.title ?? "제목이 제공되지 않습니다.", "addr": tourSpotInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": tourSpotInfo.image ?? "No Image", "thumbnail": tourSpotInfo.thumbnail ?? "No Image", "tel": tourSpotInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
                         
                         if err == nil {
-                            self.showToast(message: "찜리스트에 담았습니다.")
+                            String("찜리스트에 담았습니다.").showToast()
                             updateIcon()
                         } else {
-                            self.showToast(message: "찜리스트에 담기를 실패했습니다.")
+                            String("찜리스트에 담기를 실패했습니다.").showToast()
                             tgLog(err)
                         }
                     }
@@ -305,19 +305,19 @@ class CMDetailViewController: UIViewController {
                     db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId),"title": festivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": festivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": festivalInfo.image ?? "No Image", "thumbnail": festivalInfo.thumbnail ?? "No Image", "tel": festivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": festivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
                         
                         if err == nil {
-                            self.showToast(message: "찜리스트에 담았습니다.")
+                            String("찜리스트에 담았습니다.").showToast()
                             updateIcon()
                         } else {
-                            self.showToast(message: "찜리스트에 담기를 실패했습니다.")
+                            String("찜리스트에 담기를 실패했습니다.").showToast()
                             tgLog(err)
                         }
                     }
                 }
             default:
-                showToast(message: "데이터가 로드되지 않았습니다.")
+                String("데이터가 로드되지 않았습니다.").showToast()
             }
         } else {
-            showToast(message: "찜 기능은 로그인 후 사용할 수 있습니다.")
+            String("찜 기능은 로그인 후 사용할 수 있습니다.").showToast()
         }
     }
     
@@ -338,32 +338,18 @@ class CMDetailViewController: UIViewController {
                     docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
                 }
             default:
-                showToast(message: "데이터가 로드되지 않았습니다.")
+                String("데이터가 로드되지 않았습니다.").showToast()
             }
             
             if let docRef = docRef {
                 docRef.getDocument { (doc, err) in
                     if let doc = doc, doc.exists {
                         docRef.delete()
-                        self.showToast(message: "찜리스트에서 제거됐습니다.")
+                        String("찜리스트에서 제거됐습니다.").showToast()
                         updateIcon()
                     }
                 }
             }
         }
-    }
-    
-    func showToast(message: String) {
-        let option: [YYBottomSheet.SimpleToastOptions:Any] = [
-            .showDuration: 2.0,
-            .backgroundColor: UIColor.black,
-            .beginningAlpha: 0.8,
-            .messageFont: UIFont.italicSystemFont(ofSize: 15),
-            .messageColor: UIColor.white
-        ]
-        
-        let simpleToast = YYBottomSheet.init(simpleToastMessage: message, options: option)
-        
-        simpleToast.show()
     }
 }
