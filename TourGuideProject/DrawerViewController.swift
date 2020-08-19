@@ -17,6 +17,32 @@ import YYBottomSheet
 
 class DrawerViewController: UIViewController {
  
+    // MARK: Firebase DB에 올라가는 찜리스트 데이터 클래스
+    class ZZimListInfo {
+        
+        // Firebase로부터 Data 읽어올 때 Dictionary 형태로 받기 때문에 그 데이터로 초기화
+        init(dictionary: [String: Any]) {
+            self.contentId = dictionary["contentid"] as? String
+            self.addr = dictionary["addr"] as? String
+            self.eventDate = dictionary["eventdate"] as? String
+            self.image = dictionary["image"] as? String
+            self.tel = dictionary["tel"] as? String
+            self.thumbNail = dictionary["thumbnail"] as? String
+            self.title = dictionary["title"] as? String
+        }
+        
+        let contentId: String?
+        let image: String?
+        let thumbNail: String?
+        let title: String?
+        let addr: String?
+        let tel: String?
+        let eventDate: String?
+        
+        // 관광지/행사 데이터타입
+        var dataType: String = ""
+    }
+    
     struct Section {
         var name: String
         var items: [ZZimListInfo]
@@ -107,7 +133,7 @@ class DrawerViewController: UIViewController {
                     
                     // 2. DB에서 읽어온다.
                     for document in query.documents {
-//                        print(document.data())
+//                        tgLog(document.data())
                         let tourSpotInfo = ZZimListInfo(dictionary: document.data())
                         tourSpotInfo.dataType = "TourSpot"
                         self.sections[0].items.append(tourSpotInfo)
@@ -130,7 +156,7 @@ class DrawerViewController: UIViewController {
                     
                     // 2. DB에서 읽어온다.
                     for document in query.documents {
-//                        print(document.data())
+//                        tgLog(document.data())
                         let festivalInfo = ZZimListInfo(dictionary: document.data())
                         festivalInfo.dataType = "Festival"
                         self.sections[1].items.append(festivalInfo)

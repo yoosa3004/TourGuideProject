@@ -38,7 +38,7 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
         lbTitle.then {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints {
-            $0.top.bottom.equalTo(contentView.layoutMarginsGuide)
+            $0.centerY.equalTo(contentView.layoutMarginsGuide)
             $0.left.equalTo(ivHeader.snp.right).offset(15)
         }
         
@@ -47,7 +47,7 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.image = UIImage(named: "up_and_down.png")?.withRenderingMode(.alwaysOriginal)
         }.snp.makeConstraints {
-            $0.top.equalTo(contentView.layoutMarginsGuide)
+            $0.centerY.equalTo(contentView.layoutMarginsGuide)
             $0.right.equalTo(contentView.layoutMarginsGuide).offset(-15)
         }
         

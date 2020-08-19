@@ -196,12 +196,12 @@ class CMDetailViewController: UIViewController {
         lbTitle.then {
             $0.textAlignment = .center
             $0.numberOfLines = 3
+            $0.lineBreakMode = .byCharWrapping
             $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.ivDetail.snp.bottom).offset(25)
-            $0.height.equalTo(25)
             $0.left.equalToSuperview().offset(25)
             $0.right.equalToSuperview().offset(-25)
         }
@@ -211,13 +211,13 @@ class CMDetailViewController: UIViewController {
         lbAddr.then {
             $0.textAlignment = .center
             $0.numberOfLines = 3
+            $0.lineBreakMode = .byCharWrapping
             $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
             $0.textColor = .black
             $0.translatesAutoresizingMaskIntoConstraints = false
         }.snp.makeConstraints { [unowned self] in
             $0.left.right.equalTo(self.lbTitle)
             $0.top.equalTo(self.lbTitle.snp.bottom).offset(25)
-            $0.height.equalTo(25)
         }
         
         // 전화번호
