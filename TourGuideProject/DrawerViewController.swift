@@ -207,7 +207,7 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 // 제목
                 if let title = data.title {
-                    if title.contains("[") {
+                    if title.contains("[") && data.dataType == "Festival" {
                         $0.lbTitle.attributedText = NSAttributedString().splitByBracket(title)
                     } else {
                         $0.lbTitle.text = title
