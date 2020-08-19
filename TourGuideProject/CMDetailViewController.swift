@@ -18,7 +18,6 @@ class CMDetailViewController: UIViewController {
     enum DataType {
         case TourSpot
         case Festival
-        case ZZimList
         case None
         
         func getString() -> String {
