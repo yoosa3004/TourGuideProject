@@ -336,8 +336,6 @@ extension DrawerViewController: DrawerTableViewHeaderDelegate {
         
         sections[section].collapsed = collapsed
         
-        self.tbvZZimList.beginUpdates()
         self.tbvZZimList.reloadSections(IndexSet.init(integer: section), with: .automatic)
-        self.tbvZZimList.endUpdates()
     }
 }
