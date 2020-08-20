@@ -9,7 +9,7 @@ class CMNetworking {
     
     var pageNo: Int = 1
     var numOfRows: Int = 10
-    var arrange: String?
+    var arrange: String = "P"
     
     var APIKey: String {
         return ""
@@ -24,8 +24,10 @@ class CMNetworking {
             urlString += "&\(key)=\(value)"
         }
         
+        print("\(self.pageNo)번째 요청")
         Alamofire.request(urlString).responseJSON { response in
             if response.result.isSuccess {
+                
                 update(response.result.value)
             } else {
                 tgLog("API Networing Failed")
@@ -42,9 +44,7 @@ class CMNetworking {
         
         param.updateValue(numOfRows, forKey: "numOfRows")
 
-        if let validarrange = arrange {
-            param.updateValue(validarrange, forKey: "arrange")
-        }
+        param.updateValue(arrange, forKey: "arrange")
         
         return param
     }

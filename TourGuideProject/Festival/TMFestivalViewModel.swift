@@ -16,6 +16,8 @@ class TMFestivals: CMNetworking {
     
     var eventStartDate: Int?
     
+    let maxPageNo: Int = 10
+    
     override var APIKey: String {
         let key = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey="
             + serviceKey
@@ -36,10 +38,12 @@ class TMFestivals: CMNetworking {
                     }
                 } else {
                     tgLog("Festival Data loading Message is not OK")
+                    tgLog(result.response?.head?.resultMsg)
                     update(nil)
                 }
             } else {
                 tgLog("Festival Data Mapping Failed")
+                update(nil)
             }
         }
     }
@@ -57,7 +61,7 @@ class TMFestivals: CMNetworking {
     
     // MARK: API로부터 받은 데이터를 날짜순으로 정렬 후 월 단위로 쪼개어 테이블 뷰 데이터에 넣어줄 행사 정보 배열 생성 (1월 행사, 2월 행사, 3월 행사, ...)
     func sortByStartDate(_ targetArr: Array<FestivalInfo>) -> [[FestivalInfo]] {
-        
+
         var sortedArr = Array(repeating: [FestivalInfo](), count: 12)
 
         // 월 단위로 쪼개어 적재

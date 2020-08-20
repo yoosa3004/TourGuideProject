@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02315B0724B5995C00166294 /* CMNetworkingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* CMNetworkingViewModel.swift */; };
+		02315B0724B5995C00166294 /* CMNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02315B0624B5995C00166294 /* CMNetworking.swift */; };
 		024DD93124D16A5D000FCEF1 /* FestivaListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024DD93024D16A5D000FCEF1 /* FestivaListTableViewController.swift */; };
 		02528F3E24C5327900DD1EF3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */; };
 		0254A2AC24B4155100945CEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254A2AB24B4155100945CEA /* AppDelegate.swift */; };
@@ -55,7 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		02315B0624B5995C00166294 /* CMNetworkingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMNetworkingViewModel.swift; sourceTree = "<group>"; };
+		02315B0624B5995C00166294 /* CMNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMNetworking.swift; sourceTree = "<group>"; };
 		024DD93024D16A5D000FCEF1 /* FestivaListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivaListTableViewController.swift; sourceTree = "<group>"; };
 		02528F3D24C5327800DD1EF3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0254A2A824B4155100945CEA /* TourGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TourGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -228,7 +228,7 @@
 			children = (
 				0254A2B624B4155300945CEA /* LaunchScreen.storyboard */,
 				0254A2AB24B4155100945CEA /* AppDelegate.swift */,
-				02315B0624B5995C00166294 /* CMNetworkingViewModel.swift */,
+				02315B0624B5995C00166294 /* CMNetworking.swift */,
 				027F90D624C98119009899A3 /* CMExtensions.swift */,
 			);
 			path = Util;
@@ -542,7 +542,7 @@
 				025BC12E24EB7A410053308F /* FestivalTableViewHeader.swift in Sources */,
 				027F90CF24C91A11009899A3 /* TMTourSpotViewModel.swift in Sources */,
 				027F90D724C98119009899A3 /* CMExtensions.swift in Sources */,
-				02315B0724B5995C00166294 /* CMNetworkingViewModel.swift in Sources */,
+				02315B0724B5995C00166294 /* CMNetworking.swift in Sources */,
 				02F4412C24C7D48600BB6A98 /* TMFestivalViewModel.swift in Sources */,
 				024DD93124D16A5D000FCEF1 /* FestivaListTableViewController.swift in Sources */,
 				026F6A6324D3AE750084F756 /* SignUpViewController.swift in Sources */,

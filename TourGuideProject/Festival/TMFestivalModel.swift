@@ -126,6 +126,7 @@ class FestivalInfo: Mappable {
     
     required init?(map: Map) {}
     
+    // 찜리스트 딕셔너리 init을 이걸로.
     func mapping(map: Map) {
         contentid <- map["contentid"]
         contenttypeid <- map["contenttypeid"]

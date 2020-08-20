@@ -22,12 +22,12 @@ class FestivaListTableViewController: UIViewController {
     
     // 데이터
     var sections = Array(repeating: MonthSection(), count: 12)
+    
     // API 로딩 완료 후 최종 데이터만 sections에 넣어주기 위한 임시 배열
     var tempArr = Array(repeating: [FestivalInfo](), count: 12)
     
     // API 로드 용 변수
     let mFestivals = TMFestivals()
-    let maxPageNo: Int = 15
     
     // 리프레쉬 컨트롤
     let rcrFestical = UIRefreshControl()
@@ -37,6 +37,8 @@ class FestivaListTableViewController: UIViewController {
     
     // 테이블뷰
     var tbvFestivalInfo = UITableView()
+    
+    let lbDataLoadFailed = UILabel()
     
     override func loadView() {
         super.loadView()
@@ -84,64 +86,104 @@ class FestivaListTableViewController: UIViewController {
         avFestivalLoading.then { [unowned self] in
             $0.center = CGPoint(x: self.view.center.x, y: self.view.center.y)
             $0.lineColor = .red
-        }.start()
+        }
     }
     
     @objc func refreshFestivalData(_ sender: Any) {
-        self.tbvFestivalInfo.reloadData()
+        
+        // 데이터 로드 실패 라벨 삭제
+        self.lbDataLoadFailed.removeFromSuperview()
+        
+        
+        // 데이터 로드 재개
+        self.loadData()
+        
         self.tbvFestivalInfo.refreshControl?.endRefreshing()
     }
     
     func loadData() {
         
+        // 인디케이터 실행
+        self.avFestivalLoading.start()
+        
         // 현재 날짜부터 조회
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMdd"
         let currentDate = formatter.string(from: Date())
-        
         mFestivals.eventStartDate = Int(currentDate)
-        mFestivals.arrange = "P"
-        
-        for pageNo in 1...self.maxPageNo {
+    
+        var finishedRequestNum = 0
+        for pageNo in 1...mFestivals.maxPageNo {
             mFestivals.pageNo = pageNo
             
             mFestivals.requestAPI { [unowned self] in
+                finishedRequestNum += 1
+                
                 if let sortedInfo = $0 as? [[FestivalInfo]] {
                     for idx in sortedInfo.indices {
                         self.tempArr[idx].append(contentsOf: sortedInfo[idx])
                     }
-                } else {
-                    self.loadDataFailed()
-                    self.avFestivalLoading.stop()
-                    return
-                }
-                
-                // 최대치만큼 API 호출 + 월 별로 분리 + 정렬까지 한 후에 tableView에 쓰일 데이터에 세팅해줌.
-                if pageNo == self.maxPageNo {
                     
+                    tgLog("\(pageNo)번째 API 로드 완료")
+                }
+             
+                // 최대치만큼 API 호출 + 월 별로 분리 + 정렬까지 한 후에 tableView에 쓰일 데이터에 세팅해줌.
+                if finishedRequestNum == self.mFestivals.maxPageNo {
+                    print("\(finishedRequestNum)개 로드 완료!!")
+                    
+                    var isDataLoadFailed = true
                     for idx in self.tempArr.indices {
-                        self.tempArr[idx].sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
-                            return left.eventstartdate ?? 0 < right.eventstartdate ?? 0
+                        if self.tempArr[idx].count > 0 {
+                            isDataLoadFailed = false
+                            break
                         }
-                        
-                        self.sections[idx].items = self.tempArr[idx]
                     }
                     
-                    self.tbvFestivalInfo.reloadData()
-                    self.avFestivalLoading.stop()
+                    if isDataLoadFailed {
+                        self.loadDataFailed()
+                    } else {
+                        self.updateData()
+                    }
                 }
             }
         }
     }
     
+    // API로부터 받아온 데이터를 실제 테이블뷰에 세팅
+    func updateData() {
+        
+        self.avFestivalLoading.stop()
+        
+        for idx in self.tempArr.indices {
+            self.tempArr[idx].sort { (left: FestivalInfo, right:FestivalInfo) -> Bool in
+                return left.eventstartdate ?? 0 <= right.eventstartdate ?? 0
+            }
+            
+            self.sections[idx].items = self.tempArr[idx]
+        }
+        
+        self.tbvFestivalInfo.separatorStyle = .singleLine
+        self.tbvFestivalInfo.reloadData()
+    }
+    
+    // 데이터 로드 실패 시 처리
     func loadDataFailed() {
         
-        let lbDataLoadFailed = UILabel().then { [unowned self] in
+        // 인디케이터 stop
+        self.avFestivalLoading.stop()
+        
+        // 테이블뷰 줄 없애기
+        self.tbvFestivalInfo.separatorStyle = .none
+        self.tbvFestivalInfo.reloadData()
+        
+        // 데이터로드 실패 라벨
+        lbDataLoadFailed.then { [unowned self] in
             $0.frame = self.tbvFestivalInfo.bounds
             $0.text = "데이터 로드 실패"
             $0.textAlignment = .center
         }
         
+        // 라벨 띄우기
         self.tbvFestivalInfo.backgroundView = UIView(frame: self.tbvFestivalInfo.bounds)
         self.tbvFestivalInfo.backgroundView?.addSubview(lbDataLoadFailed)
     }
