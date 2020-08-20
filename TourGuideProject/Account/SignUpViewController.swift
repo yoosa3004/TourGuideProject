@@ -102,6 +102,8 @@ class SignUpViewController: UIViewController {
             $0.borderStyle = .roundedRect
             $0.layer.borderColor = CGColor(srgbRed: 255, green: 192, blue: 203, alpha: 0)
             $0.autocorrectionType = .no
+            $0.keyboardType = .emailAddress
+            $0.autocapitalizationType = .none
             $0.delegate = self
             $0.returnKeyType = .next
         }.snp.makeConstraints {
@@ -122,6 +124,7 @@ class SignUpViewController: UIViewController {
             $0.layer.borderColor = CGColor(srgbRed: 255, green: 192, blue: 203, alpha: 0)
             $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/5, height: self.view.frame.height/5)
             $0.autocorrectionType = .no
+            $0.autocapitalizationType = .none
             $0.isSecureTextEntry = true
             $0.delegate = self
             $0.returnKeyType = .done

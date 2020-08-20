@@ -104,6 +104,8 @@ class AccountViewController: UIViewController {
             $0.autocorrectionType = .no
             $0.delegate = self
             $0.returnKeyType = .next
+            $0.autocapitalizationType = .none
+            $0.keyboardType = .emailAddress
         }.snp.makeConstraints {
             $0.top.equalTo(ivAccount.snp.bottom).offset(50)
             $0.left.equalTo(self.view.safeAreaLayoutGuide).offset(25)
@@ -125,6 +127,7 @@ class AccountViewController: UIViewController {
             $0.isSecureTextEntry = true
             $0.delegate = self
             $0.returnKeyType = .done
+            $0.autocapitalizationType = .none
         }.snp.makeConstraints { [unowned self] in
             $0.top.equalTo(self.tfID.snp.bottom).offset(10)
             $0.left.right.equalTo(self.tfID)
