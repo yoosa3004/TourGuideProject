@@ -20,9 +20,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     // API 로드용 변수
     var mTourSpot = TMTourSpot()
     var areaCode: Int?
-    var arrange: String?
     var loadedPageNo: Int = 1
-    let maxPageNo: Int = 10
     
     // 데이터
     var listTourSpot = Array<TourSpotInfo>()
@@ -35,6 +33,8 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
     let cellPadding: CGFloat = 10
     let cellHeightRatio: CGFloat = 1.25
     
+    var isInitData: Bool = false
+    
     override func loadView() {
         super.loadView()
         
@@ -43,7 +43,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
         avTourSpotLoading.then { [unowned self] in
             $0.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 100)
             $0.lineColor = .red
-        }.start()
+        }
         
         // 콜렉션 뷰 세팅
         setCollectionView()
@@ -71,6 +71,9 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             // 셀 등록
             $0.register(TourSpotCell.self, forCellWithReuseIdentifier: TourSpotCell.reusableIdentifier)
             
+            // 데이터가 없을 때도 pull-down 할 수 있게
+            $0.alwaysBounceVertical = true
+            
             // 리프레쉬 컨트롤
             $0.cr.addHeadRefresh(animator: NormalHeaderAnimator()) { [unowned self] in
                 self.refreshTourSpotData()
@@ -78,32 +81,59 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             
             // 푸터
             $0.cr.addFootRefresh(animator: NormalFooterAnimator()) { [unowned self] in
-                if self.loadedPageNo < self.maxPageNo {
-                    self.avTourSpotLoading.start()
-                    self.loadMoreData()
+                if self.loadedPageNo <= self.mTourSpot.maxPageNo {
+                    self.loadData()
                 }
             }
         }
     }
     
+    // 1. 데이터가 있는 상황에서 reload, 2. 데이터 로드 실패 화면에서 reload
     func refreshTourSpotData() {
-        self.collectionView.reloadData()
+    
+        if self.listTourSpot.isEmpty == false {
+            self.listTourSpot.removeAll()
+            self.collectionView.reloadData()
+        }
+        
+        self.loadedPageNo = 1
+        self.loadData()
         self.collectionView.cr.endHeaderRefresh()
     }
     
-    func loadMoreData() {
-        mTourSpot.pageNo = loadedPageNo + 1
-        mTourSpot.requestAPI { (apiResult) -> Void in
+    // 1. init 2. refresh 3. load more
+    func loadData() {
+        
+        // 인디케이터 시작
+        self.avTourSpotLoading.start()
+        
+        mTourSpot.pageNo = loadedPageNo
+        
+        mTourSpot.requestAPI { [unowned self] (apiResult) -> Void in
+            
+            // 전에 데이터 로드가 실패했다면 라벨 삭제
+            self.lbFailed.removeFromSuperview()
+            
+            // 데이터 로드 성공
             if let result = apiResult as? [TourSpotInfo] {
-                self.lbFailed.removeFromSuperview()
+                
+                // 실제 데이터에 insert
                 self.listTourSpot.append(contentsOf: result)
                 self.collectionView.reloadData()
+                
+                // 다음 로드를 위해 pageNo + 1
                 self.loadedPageNo += 1
             }
+            // 데이터 로드 실패
+            else {
+                self.loadDataFailed()
+            }
             
+            // 인디케이터 멈추기
             self.avTourSpotLoading.stop()
             
-            if self.loadedPageNo == self.maxPageNo {
+            // 설정값 만큼 로딩했을 시 no more Data 해주기
+            if self.loadedPageNo > self.mTourSpot.maxPageNo {
                 self.collectionView.cr.noticeNoMoreData()
             } else {
                 self.collectionView.cr.endLoadingMore()
@@ -111,25 +141,23 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
         }
     }
     
-    func loadData() {
-        mTourSpot.requestAPI { (apiResult) -> Void in
-            if let result = apiResult as? [TourSpotInfo] {
-                self.listTourSpot = result
-                self.collectionView.reloadData()
-            } else {
-                self.dataLoadFailed()
+    func loadDataFailed() {
+        
+        // 인디케이터 삭제
+        self.avTourSpotLoading.stop()
+        
+        // 데이터가 아에 로드되지 않았을 경우(1. init에서 들어오거나 2. 데이터가 있는 상태에서 인터넷연결 해제 후 reload 시도한 경우)
+        if listTourSpot.isEmpty {
+            self.view.addSubview(self.lbFailed)
+            self.lbFailed.then {
+                $0.text = "데이터 로드 실패"
+            }.snp.makeConstraints {
+                $0.center.equalToSuperview()
             }
-            
-            self.avTourSpotLoading.stop()
         }
-    }
-    
-    func dataLoadFailed() {
-        self.view.addSubview(self.lbFailed)
-        self.lbFailed.then {
-            $0.text = "데이터 로드 실패"
-        }.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        // load more Data 에서 데이터 로딩 실패했을 경우 Toast
+        else {
+            String("데이터 로드에 실패했습니다!!").showToast()
         }
     }
     

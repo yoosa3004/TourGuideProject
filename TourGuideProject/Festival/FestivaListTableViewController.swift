@@ -10,6 +10,7 @@ import UIKit
 import Then
 import SnapKit
 import CRRefresh
+import Alamofire
 import SpringIndicator
 
 class FestivaListTableViewController: UIViewController {
@@ -94,7 +95,6 @@ class FestivaListTableViewController: UIViewController {
         // 데이터 로드 실패 라벨 삭제
         self.lbDataLoadFailed.removeFromSuperview()
         
-        
         // 데이터 로드 재개
         self.loadData()
         
@@ -105,6 +105,22 @@ class FestivaListTableViewController: UIViewController {
         
         // 인디케이터 실행
         self.avFestivalLoading.start()
+        
+        /*
+        // 시간초과 검사를 위해 함수 추가
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            
+            print("시간초과")
+            Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { data, upload, download in
+                data.forEach { $0.cancel() }
+                upload.forEach { $0.cancel() }
+                download.forEach { $0.cancel() }
+            }
+            
+            self.checkDataIsEmpty()
+            return
+        }
+         */
         
         // 현재 날짜부터 조회
         let formatter = DateFormatter()
@@ -131,22 +147,27 @@ class FestivaListTableViewController: UIViewController {
                 if finishedRequestNum == self.mFestivals.maxPageNo {
                     print("\(finishedRequestNum)개 로드 완료!!")
                     
-                    var isDataLoadFailed = true
-                    for idx in self.tempArr.indices {
-                        if self.tempArr[idx].count > 0 {
-                            isDataLoadFailed = false
-                            break
-                        }
-                    }
-                    
-                    if isDataLoadFailed {
-                        self.loadDataFailed()
-                    } else {
-                        self.updateData()
-                    }
+                    self.checkDataIsEmpty()
                 }
             }
         }
+    }
+    
+    // 데이터 로드 실패인지 데이터 업데이트할건지 검사하는 함수
+    func checkDataIsEmpty() {
+        var isDataLoadFailed = true
+         for idx in self.tempArr.indices {
+             if self.tempArr[idx].count > 0 {
+                 isDataLoadFailed = false
+                 break
+             }
+         }
+         
+         if isDataLoadFailed {
+             self.loadDataFailed()
+         } else {
+             self.updateData()
+         }
     }
     
     // API로부터 받아온 데이터를 실제 테이블뷰에 세팅

@@ -14,6 +14,7 @@ import ObjectMapper
 class TMTourSpot: CMNetworking {
     
     var areaCode: Int? = 0
+    let maxPageNo: Int = 10
     
     override var APIKey: String {
         let key = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?serviceKey="
