@@ -95,6 +95,10 @@ class FestivaListTableViewController: UIViewController {
         // 데이터 로드 실패 라벨 삭제
         self.lbDataLoadFailed.removeFromSuperview()
         
+        // 데이터 삭제
+        self.tempArr.removeAll()
+        self.tbvFestivalInfo.reloadData()
+        
         // 데이터 로드 재개
         self.loadData()
         

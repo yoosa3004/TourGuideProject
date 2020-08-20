@@ -27,7 +27,6 @@ class CMNetworking {
         print("\(self.pageNo)번째 요청")
         Alamofire.request(urlString).responseJSON { response in
             if response.result.isSuccess {
-                
                 update(response.result.value)
             } else {
                 tgLog("API Networing Failed")
