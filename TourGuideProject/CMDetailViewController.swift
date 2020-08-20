@@ -13,25 +13,14 @@ import FirebaseFirestore
 import FirebaseAuth
 import YYBottomSheet
 
-class CMDetailViewController: UIViewController {
+enum DataType: String {
     
-    enum DataType {
-        case TourSpot
-        case Festival
-        case None
-        
-        func getString() -> String {
-            
-            switch self {
-            case .TourSpot:
-                return "TourSpot"
-            case .Festival:
-                return "Festival"
-            default:
-                return "None"
-            }
-        }
-    }
+    case TourSpot = "TourSpot"
+    case Festival = "Festival"
+    case None = "None"
+}
+
+class CMDetailViewController: UIViewController {
     
     // 각 컨트롤러로부터 전달받는 데이터
     var tourSpotInfo: TourSpotInfo?
@@ -109,7 +98,7 @@ class CMDetailViewController: UIViewController {
         } else {
             if let user = Auth.auth().currentUser {
                 if let contentId = contentId {
-                    let docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
+                    let docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId))
                     
                     docRef.getDocument { (document, err) in
                         if let document = document, document.exists {
@@ -288,7 +277,7 @@ class CMDetailViewController: UIViewController {
             case .TourSpot:
                 if let tourSpotInfo = self.tourSpotInfo, let contentId = tourSpotInfo.contentid {
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId), "title": tourSpotInfo.title ?? "제목이 제공되지 않습니다.", "addr": tourSpotInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": tourSpotInfo.image ?? "No Image", "thumbnail": tourSpotInfo.thumbnail ?? "No Image", "tel": tourSpotInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId)).setData(["contentid": String(contentId), "title": tourSpotInfo.title ?? "제목이 제공되지 않습니다.", "addr": tourSpotInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": tourSpotInfo.image ?? "No Image", "thumbnail": tourSpotInfo.thumbnail ?? "No Image", "tel": tourSpotInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
                         
                         if err == nil {
                             String("찜리스트에 담았습니다.").showToast()
@@ -302,7 +291,7 @@ class CMDetailViewController: UIViewController {
             case .Festival:
                 if let festivalInfo = self.festivalInfo, let contentId = festivalInfo.contentid {
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId)).setData(["contentid": String(contentId),"title": festivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": festivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": festivalInfo.image ?? "No Image", "thumbnail": festivalInfo.thumbnail ?? "No Image", "tel": festivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": festivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId)).setData(["contentid": String(contentId),"title": festivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": festivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": festivalInfo.image ?? "No Image", "thumbnail": festivalInfo.thumbnail ?? "No Image", "tel": festivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": festivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
                         
                         if err == nil {
                             String("찜리스트에 담았습니다.").showToast()
@@ -331,11 +320,11 @@ class CMDetailViewController: UIViewController {
             switch self.dataType {
             case .TourSpot:
                 if let contentId = tourSpotInfo?.contentid {
-                    docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
+                    docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId))
                 }
             case .Festival:
                 if let contentId = festivalInfo?.contentid {
-                    docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.getString()).document(String(contentId))
+                    docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId))
                 }
             default:
                 String("데이터가 로드되지 않았습니다.").showToast()

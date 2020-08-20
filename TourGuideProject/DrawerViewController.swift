@@ -40,7 +40,7 @@ class DrawerViewController: UIViewController {
         let eventDate: String?
         
         // 관광지/행사 데이터타입
-        var dataType: String = ""
+        var dataType: DataType = .None
     }
     
     struct Section {
@@ -135,7 +135,7 @@ class DrawerViewController: UIViewController {
                     for document in query.documents {
 //                        tgLog(document.data())
                         let tourSpotInfo = ZZimListInfo(dictionary: document.data())
-                        tourSpotInfo.dataType = "TourSpot"
+                        tourSpotInfo.dataType = .TourSpot
                         self.sections[0].items.append(tourSpotInfo)
                     }
                     
@@ -158,7 +158,7 @@ class DrawerViewController: UIViewController {
                     for document in query.documents {
 //                        tgLog(document.data())
                         let festivalInfo = ZZimListInfo(dictionary: document.data())
-                        festivalInfo.dataType = "Festival"
+                        festivalInfo.dataType = .Festival
                         self.sections[1].items.append(festivalInfo)
                     }
                     
@@ -207,7 +207,7 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 // 제목
                 if let title = data.title {
-                    if title.contains("[") && data.dataType == "Festival" {
+                    if title.contains("[") && data.dataType == .Festival {
                         $0.lbTitle.attributedText = NSAttributedString().splitByBracket(title)
                     } else {
                         $0.lbTitle.text = title
@@ -278,11 +278,11 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
             let data = self.sections[indexPath.section].items[indexPath.row]
             
             switch data.dataType {
-            case "TourSpot":
+            case .TourSpot:
                 $0.tourSpotInfo = TourSpotInfo(title: data.title, addr1: data.addr, addr2: "", image: data.image, thumbnail: data.thumbNail, tel: data.tel)
                 $0.tourSpotInfo?.contentid = Int(data.contentId ?? "")
                 $0.dataType = .TourSpot
-            case "Festival":
+            case .Festival:
                 $0.festivalInfo = FestivalInfo(title: data.title, addr1: data.addr, addr2: "", image: data.image, thumbnail: data.thumbNail, tel: data.tel, eventDate: data.eventDate)
                 $0.festivalInfo?.contentid = Int(data.contentId ?? "")
                 $0.dataType = .Festival
@@ -302,7 +302,7 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
             
             if let user = Auth.auth().currentUser {
                 if let contentId = self.sections[indexPath.section].items[indexPath.row].contentId {
-                    let docRef = self.db.collection("zzimList").document(user.uid).collection(self.sections[indexPath.section].items[indexPath.row].dataType).document(contentId)
+                    let docRef = self.db.collection("zzimList").document(user.uid).collection(self.sections[indexPath.section].items[indexPath.row].dataType.rawValue).document(contentId)
                     
                     docRef.getDocument { (doc, err) in
                         if let doc = doc, doc.exists {
