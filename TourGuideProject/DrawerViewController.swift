@@ -135,6 +135,7 @@ class DrawerViewController: UIViewController {
                     for document in query.documents {
 //                        tgLog(document.data())
                         let tourSpotInfo = ZZimListInfo(dictionary: document.data())
+                        //@test
                         tourSpotInfo.dataType = "TourSpot"
                         self.sections[0].items.append(tourSpotInfo)
                     }
