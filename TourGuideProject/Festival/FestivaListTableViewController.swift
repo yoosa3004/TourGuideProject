@@ -96,8 +96,7 @@ class FestivaListTableViewController: UIViewController {
         self.lbDataLoadFailed.removeFromSuperview()
         
         // 데이터 삭제
-        self.tempArr.removeAll()
-        self.tbvFestivalInfo.reloadData()
+        self.tempArr = Array(repeating: [FestivalInfo](), count: 12)
         
         // 데이터 로드 재개
         self.loadData()
@@ -199,6 +198,7 @@ class FestivaListTableViewController: UIViewController {
         
         // 테이블뷰 줄 없애기
         self.tbvFestivalInfo.separatorStyle = .none
+        self.sections = Array(repeating: MonthSection(), count: 12)
         self.tbvFestivalInfo.reloadData()
         
         // 데이터로드 실패 라벨
