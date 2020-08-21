@@ -135,15 +135,10 @@ class DrawerViewController: UIViewController {
                     
                     // 2. DB에서 읽어온다.
                     for document in query.documents {
-                        if let tourSpotInfo = ZZimListInfo(JSON: document.data()) {
-                            tourSpotInfo.dataType = .TourSpot
-                            self.sections[0].items.append(tourSpotInfo)
-                        }
-                    }
-                    
-                    self.tbvZZimList.reloadData()
-                    tgLog("관광지 데이터 로드 완료")
-                } else {
+                        let tourSpotInfo = ZZimListInfo(dictionary: document.data())
+                        //@test
+                        tourSpotInfo.dataType = "TourSpot"
+                        self.sections[0].items.append(tourSpotInfo)
                     tgLog("관광지 데이터 없음")
                 }
             }
