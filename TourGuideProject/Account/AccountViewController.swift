@@ -186,7 +186,10 @@ class AccountViewController: UIViewController {
     }
     
     @objc func onSigninBtnClicked(_ sender: UIButton) {
-        self.navigationController?.present(SignUpViewController(), animated: true, completion: nil)
+        let vcSignUp = UINavigationController(rootViewController: SignUpViewController()).then {
+            $0.modalPresentationStyle = .fullScreen
+        }
+        self.navigationController?.present(vcSignUp, animated: true, completion: nil)
     }
 }
 

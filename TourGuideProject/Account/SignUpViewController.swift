@@ -151,12 +151,8 @@ class SignUpViewController: UIViewController {
     }
     
     func setNavItem() {
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44))
-        self.view.addSubview(navBar)
-
-        let navItem = UINavigationItem(title: "회원가입")
-        navBar.setItems([navItem], animated: false)
-        navItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(onCloseBtnClicked(_:)))
+        self.title = "회원가입"
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(onCloseBtnClicked(_:)))
     }
     
     @objc func onSigninBtnClicked(_ sender: Any) {
