@@ -17,6 +17,8 @@ class AccountViewController: UIViewController {
     
     var scvAccount = UIScrollView()
     
+    var lbID = UILabel()
+    
     var tfID = UITextField()
     
     var tfPassword = UITextField()
@@ -177,10 +179,10 @@ class AccountViewController: UIViewController {
         else {
             do {
                 try Auth.auth().signOut()
-                String("로그인 성공!").showToast()
+                String("로그아웃 성공!").showToast()
                 self.updateViewsPerAuthState(false)
             } catch _ as NSError {
-                String("로그인 실패!").showToast()
+                String("로그아웃 실패!").showToast()
             }
         }
     }
@@ -220,17 +222,32 @@ extension AccountViewController: UITextFieldDelegate {
     // MARK: 로그인/로그아웃에 따라 textField, button 상태를 변경
     func updateViewsPerAuthState(_ isLoggedIn : Bool) {
         
+        tfID.isHidden = isLoggedIn
+        tfPassword.isHidden = isLoggedIn
+        lbID.isHidden = !isLoggedIn
+        btnSignin.isHidden = isLoggedIn
+        
         // 로그인 체크
         if isLoggedIn {
-            tfID.placeholder = "이미 로그인 된 상태입니다."
-            tfPassword.placeholder = "이미 로그인 된 상태입니다."
+            self.scvAccount.addSubview(self.lbID)
+            lbID.then {
+                $0.text = "계정 \n\n \(Auth.auth().currentUser?.email ?? String("계정을 불러오지 못했습니다."))"
+                $0.textAlignment = .center
+                $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+                $0.numberOfLines = 4
+            }.snp.makeConstraints {
+                $0.top.equalTo(ivAccount.snp.bottom).offset(50)
+                $0.left.equalTo(self.view.safeAreaLayoutGuide).offset(25)
+                $0.right.equalTo(self.view.safeAreaLayoutGuide).offset(-25)
+            }
+            
             btnLogin.setTitle("로그아웃", for: .normal)
-            btnSignin.isHidden = true
         } else {
+            tfID.text = ""
+            tfPassword.text = ""
             tfID.placeholder = "이메일"
             tfPassword.placeholder = "비밀번호"
             btnLogin.setTitle("로그인", for: .normal)
-            btnSignin.isHidden = false
         }
     }
     
