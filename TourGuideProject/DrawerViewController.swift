@@ -11,6 +11,7 @@ import Then
 import SnapKit
 import KYDrawerController
 import FirebaseFirestore
+import ObjectMapper
 import FirebaseAuth
 import SpringIndicator
 import YYBottomSheet
@@ -18,35 +19,36 @@ import YYBottomSheet
 class DrawerViewController: UIViewController {
  
     // MARK: Firebase DB에 올라가는 찜리스트 데이터 클래스
-    class ZZimListInfo {
-        
-        // Firebase로부터 Data 읽어올 때 Dictionary 형태로 받기 때문에 그 데이터로 초기화
-        init(dictionary: [String: Any]) {
-            self.contentId = dictionary["contentid"] as? String
-            self.addr = dictionary["addr"] as? String
-            self.eventDate = dictionary["eventdate"] as? String
-            self.image = dictionary["image"] as? String
-            self.tel = dictionary["tel"] as? String
-            self.thumbNail = dictionary["thumbnail"] as? String
-            self.title = dictionary["title"] as? String
-        }
-        
-        let contentId: String?
-        let image: String?
-        let thumbNail: String?
-        let title: String?
-        let addr: String?
-        let tel: String?
-        let eventDate: String?
+    class ZZimListInfo: Mappable {
+
+        var contentId: String?
+        var image: String?
+        var thumbNail: String?
+        var title: String?
+        var addr: String?
+        var tel: String?
+        var eventDate: String?
         
         // 관광지/행사 데이터타입
         var dataType: DataType = .None
+        
+        required init?(map: Map) {}
+        
+        func mapping(map: Map) {
+            contentId <- map["contentid"]
+            addr <- map["addr"]
+            eventDate <- map["eventdate"]
+            image <- map["image"]
+            tel <- map["tel"]
+            thumbNail <- map["thumbnail"]
+            title <- map["title"]
+        }
     }
     
     struct Section {
         var name: String
         var items: [ZZimListInfo]
-        var collapsed: Bool
+        var collapsed: Bool = false
         
         init(name: String, items: [ZZimListInfo], collapsed: Bool = false) {
             self.name = name
@@ -133,10 +135,10 @@ class DrawerViewController: UIViewController {
                     
                     // 2. DB에서 읽어온다.
                     for document in query.documents {
-//                        tgLog(document.data())
-                        let tourSpotInfo = ZZimListInfo(dictionary: document.data())
-                        tourSpotInfo.dataType = .TourSpot
-                        self.sections[0].items.append(tourSpotInfo)
+                        if let tourSpotInfo = ZZimListInfo(JSON: document.data()) {
+                            tourSpotInfo.dataType = .TourSpot
+                            self.sections[0].items.append(tourSpotInfo)
+                        }
                     }
                     
                     self.tbvZZimList.reloadData()
@@ -156,10 +158,10 @@ class DrawerViewController: UIViewController {
                     
                     // 2. DB에서 읽어온다.
                     for document in query.documents {
-//                        tgLog(document.data())
-                        let festivalInfo = ZZimListInfo(dictionary: document.data())
-                        festivalInfo.dataType = .Festival
-                        self.sections[1].items.append(festivalInfo)
+                        if let festivalInfo = ZZimListInfo(JSON: document.data()) {
+                            festivalInfo.dataType = .Festival
+                            self.sections[1].items.append(festivalInfo)
+                        }
                     }
                     
                     self.tbvZZimList.reloadData()
