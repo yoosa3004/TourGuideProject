@@ -136,6 +136,7 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
             if self.loadedPageNo > self.mTourSpot.maxPageNo {
                 self.collectionView.cr.noticeNoMoreData()
             } else {
+                self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: true)
                 self.collectionView.cr.endLoadingMore()
             }
         }
@@ -213,6 +214,5 @@ class TourSpotCollectionViewController: UICollectionViewController, UICollection
         let widthMinusPadding = self.view.frame.width - (cellPadding + cellPadding * cellsPerRow)
         let eachWidth = widthMinusPadding / cellsPerRow
         return CGSize(width: eachWidth, height: eachWidth * cellHeightRatio)
-    
     }
 }
