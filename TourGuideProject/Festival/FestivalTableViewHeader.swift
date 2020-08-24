@@ -45,7 +45,7 @@ class FestivalTableViewHeader: UITableViewHeaderFooterView {
          contentView.addSubview(ivArrow)
          ivArrow.then {
              $0.translatesAutoresizingMaskIntoConstraints = false
-             $0.image = UIImage(named: "up_and_down.png")?.withRenderingMode(.alwaysOriginal)
+             $0.image = UIImage(named: "down_arrow.png")?.withRenderingMode(.alwaysOriginal)
          }.snp.makeConstraints {
              $0.centerY.equalTo(contentView.layoutMarginsGuide)
              $0.right.equalTo(contentView.layoutMarginsGuide).offset(-15)

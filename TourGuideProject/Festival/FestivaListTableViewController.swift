@@ -315,6 +315,13 @@ extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSo
         
         header.ivHeader.image = UIImage(named: "happiness.png")
         header.lbTitle.text = "\(section+1)월"
+        
+        if sections[section].collapsed {
+            header.ivArrow.image = UIImage(named: "down_arrow.png")?.withRenderingMode(.alwaysOriginal)
+        } else {
+            header.ivArrow.image = UIImage(named: "up_arrow.png")?.withRenderingMode(.alwaysOriginal)
+        }
+        
         header.section = section
         header.delegate = self
         
@@ -326,6 +333,9 @@ extension FestivaListTableViewController: FestivalTableViewHeaderDelegate {
     
     // 헤더 클릭 시 Section 별 Toggle 적용
     func toggleSection(_ header: FestivalTableViewHeader, section: Int) {
+        
+        if sections[section].items.isEmpty { return }
+        
         let collapsed = !sections[section].collapsed
         
         sections[section].collapsed = collapsed
