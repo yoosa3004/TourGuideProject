@@ -17,7 +17,7 @@ import SpringIndicator
 import YYBottomSheet
 
 class DrawerViewController: UIViewController {
- 
+
     // MARK: Firebase DB에 올라가는 찜리스트 데이터 클래스
     class ZZimListInfo: Mappable {
 
@@ -48,7 +48,7 @@ class DrawerViewController: UIViewController {
     struct Section {
         var name: String
         var items: [ZZimListInfo]
-        var collapsed: Bool = false
+        var collapsed: Bool = true
         
         init(name: String, items: [ZZimListInfo], collapsed: Bool = false) {
             self.name = name
@@ -256,7 +256,15 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
                 $0.image = UIImage(named: "festival.png")
             }
         }
+        
         header.lbTitle.text = sections[section].name
+        
+        // 헤더 이미지 세팅
+        if sections[section].collapsed {
+            header.ivArrow.image = UIImage(named: "down_arrow.png")?.withRenderingMode(.alwaysOriginal)
+        } else {
+            header.ivArrow.image = UIImage(named: "up_arrow.png")?.withRenderingMode(.alwaysOriginal)
+        }
         
         header.section = section
         header.delegate = self
@@ -332,8 +340,12 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension DrawerViewController: DrawerTableViewHeaderDelegate {
-    
+
     func toggleSelection(_ header: DrawerTableViewHeader, section: Int) {
+        
+        // 섹션에 데이터가 없다면 접히지 않도록 하기
+        if sections[section].items.isEmpty { return }
+        
         let collapsed = !sections[section].collapsed
         
         sections[section].collapsed = collapsed
