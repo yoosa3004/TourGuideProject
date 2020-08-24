@@ -87,7 +87,6 @@ class FestivalInfo: Mappable {
     var eventstartdate: Int?
     var eventenddate: Int?
     
-    
     // 고유 식별자
     var contentid: Int?
     // 지역 코드
@@ -108,7 +107,7 @@ class FestivalInfo: Mappable {
     
     init() {}
     
-    init(title: String?, addr1: String?, addr2: String?, image: String?, thumbnail: String?, tel: String?, eventDate: String?) {
+    init(title: String?, addr1: String?, addr2: String?, image: String?, thumbnail: String?, tel: String?, eventstartdate: Int?, eventenddate: Int?) {
         self.title = title
         
         if let addr1 = addr1 {
@@ -121,7 +120,8 @@ class FestivalInfo: Mappable {
         self.thumbnail = thumbnail
         self.tel = tel
         
-        self.convertedEventDate = eventDate
+        self.eventstartdate = eventstartdate
+        self.eventenddate = eventenddate
     }
     
     required init?(map: Map) {}

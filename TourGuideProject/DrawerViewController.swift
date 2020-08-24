@@ -21,13 +21,14 @@ class DrawerViewController: UIViewController {
     // MARK: Firebase DB에 올라가는 찜리스트 데이터 클래스
     class ZZimListInfo: Mappable {
 
-        var contentId: String?
+        var contentId: Int?
         var image: String?
         var thumbNail: String?
         var title: String?
         var addr: String?
         var tel: String?
-        var eventDate: String?
+        var eventstartdate: Int?
+        var eventenddate: Int?
         
         // 관광지/행사 데이터타입
         var dataType: DataType = .None
@@ -37,7 +38,8 @@ class DrawerViewController: UIViewController {
         func mapping(map: Map) {
             contentId <- map["contentid"]
             addr <- map["addr"]
-            eventDate <- map["eventdate"]
+            eventstartdate <- map["eventstartdate"]
+            eventenddate <- map["eventenddate"]
             image <- map["image"]
             tel <- map["tel"]
             thumbNail <- map["thumbnail"]
@@ -226,9 +228,18 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
                     $0.ivDrawer.kf.setImage(with: URL(string: thumbnail))
                 }
                 
-                // 행사
-                if let eventDate = data.eventDate {
-                    $0.lbDate.text = eventDate
+                // 날짜
+                if data.dataType == .TourSpot {
+                    $0.lbDate.text = ""
+                } else {
+                    if let startDate = data.eventstartdate {
+                        if let endDate = data.eventenddate {
+                            if startDate != 0 && endDate != 0 {
+                                let convertedEventDate = String(startDate.changeDateFormat()) + " ~ " + String(endDate.changeDateFormat())
+                                $0.lbDate.text = convertedEventDate
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -290,11 +301,11 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
             switch data.dataType {
             case .TourSpot:
                 $0.tourSpotInfo = TourSpotInfo(title: data.title, addr1: data.addr, addr2: "", image: data.image, thumbnail: data.thumbNail, tel: data.tel)
-                $0.tourSpotInfo?.contentid = Int(data.contentId ?? "")
+                $0.tourSpotInfo?.contentid = data.contentId
                 $0.dataType = .TourSpot
             case .Festival:
-                $0.festivalInfo = FestivalInfo(title: data.title, addr1: data.addr, addr2: "", image: data.image, thumbnail: data.thumbNail, tel: data.tel, eventDate: data.eventDate)
-                $0.festivalInfo?.contentid = Int(data.contentId ?? "")
+                $0.festivalInfo = FestivalInfo(title: data.title, addr1: data.addr, addr2: "", image: data.image, thumbnail: data.thumbNail, tel: data.tel, eventstartdate: data.eventstartdate, eventenddate: data.eventenddate)
+                $0.festivalInfo?.contentid = data.contentId
                 $0.dataType = .Festival
             default:
                 return
@@ -305,14 +316,14 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
         
         self.navigationController?.pushViewController(vcDetail, animated: true)
     }
-
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let delete = UIContextualAction(style: .normal, title: "삭제") { [unowned self] _, _, completionHandler in
             
             if let user = Auth.auth().currentUser {
                 if let contentId = self.sections[indexPath.section].items[indexPath.row].contentId {
-                    let docRef = self.db.collection("zzimList").document(user.uid).collection(self.sections[indexPath.section].items[indexPath.row].dataType.rawValue).document(contentId)
+                    let docRef = self.db.collection("zzimList").document(user.uid).collection(self.sections[indexPath.section].items[indexPath.row].dataType.rawValue).document(String(contentId))
                     
                     docRef.getDocument { (doc, err) in
                         if let doc = doc, doc.exists {

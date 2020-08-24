@@ -83,7 +83,7 @@ class CMDetailViewController: UIViewController {
             }
         case .Festival:
             if let festivalInfo = self.festivalInfo {
-                self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel, festivalInfo.convertedEventDate ?? "")
+                self.setContents(image: festivalInfo.image, title: festivalInfo.title, addr1: festivalInfo.addr1, addr2: festivalInfo.addr2, tel: festivalInfo.tel, festivalInfo.eventstartdate, festivalInfo.eventenddate)
                 self.checkIsHeartSelected(festivalInfo.contentid)
             }
         default:
@@ -110,7 +110,7 @@ class CMDetailViewController: UIViewController {
         }
     }
     
-    func setContents(image: String?, title: String?, addr1: String?, addr2: String?, tel: String?, _ eventDate: String = "") {
+    func setContents(image: String?, title: String?, addr1: String?, addr2: String?, tel: String?, _ eventStartDate: Int? = nil, _ eventEndDate: Int? = nil) {
         
         // 이미지
         if let image = image {
@@ -139,7 +139,12 @@ class CMDetailViewController: UIViewController {
         }
         
         // 일정
-        lbEventDate.text = eventDate
+        if let startDate = eventStartDate {
+            if let endDate = eventEndDate {
+                let convertedEventDate = String(startDate.changeDateFormat()) + " ~ " + String(endDate.changeDateFormat())
+                lbEventDate.text = convertedEventDate
+            }
+        }
     }
     
     func setViews() {
@@ -277,7 +282,7 @@ class CMDetailViewController: UIViewController {
             case .TourSpot:
                 if let tourSpotInfo = self.tourSpotInfo, let contentId = tourSpotInfo.contentid {
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId)).setData(["contentid": String(contentId), "title": tourSpotInfo.title ?? "제목이 제공되지 않습니다.", "addr": tourSpotInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": tourSpotInfo.image ?? "No Image", "thumbnail": tourSpotInfo.thumbnail ?? "No Image", "tel": tourSpotInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": ""]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId)).setData(["contentid": contentId, "title": tourSpotInfo.title ?? "제목이 제공되지 않습니다.", "addr": tourSpotInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": tourSpotInfo.image ?? "No Image", "thumbnail": tourSpotInfo.thumbnail ?? "No Image", "tel": tourSpotInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventstartdate": 0, "eventenddate": 0]) { err in
                         
                         if err == nil {
                             String("찜리스트에 담았습니다.").showToast()
@@ -291,7 +296,7 @@ class CMDetailViewController: UIViewController {
             case .Festival:
                 if let festivalInfo = self.festivalInfo, let contentId = festivalInfo.contentid {
                     
-                    db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId)).setData(["contentid": String(contentId),"title": festivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": festivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": festivalInfo.image ?? "No Image", "thumbnail": festivalInfo.thumbnail ?? "No Image", "tel": festivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventdate": festivalInfo.convertedEventDate ?? "행사 일정이 제공되지 않습니다."]) { err in
+                    db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId)).setData(["contentid": contentId, "title": festivalInfo.title ?? "제목이 제공되지 않습니다.", "addr": festivalInfo.addr1 ?? "주소가 제공되지 않습니다.", "image": festivalInfo.image ?? "No Image", "thumbnail": festivalInfo.thumbnail ?? "No Image", "tel": festivalInfo.tel ?? "전화번호가 제공되지 않습니다.", "eventstartdate": festivalInfo.eventstartdate ?? 0, "eventenddate": festivalInfo.eventenddate ?? 0]) { err in
                         
                         if err == nil {
                             String("찜리스트에 담았습니다.").showToast()

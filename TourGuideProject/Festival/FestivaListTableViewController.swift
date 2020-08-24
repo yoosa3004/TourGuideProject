@@ -255,7 +255,6 @@ extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSo
                     if let endDate = data.eventenddate {
                         let convertedEventDate = String(startDate.changeDateFormat()) + " ~ " + String(endDate.changeDateFormat())
                         $0.lbDate.text = convertedEventDate
-                        data.convertedEventDate = convertedEventDate
                     }
                 }
                 
