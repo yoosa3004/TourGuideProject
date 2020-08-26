@@ -10,6 +10,7 @@ import UIKit
 import Then
 import SnapKit
 import FirebaseFirestore
+import FirebaseMessaging
 import FirebaseAuth
 import YYBottomSheet
 
@@ -301,6 +302,10 @@ class CMDetailViewController: UIViewController {
                         if err == nil {
                             String("찜리스트에 담았습니다.").showToast()
                             updateIcon()
+                            // topic 구독
+                            Messaging.messaging().subscribe(toTopic: "HyunndyTest") { error in
+                                print("######### Subsctibed to HyunndyTest topic")
+                            }
                         } else {
                             String("찜리스트에 담기를 실패했습니다.").showToast()
                             tgLog(err)

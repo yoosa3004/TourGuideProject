@@ -25,7 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // 파이어베이스
         FirebaseApp.configure()
-
+        
+        // Notification 관련 설정
         configureNotification()
         
         // 탭바 VC 세팅
@@ -83,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let openAction = UNNotificationAction(identifier: "OpenNotification", title: NSLocalizedString("TourGuide", comment: "TourGuide앱의 알림입니다."), options: UNNotificationActionOptions.foreground)
         let defaultCategory = UNNotificationCategory(identifier: "CustomSamplePush", actions: [openAction], intentIdentifiers: [], options: [])
         center.setNotificationCategories(Set([defaultCategory]))
-        
+
         UIApplication.shared.registerForRemoteNotifications()
     }
     
@@ -123,6 +124,8 @@ extension AppDelegate: MessagingDelegate {
         
         // 서버에 보낼 FCMToken
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+        
+        Messaging.messaging().unsubscribe(fromTopic: "HyunndyTest")
     }
     
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
