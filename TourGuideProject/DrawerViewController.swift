@@ -81,6 +81,7 @@ class DrawerViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.tbvZZimList.separatorStyle = .none
         getDataFromDB()
     }
     
@@ -99,6 +100,7 @@ class DrawerViewController: UIViewController {
             $0.register(DrawerTableViewCell.self, forCellReuseIdentifier: DrawerTableViewCell.reusableIdentifier)
             $0.delegate = self
             $0.dataSource = self
+            $0.separatorStyle = .none
         }.snp.makeConstraints {
             $0.top.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
         }
@@ -143,6 +145,11 @@ class DrawerViewController: UIViewController {
                         }
                     }
                     
+                    // 3. 테이블 뷰 줄 세팅
+                    if query.documents.count > 0 {
+                        self.tbvZZimList.separatorStyle = .singleLine
+                    }
+                    
                     self.tbvZZimList.reloadData()
                     tgLog("관광지 데이터 로드 완료")
                 } else {
@@ -166,6 +173,11 @@ class DrawerViewController: UIViewController {
                         }
                     }
                     
+                    // 3. 테이블 뷰 줄 세팅
+                    if query.documents.count > 0 {
+                        self.tbvZZimList.separatorStyle = .singleLine
+                    }
+                    
                     self.tbvZZimList.reloadData()
                     tgLog("행사 데이터 로드 완료")
                     self.avZZimListLoading.stop()
@@ -178,6 +190,7 @@ class DrawerViewController: UIViewController {
             String("찜리스트는 로그인 상태일 때 이용할 수 있습니다.").showToast()
             self.sections[0].items.removeAll()
             self.sections[1].items.removeAll()
+            self.tbvZZimList.separatorStyle = .none
             self.tbvZZimList.reloadData()
         }
     }
