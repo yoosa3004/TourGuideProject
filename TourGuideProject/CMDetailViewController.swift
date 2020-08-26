@@ -104,6 +104,7 @@ class CMDetailViewController: UIViewController {
                     docRef.getDocument { (document, err) in
                         if let document = document, document.exists {
                             self.navigationItem.rightBarButtonItem?.image = self.imgFullHeart
+                            print("#### fetch test")
                         }
                     }
                 }
