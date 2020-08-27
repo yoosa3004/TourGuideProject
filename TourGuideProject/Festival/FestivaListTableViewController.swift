@@ -110,19 +110,19 @@ class FestivaListTableViewController: UIViewController {
         self.avFestivalLoading.start()
         
         /*
-        // 시간초과 검사를 위해 함수 추가
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            
-            print("시간초과")
-            Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { data, upload, download in
-                data.forEach { $0.cancel() }
-                upload.forEach { $0.cancel() }
-                download.forEach { $0.cancel() }
-            }
-            
-            self.checkDataIsEmpty()
-            return
-        }
+         // 시간초과 검사를 위해 함수 추가
+         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+         
+         print("시간초과")
+         Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { data, upload, download in
+         data.forEach { $0.cancel() }
+         upload.forEach { $0.cancel() }
+         download.forEach { $0.cancel() }
+         }
+         
+         self.checkDataIsEmpty()
+         return
+         }
          */
         
         // 현재 날짜부터 조회
@@ -217,7 +217,7 @@ class FestivaListTableViewController: UIViewController {
 extension FestivaListTableViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].collapsed ? 1 : sections[section].items.count
+        return sections[section].collapsed ? 0 : sections[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -339,10 +339,23 @@ extension FestivaListTableViewController: FestivalTableViewHeaderDelegate {
         
         sections[section].collapsed = collapsed
         
-        UIView.performWithoutAnimation {
-            self.tbvFestivalInfo.reloadSections(IndexSet.init(integer: section), with: .none)
+        func indexPathsForSection() -> [IndexPath] {
+            var indexPaths = [IndexPath]()
+            
+            for row in 0..<self.sections[section].items.count {
+                indexPaths.append(IndexPath(row: row,
+                                            section: section))
+            }
+            
+            return indexPaths
         }
         
-        //self.tbvFestivalInfo.reloadSections(IndexSet.init(integer: section), with: .automatic)
+        if collapsed {
+            self.tbvFestivalInfo.deleteRows(at: indexPathsForSection(), with: .fade)
+            header.ivArrow.image = UIImage(named: "down_arrow.png")?.withRenderingMode(.alwaysOriginal)
+        } else {
+            self.tbvFestivalInfo.insertRows(at: indexPathsForSection(), with: .fade)
+            header.ivArrow.image = UIImage(named: "up_arrow.png")?.withRenderingMode(.alwaysOriginal)
+        }
     }
 }

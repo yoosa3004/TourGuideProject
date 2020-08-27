@@ -205,7 +205,7 @@ extension DrawerViewController: UITableViewDelegate, UITableViewDataSource {
     
     // 갯수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].collapsed ? 1 : sections[section].items.count
+        return sections[section].collapsed ? 0 : sections[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -374,6 +374,21 @@ extension DrawerViewController: DrawerTableViewHeaderDelegate {
         
         sections[section].collapsed = collapsed
         
-        self.tbvZZimList.reloadSections(IndexSet.init(integer: section), with: .automatic)
+        func indexPathsForSection() -> [IndexPath] {
+            var indexPaths = [IndexPath]()
+            
+            for row in 0..<self.sections[section].items.count {
+                indexPaths.append(IndexPath(row: row, section: section))
+            }
+            return indexPaths
+        }
+        
+        if collapsed {
+            self.tbvZZimList.deleteRows(at: indexPathsForSection(), with: .fade)
+            header.ivArrow.image = UIImage(named: "down_arrow.png")?.withRenderingMode(.alwaysOriginal)
+        } else {
+            self.tbvZZimList.insertRows(at: indexPathsForSection(), with: .fade)
+            header.ivArrow.image = UIImage(named: "up_arrow.png")?.withRenderingMode(.alwaysOriginal)
+        }
     }
 }
