@@ -16,36 +16,36 @@ import FirebaseAuth
 import SpringIndicator
 import YYBottomSheet
 
-class DrawerViewController: UIViewController {
+// MARK: Firebase DB에 올라가는 찜리스트 데이터 클래스
+class ZZimListInfo: Mappable {
 
-    // MARK: Firebase DB에 올라가는 찜리스트 데이터 클래스
-    class ZZimListInfo: Mappable {
-
-        var contentId: Int?
-        var image: String?
-        var thumbNail: String?
-        var title: String?
-        var addr: String?
-        var tel: String?
-        var eventstartdate: Int?
-        var eventenddate: Int?
-        
-        // 관광지/행사 데이터타입
-        var dataType: DataType = .None
-        
-        required init?(map: Map) {}
-        
-        func mapping(map: Map) {
-            contentId <- map["contentid"]
-            addr <- map["addr"]
-            eventstartdate <- map["eventstartdate"]
-            eventenddate <- map["eventenddate"]
-            image <- map["image"]
-            tel <- map["tel"]
-            thumbNail <- map["thumbnail"]
-            title <- map["title"]
-        }
+    var contentId: Int?
+    var image: String?
+    var thumbNail: String?
+    var title: String?
+    var addr: String?
+    var tel: String?
+    var eventstartdate: Int?
+    var eventenddate: Int?
+    
+    // 관광지/행사 데이터타입
+    var dataType: DataType = .None
+    
+    required init?(map: Map) {}
+    
+    func mapping(map: Map) {
+        contentId <- map["contentid"]
+        addr <- map["addr"]
+        eventstartdate <- map["eventstartdate"]
+        eventenddate <- map["eventenddate"]
+        image <- map["image"]
+        tel <- map["tel"]
+        thumbNail <- map["thumbnail"]
+        title <- map["title"]
     }
+}
+
+class DrawerViewController: UIViewController {
     
     struct Section {
         var name: String

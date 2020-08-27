@@ -29,6 +29,8 @@ class AccountViewController: UIViewController {
     
     var btnSignin = UIButton()
     
+    let notificationHelper = NotificationHelper()
+    
     override func loadView() {
         super.loadView()
         
@@ -165,11 +167,15 @@ class AccountViewController: UIViewController {
         if sender.title(for: .normal) == "로그인" {
             guard let email = tfID.text, let password = tfPassword.text else { return }
             
-            Auth.auth().signIn(withEmail: email, password: password) { (user,error) in
-                if user != nil {
+            Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (user,error) in
+                if let user = user {
                     String("로그인 성공!").showToast()
                     self.updateViewsPerAuthState(true)
                     self.view.endEditing(true)
+                    
+                    // 찜리스트에 담아놨던 행사들의 Notification 추가
+                    self.notificationHelper.addAllUserNotification(userid: user.user.uid)
+                    
                 } else {
                     String("로그인 실패!").showToast()
                 }
@@ -181,6 +187,10 @@ class AccountViewController: UIViewController {
                 try Auth.auth().signOut()
                 String("로그아웃 성공!").showToast()
                 self.updateViewsPerAuthState(false)
+                
+                // 찜리스트에 담아놨던 행사들의 Notification 해제
+                self.notificationHelper.removeAllUserNotification()
+                
             } catch _ as NSError {
                 String("로그아웃 실패!").showToast()
             }

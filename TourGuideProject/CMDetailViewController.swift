@@ -55,6 +55,9 @@ class CMDetailViewController: UIViewController {
     // Firebase
     let db = Firestore.firestore()
     
+    // Notification Manager
+    let notificationManager = NotificationHelper()
+    
     override func loadView() {
         super.loadView()
         
@@ -302,9 +305,15 @@ class CMDetailViewController: UIViewController {
                         if err == nil {
                             String("찜리스트에 담았습니다.").showToast()
                             updateIcon()
+                            
                             // topic 구독
-                            Messaging.messaging().subscribe(toTopic: "HyunndyTest") { error in
-                                print("######### Subsctibed to HyunndyTest topic")
+//                            Messaging.messaging().subscribe(toTopic: "HyunndyTest") { error in
+//                                print("######### Subsctibed to HyunndyTest topic")
+//                            }
+                            
+                            // local Notification 등록
+                            if let eventstartdate = festivalInfo.eventstartdate {
+                                self.notificationManager.addNotification(contentId: contentId, title: festivalInfo.title ?? "", eventDate: eventstartdate)
                             }
                         } else {
                             String("찜리스트에 담기를 실패했습니다.").showToast()
@@ -335,6 +344,9 @@ class CMDetailViewController: UIViewController {
             case .Festival:
                 if let contentId = festivalInfo?.contentid {
                     docRef = db.collection("zzimList").document(user.uid).collection(self.dataType.rawValue).document(String(contentId))
+                    
+                    // notification 삭제
+                    notificationManager.removeNotification(contentId: contentId)
                 }
             default:
                 String("데이터가 로드되지 않았습니다.").showToast()

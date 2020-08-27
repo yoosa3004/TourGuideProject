@@ -17,7 +17,6 @@ import Then
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    let notificationDelegate = NotificationDelegate()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -74,11 +73,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func configureNotification() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .badge, .sound]) { _, _ in }
+        center.requestAuthorization(options: [.alert, .sound]) { _, _ in }
         
         // 메세지/NotificationCenter 델리게이트 설정
         Messaging.messaging().delegate = self
-        center.delegate = notificationDelegate
+        center.delegate = self
         
         // use UNNotificationCategory to defines a type of notification that your excutable can receive as this is possible to customized a specific push notification
         let openAction = UNNotificationAction(identifier: "OpenNotification", title: NSLocalizedString("TourGuide", comment: "TourGuide앱의 알림입니다."), options: UNNotificationActionOptions.foreground)
@@ -111,6 +110,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         tgLog("#### enter the foreground")
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    // 앱이 포그라운드에 있을 때 호출되는 함수
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert,.sound])
+    }
+    
+    // Notification에 대한 사용자의 응답 처리를 할 수 있는 함수
+    // response의 actionIdentifier을 통해 사용자가 Notificatio을 종료한 경우, 열었을(클릭했을) 경우의 처리를 할 수 있다.
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        switch response.actionIdentifier {
+        case UNNotificationDismissActionIdentifier:
+            tgLog("###### Dismiss Action")
+        case UNNotificationDefaultActionIdentifier:
+            tgLog("###### Open Action")
+        default:
+            tgLog("default")
+        }
+        
+        completionHandler()
     }
 }
 
