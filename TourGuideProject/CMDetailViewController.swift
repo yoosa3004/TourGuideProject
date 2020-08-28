@@ -12,6 +12,7 @@ import SnapKit
 import FirebaseFirestore
 import FirebaseMessaging
 import FirebaseAuth
+import FirebaseAnalytics
 import YYBottomSheet
 
 enum DataType: String {
@@ -69,6 +70,14 @@ class CMDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setViewContents()
+        
+        // 로그 이벤트 등록
+        Analytics.logEvent("Choose_Data", parameters: [
+            // 선택한 데이터 타입 ( 관광지/행사 )
+            "DataType": dataType,
+            // 선택한 데이터의 이름
+            "Title": tourSpotInfo?.title ?? festivalInfo?.title
+        ])
     }
     
     override func viewWillDisappear(_ animated: Bool) {

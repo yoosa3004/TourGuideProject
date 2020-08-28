@@ -7,17 +7,45 @@
 		<key>Content.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>41</integer>
+			<integer>42</integer>
 		</dict>
 		<key>Service.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>40</integer>
+			<integer>41</integer>
 		</dict>
 		<key>TourGuideProject.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>42</integer>
+			<integer>40</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>02227DA124F4DB830013C92F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>02227DB124F4DBAB0013C92F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0254A2A724B4155100945CEA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0254A2BD24B4155300945CEA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0254A2C824B4155300945CEA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

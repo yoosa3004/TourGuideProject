@@ -173,6 +173,11 @@ class AccountViewController: UIViewController {
                     self.updateViewsPerAuthState(true)
                     self.view.endEditing(true)
                     
+                    // 로그 이벤트 등록
+                    Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                        "user_email": email
+                    ])
+                    
                     // 찜리스트에 담아놨던 행사들의 Notification 추가
                     self.notificationHelper.addAllUserNotification(userid: user.user.uid)
                     

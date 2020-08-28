@@ -10,7 +10,7 @@ import UIKit
 import YYBottomSheet
 import FirebaseAuth
 import FirebaseFirestore
-
+import FirebaseAnalytics
 
 class SignUpViewController: UIViewController {
     
@@ -162,6 +162,12 @@ class SignUpViewController: UIViewController {
                 
                 // 회원가입 성공!
                 if error == nil {
+                    
+                    // 로그 이벤트 등록
+                    Analytics.logEvent(AnalyticsEventSignUp, parameters: [
+                        "user_email": email
+                    ])
+                    
                     self.completeSignUp()
                 } else {
                     String("잘못된 이메일 형식이거나 이미 존재하는 계정입니다.").showToast()
