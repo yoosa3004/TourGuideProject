@@ -12,6 +12,7 @@ import SnapKit
 import CRRefresh
 import Alamofire
 import SpringIndicator
+import ObjectMapper
 
 class FestivaListTableViewController: UIViewController {
     
@@ -134,22 +135,22 @@ class FestivaListTableViewController: UIViewController {
         var finishedRequestNum = 0
         for pageNo in 1...mFestivals.maxPageNo {
             mFestivals.pageNo = pageNo
-            
+
             mFestivals.requestAPI { [unowned self] in
                 finishedRequestNum += 1
-                
+
                 if let sortedInfo = $0 as? [[FestivalInfo]] {
                     for idx in sortedInfo.indices {
                         self.tempArr[idx].append(contentsOf: sortedInfo[idx])
                     }
-                    
+
                     tgLog("\(pageNo)번째 API 로드 완료")
                 }
-             
+
                 // 최대치만큼 API 호출 + 월 별로 분리 + 정렬까지 한 후에 tableView에 쓰일 데이터에 세팅해줌.
                 if finishedRequestNum == self.mFestivals.maxPageNo {
                     print("\(finishedRequestNum)개 로드 완료!!")
-                    
+
                     self.checkDataIsEmpty()
                 }
             }

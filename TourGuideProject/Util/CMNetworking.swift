@@ -2,6 +2,8 @@ import Foundation
 import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
+import RxSwift
+import RxCocoa
 
 class CMNetworking {
 
@@ -17,6 +19,7 @@ class CMNetworking {
     
     func requestAPI(update: @escaping(_ update: [Any]?) -> Void) {}
     
+    /*
     func request(requestParam: Dictionary<String, Any>, update: @escaping(_ update: Any?) -> Void) {
         
         var urlString = APIKey
@@ -32,6 +35,32 @@ class CMNetworking {
                 tgLog("API Networing Failed")
                 update(nil)
             }
+        }
+    }
+     */
+    
+    func request(requestParam: Dictionary<String, Any>) -> Observable<Any?> {
+        
+        var urlString = APIKey
+        for (key, value) in requestParam {
+            urlString += "&\(key)=\(value)"
+        }
+        
+        return Observable<Any?>.create { observer in
+            _ = Alamofire.request(urlString).responseJSON { response in
+                if response.result.isSuccess {
+                    observer.onNext(response.result.value)
+                    observer.onCompleted()
+                } else {
+                    if let err = response.error {
+                        observer.onError(err)
+                    } else {
+                        observer.onNext(nil)
+                        observer.onCompleted()
+                    }
+                }
+            }
+            return Disposables.create()
         }
     }
     
