@@ -10,6 +10,8 @@ import Foundation
 import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
+import RxCocoa
+import RxSwift
 
 
 class TMFestivals: CMNetworking {
@@ -18,11 +20,23 @@ class TMFestivals: CMNetworking {
     
     let maxPageNo: Int = 10
     
+    // API 로딩 완료 후 최종 데이터만 sections에 넣어주기 위한 임시 배열
+    var resultArr = Array(repeating: [FestivalInfo](), count: 12)
+    
     override var APIKey: String {
         let key = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?serviceKey="
             + serviceKey
             + "&MobileOS=IOS&MobileApp=AppTest&listYN=Y&_type=json"
         return key
+    }
+    
+    override init() {
+        
+        // 현재 날짜부터 조회
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        let currentDate = formatter.string(from: Date())
+        self.eventStartDate = Int(currentDate)
     }
     
     /*
@@ -51,9 +65,19 @@ class TMFestivals: CMNetworking {
      */
     
     override func requestAPI(update: @escaping(_ update: [Any]?) -> Void) {
+
+        resultArr = Array(repeating: [FestivalInfo](), count: 12)
         
-        let observable = super.request(requestParam: getParam())
-        _ = observable
+        var observableArr = [Observable<Any?>]()
+        
+        // maxPageNo 만큼 로드
+        for pageNo in 1...maxPageNo {
+            self.pageNo = pageNo
+            let tempObservable = super.request(requestParam: getParam())
+            observableArr.append(tempObservable)
+        }
+        
+        _ = Observable.merge(observableArr)
             .map { json in Mapper<FestivalResponse>().map(JSONObject: json) }
             .filter { json in json?.response?.head?.resultMsg == "OK" }
             .map { result in result?.response?.body?.items?.item }
@@ -62,14 +86,19 @@ class TMFestivals: CMNetworking {
                 switch event {
                 case .next(let result):
                     if let result = result {
-                        update(self.sortByStartDate(result))
+                        self.sortByStartDate(result)
+                        print("행사 데이터 로드!")
                     }
                     break
                 case .error(let err):
                     tgLog(err)
                     update(nil)
+                    self.pageNo = 1
                     break
                 case .completed:
+                    update(self.resultArr)
+                    self.pageNo = 1
+                    print("행사 데이터 업데이트!")
                     break
                 }
         }
@@ -79,7 +108,7 @@ class TMFestivals: CMNetworking {
         
         var param = super.getParam()
         
-        if let validStartDate = eventStartDate {
+        if let validStartDate = self.eventStartDate {
             param.updateValue(validStartDate, forKey: "eventStartDate")
         }
         
@@ -87,12 +116,10 @@ class TMFestivals: CMNetworking {
     }
     
     // MARK: API로부터 받은 데이터를 날짜순으로 정렬 후 월 단위로 쪼개어 테이블 뷰 데이터에 넣어줄 행사 정보 배열 생성 (1월 행사, 2월 행사, 3월 행사, ...)
-    func sortByStartDate(_ targetArr: Array<FestivalInfo>) -> [[FestivalInfo]] {
-        
-        var sortedArr = Array(repeating: [FestivalInfo](), count: 12)
+    func sortByStartDate(_ targetArr: Array<FestivalInfo>) {
         
         // 월 단위로 쪼개어 적재
-        for idx in sortedArr.indices {
+        for idx in resultArr.indices {
             
             let month = String.init(format: "%02d", idx+1)
             
@@ -105,9 +132,7 @@ class TMFestivals: CMNetworking {
                 return false
             }
             
-            sortedArr[idx].append(contentsOf: filteredByMonth)
+            resultArr[idx].append(contentsOf: filteredByMonth)
         }
-        
-        return sortedArr
     }
 }

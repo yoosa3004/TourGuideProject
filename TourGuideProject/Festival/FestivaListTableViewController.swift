@@ -92,17 +92,16 @@ class FestivaListTableViewController: UIViewController {
     }
     
     @objc func refreshFestivalData(_ sender: Any) {
-        
+
         // 데이터 로드 실패 라벨 삭제
         self.lbDataLoadFailed.removeFromSuperview()
         
         // 데이터 삭제
         self.tempArr = Array(repeating: [FestivalInfo](), count: 12)
+        self.sections = Array(repeating: MonthSection(), count: 12)
         
         // 데이터 로드 재개
         self.loadData()
-        
-        self.tbvFestivalInfo.refreshControl?.endRefreshing()
     }
     
     func loadData() {
@@ -110,68 +109,32 @@ class FestivaListTableViewController: UIViewController {
         // 인디케이터 실행
         self.avFestivalLoading.start()
         
-        /*
-         // 시간초과 검사를 위해 함수 추가
-         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-         
-         print("시간초과")
-         Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { data, upload, download in
-         data.forEach { $0.cancel() }
-         upload.forEach { $0.cancel() }
-         download.forEach { $0.cancel() }
-         }
-         
-         self.checkDataIsEmpty()
-         return
-         }
-         */
-        
-        // 현재 날짜부터 조회
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyyMMdd"
-        let currentDate = formatter.string(from: Date())
-        mFestivals.eventStartDate = Int(currentDate)
-    
-        var finishedRequestNum = 0
-        for pageNo in 1...mFestivals.maxPageNo {
-            mFestivals.pageNo = pageNo
-
-            mFestivals.requestAPI { [unowned self] in
-                finishedRequestNum += 1
-
-                if let sortedInfo = $0 as? [[FestivalInfo]] {
-                    for idx in sortedInfo.indices {
-                        self.tempArr[idx].append(contentsOf: sortedInfo[idx])
-                    }
-
-                    tgLog("\(pageNo)번째 API 로드 완료")
-                }
-
-                // 최대치만큼 API 호출 + 월 별로 분리 + 정렬까지 한 후에 tableView에 쓰일 데이터에 세팅해줌.
-                if finishedRequestNum == self.mFestivals.maxPageNo {
-                    print("\(finishedRequestNum)개 로드 완료!!")
-
-                    self.checkDataIsEmpty()
-                }
+        // API 요청
+        mFestivals.requestAPI { [unowned self] in
+            if let sortedInfo = $0 as? [[FestivalInfo]] {
+                self.tempArr = sortedInfo
             }
+            
+            self.checkDataIsEmpty()
+            self.tbvFestivalInfo.refreshControl?.endRefreshing()
         }
     }
     
     // 데이터 로드 실패인지 데이터 업데이트할건지 검사하는 함수
     func checkDataIsEmpty() {
         var isDataLoadFailed = true
-         for idx in self.tempArr.indices {
-             if self.tempArr[idx].count > 0 {
-                 isDataLoadFailed = false
-                 break
-             }
-         }
-         
-         if isDataLoadFailed {
-             self.loadDataFailed()
-         } else {
-             self.updateData()
-         }
+        for idx in self.tempArr.indices {
+            if self.tempArr[idx].count > 0 {
+                isDataLoadFailed = false
+                break
+            }
+        }
+        
+        if isDataLoadFailed {
+            self.loadDataFailed()
+        } else {
+            self.updateData()
+        }
     }
     
     // API로부터 받아온 데이터를 실제 테이블뷰에 세팅
@@ -344,8 +307,7 @@ extension FestivaListTableViewController: FestivalTableViewHeaderDelegate {
             var indexPaths = [IndexPath]()
             
             for row in 0..<self.sections[section].items.count {
-                indexPaths.append(IndexPath(row: row,
-                                            section: section))
+                indexPaths.append(IndexPath(row: row, section: section))
             }
             
             return indexPaths
