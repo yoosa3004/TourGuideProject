@@ -30,6 +30,8 @@ class TMFestivals: CMNetworking {
         return key
     }
     
+        lazy var festivalObservable = BehaviorSubject<[FestivalInfo]?>(value: [])
+    
     override init() {
         
         // 현재 날짜부터 조회
@@ -77,7 +79,7 @@ class TMFestivals: CMNetworking {
             observableArr.append(tempObservable)
         }
         
-        _ = Observable.merge(observableArr)
+        Observable.merge(observableArr)
             .map { json in Mapper<FestivalResponse>().map(JSONObject: json) }
             .filter { json in json?.response?.head?.resultMsg == "OK" }
             .map { result in result?.response?.body?.items?.item }
@@ -102,6 +104,7 @@ class TMFestivals: CMNetworking {
                     break
                 }
         }
+        .disposed(by: self.disposeBag)
     }
     
     override func getParam() -> Dictionary<String, Any> {

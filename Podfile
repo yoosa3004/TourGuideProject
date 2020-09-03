@@ -26,8 +26,9 @@ target 'TourGuideProject' do
   # Optionally, include the Swift extensions if you're using Swift.
   pod 'FirebaseFirestoreSwift'
   
-  pod 'RxSwift', '~> 4.0'
-  pod 'RxCocoa', '~> 4.0’
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'RxViewController'
   
   
 # Pods for TourGuideProject

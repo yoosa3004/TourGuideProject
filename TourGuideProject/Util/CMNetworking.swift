@@ -5,6 +5,17 @@ import ObjectMapper
 import RxSwift
 import RxCocoa
 
+/*
+ RxCocoa
+ 
+ UIBinding
+ 메인스레드에있어야하고, 에러가 나도 스트림이 죽으면 안된다.
+ 
+ Observable / Subject
+ Observable / Driver
+ 
+ */
+
 class CMNetworking {
 
     let serviceKey = "tLN%2Bjilj3ZFHA2%2FpssG4J4hN82oI6Q2b0rF3pB5hrv3LVOccCkbBP2YcHlMqd7%2FqHejXWPsU0abYZ2y%2FnivcZQ%3D%3D"
@@ -17,30 +28,11 @@ class CMNetworking {
         return ""
     }
     
+    var disposeBag = DisposeBag()
+    
     func requestAPI(update: @escaping(_ update: [Any]?) -> Void) {}
     
-    /*
-    func request(requestParam: Dictionary<String, Any>, update: @escaping(_ update: Any?) -> Void) {
-        
-        var urlString = APIKey
-        for (key, value) in requestParam {
-            urlString += "&\(key)=\(value)"
-        }
-        
-        print("\(self.pageNo)번째 요청")
-        Alamofire.request(urlString).responseJSON { response in
-            if response.result.isSuccess {
-                update(response.result.value)
-            } else {
-                tgLog("API Networing Failed")
-                update(nil)
-            }
-        }
-    }
-     */
-    
     func request(requestParam: Dictionary<String, Any>) -> Observable<Any?> {
-        
         var urlString = APIKey
         for (key, value) in requestParam {
             urlString += "&\(key)=\(value)"
@@ -76,5 +68,25 @@ class CMNetworking {
         
         return param
     }
+    
+    /*
+    func request(requestParam: Dictionary<String, Any>, update: @escaping(_ update: Any?) -> Void) {
+        
+        var urlString = APIKey
+        for (key, value) in requestParam {
+            urlString += "&\(key)=\(value)"
+        }
+        
+        print("\(self.pageNo)번째 요청")
+        Alamofire.request(urlString).responseJSON { response in
+            if response.result.isSuccess {
+                update(response.result.value)
+            } else {
+                tgLog("API Networing Failed")
+                update(nil)
+            }
+        }
+    }
+     */
 }
 

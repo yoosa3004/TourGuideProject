@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
+import RxSwift
 
 class TMTourSpot: CMNetworking {
     
@@ -22,6 +23,72 @@ class TMTourSpot: CMNetworking {
             + "&MobileApp=AppTest&MobileOS=IOS&listYN=Y&_type=json&contentTypeId=12"
         return key
     }
+    
+    
+    lazy var tourSpotObservable = BehaviorSubject<[TourSpotInfo]>(value: [])
+    
+    override init() {
+        super.init()
+        
+//        requestAPIRx()
+        
+    }
+    
+    func requestAPIRx() {
+        
+        _ = super.request(requestParam: getParam())
+            .map { json in Mapper<TourSpotResponse>().map(JSONObject: json)}
+            .filter { json in json?.response?.head?.resultMsg == "OK" }
+            .map { result in
+                print("@@@@@@@@@ \(result?.response?.body?.items?.item)")
+                
+                return (result?.response?.body?.items?.item ?? [])
+        }
+            .take(1)
+            .bind(to: tourSpotObservable)
+        
+        
+        print(tourSpotObservable)
+    }
+
+    
+    override func requestAPI(update: @escaping(_ update: [Any]?) -> Void) {
+        
+        let observable = super.request(requestParam: getParam())
+        observable
+            .map { json in Mapper<TourSpotResponse>().map(JSONObject: json)}
+            .filter { json in json?.response?.head?.resultMsg == "OK" }
+            .map { result in result?.response?.body?.items?.item }
+            .ifEmpty(default: nil)
+            .subscribe { event in
+                switch event {
+                case .next(let result):
+                    if let result = result {
+                        update(result)
+                    }
+                    break
+                case .error(let err):
+                    tgLog(err)
+                    update(nil)
+                    break
+                case .completed:
+                    break
+                }
+        }
+        .disposed(by: self.disposeBag)
+    }
+    
+    override func getParam() -> Dictionary<String, Any> {
+        
+        var param = super.getParam()
+        
+        if let validAreaCode = areaCode {
+            param.updateValue(validAreaCode, forKey: "areaCode")
+        }
+        
+        return param
+    }
+    
     
     /*
      override func requestAPI(update: @escaping(_ update: [Any]?) -> Void){
@@ -46,40 +113,4 @@ class TMTourSpot: CMNetworking {
      }
      }
      */
-    
-    override func requestAPI(update: @escaping(_ update: [Any]?) -> Void) {
-        
-        let observable = super.request(requestParam: getParam())
-        _ = observable
-            .map { json in Mapper<TourSpotResponse>().map(JSONObject: json)}
-            .filter { json in json?.response?.head?.resultMsg == "OK" }
-            .map { result in result?.response?.body?.items?.item }
-            .ifEmpty(default: nil)
-            .subscribe { event in
-                switch event {
-                case .next(let result):
-                    if let result = result {
-                        update(result)
-                    }
-                    break
-                case .error(let err):
-                    tgLog(err)
-                    update(nil)
-                    break
-                case .completed:
-                    break
-                }
-        }
-    }
-    
-    override func getParam() -> Dictionary<String, Any> {
-        
-        var param = super.getParam()
-        
-        if let validAreaCode = areaCode {
-            param.updateValue(validAreaCode, forKey: "areaCode")
-        }
-        
-        return param
-    }
 }

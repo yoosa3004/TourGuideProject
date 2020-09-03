@@ -94,12 +94,9 @@ class TourSpotListViewController: UIViewController {
         for (key, value) in areaCategory {
             scAreaCategory.insertSegment(withTitle: key, at: idx, animated: false)
             
-            let vcAreaTourSpot = TourSpotCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout().then {
-                $0.scrollDirection = .vertical
-            }).then {
+            let vcAreaTourSpot = TourSpotCollectionViewController().then {
                 $0.mTourSpot.areaCode = value
                 $0.mTourSpot.arrange = "P"
-//                $0.view.translatesAutoresizingMaskIntoConstraints = false 스냅킷쓰면 자동으로 false로 세팅됨.
             }
             
             // ChildController로 추가
